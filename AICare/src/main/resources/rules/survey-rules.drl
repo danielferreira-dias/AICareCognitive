@@ -1,0 +1,40 @@
+package rules
+
+import pt.isep.meia.AICare.models.Question;
+import pt.isep.meia.AICare.models.Answer;
+import pt.isep.meia.AICare.models.SurveySession;
+
+global Question nextQuestion;
+
+// Rule to set the first question when a new session starts
+rule "Set First Question"
+when
+    SurveySession()
+then
+    nextQuestion = new Question("q1", "What is your name?");
+end
+
+// Rule to determine the next question based on the answer to "q1"
+rule "Handle Name Answer"
+when
+    Answer(questionId == "q1")
+then
+    nextQuestion = new Question("q2", "How old are you?");
+end
+
+// Rule to determine the next question based on the answer to "q2"
+rule "Handle Age Answer"
+when
+    Answer(questionId == "q2", response matches "[0-9]+")
+then
+    nextQuestion = new Question("q3", "What is your favorite color?");
+end
+
+// Rule to end the survey if there are no more questions
+rule "End Survey"
+salience -1
+when
+    Answer(questionId == "q3")
+then
+    nextQuestion = null; // This will signal the survey to end
+end

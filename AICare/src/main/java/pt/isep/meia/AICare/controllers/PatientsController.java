@@ -1,5 +1,6 @@
 package pt.isep.meia.AICare.controllers;
 
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class PatientsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable UUID id) {
-        Patient patient = patientService.getPatientById(id);
+        var patient = patientService.getPatientById(id);
         return (patient != null) ? ResponseEntity.ok(patient) : ResponseEntity.notFound().build();
     }
 
