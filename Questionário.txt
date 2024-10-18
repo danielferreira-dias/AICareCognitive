@@ -1,0 +1,116 @@
+tem doença diagnosticadas?
+    tem alzheimer?
+        inicial ou avançado?
+    tem parkinson?
+        inicial ou avançado?
+    tem demencia vascular?
+        inicial ou avançada?
+
+
+se não tiver alzheimer
+    tem desorientação espacial?
+    aparenta frustração devido a perdas de memória?
+    tem esquecimentos ligeiros?
+        se sim a alguma das anteriores
+            apresenta o olhar muito fixo?
+            necessita de vigilância permanente?
+            não consegue executar os estímulos?
+            tem histórico de quedas?
+
+
+se não tiver parkinson
+    tem tremores?
+    tem dificuldade na locomoção?
+    tem coluna curvada?
+    tem perdas de equilibrio?
+    tem principios de surdez?
+        se sim a alguma das anteriores
+            tem dificuldade de locomoção?
+            apresenta tremores intensos?
+            tem dificuldades de coordenação a fazer movimentos precisos?
+
+
+se não tiver demencia vascular
+    tem problemas em lembrar informações ou eventos recentes?
+    tem alterações emocionais como depressão ou ansiedade?
+    tem dificuldades de racioncinio, planeamento ou organização?
+        se sim a alguma das anteriores
+            tem dificuldade em recordar informaçãoes importantes?
+            tem dificuldade em reconhecer pessoas?
+            tem histórico de episódios de agressividade, insónia ou agitação?
+            tem problemas em mover as mãos e locomoção?
+
+---------------------------------------------------------------------------------------
+
+para as opções abaixo, selecione a opção que faz mais sentido
+
+Integração Social
+1. Relações sociais boas e fáceis e integra-se sem dificuldades
+2. Graves problemas de integração
+3. Pessoa isolada, só afastada da familia
+
+Visão
+1. Boa visão
+2. Apresenta dificuldades
+3. Cegueira
+
+Audição
+1. Boa audição
+2. Apresenta dificuldades
+3. Surdez
+
+Fala
+1. Fala normalmente
+2. Apresenta dificuldades
+3. Não se faz compreender através da palavra
+
+Olfato
+1. Funciona normalmente
+2. Tem dificuldades em identificar odores
+3. Perda total do olfato
+
+Capacidade motora da parte superior
+1. Funciona normalmente
+2. Tem dificuldade em fazer movimentos precisos
+3. Não consegue fazer movimentos com a parte superior
+
+Capacidade motora da parte inferior
+1. Funciona normalmente
+2. Tem dificuldade em fazer movimentos precisos
+3. Não consegue fazer movimentos com a parte inferior
+
+Manuseamento de objetos usuais
+1. Manipulação correta e total
+2. Só manuseia corretamente alguns
+3. Não pode fazê-lo
+
+Ler
+1. Sem dificudades
+2. Apresenta dificuldades
+3. Não consegue 
+
+Escrever
+1. Sem dificudades
+2. Apresenta dificuldades
+3. Não consegue 
+
+Mobilidade ao ar livre
+1. Move-se sem dificuldade, com ou sem bengala
+2. Move-se com dificuldade e com ajuda (andarilho, cadeira de rodas)
+3. Dependência total
+
+---------------------------------------------------------------------------------------
+
+Gostos
+
+Gosta de teatro?
+Gosta de cinema?
+Gosta de museu?
+Gosta de ver televisão?
+Gosta de ouvir rádio?
+Gosta de ler?
+Alguma vez pertenceu a algum grupo recreativo?
+Gosta de música?
+Gosta de caminhar e conher lugares?
+Gosta de desporto?
+Gosta de fazer trabalhos manuais ou artesanato?
