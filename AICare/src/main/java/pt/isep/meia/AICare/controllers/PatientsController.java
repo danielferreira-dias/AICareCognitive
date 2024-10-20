@@ -4,9 +4,10 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pt.isep.meia.AICare.models.Patient;
+import pt.isep.meia.AICare.domain.entities.Patient;
 import pt.isep.meia.AICare.application.services.PatientService;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +29,10 @@ public class PatientsController {
 
     @PostMapping
     public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
-        return ResponseEntity.ok(patientService.createPatient(patient));
+        var createdPatient = patientService.createPatient(patient);
+        return ResponseEntity
+                .created(URI.create("/api/patients/" + createdPatient.getId()))
+                .body(createdPatient);
     }
 
     @GetMapping("/{id}")

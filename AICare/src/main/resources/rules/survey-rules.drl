@@ -1,40 +1,187 @@
-package rules
+package pt.isep.meia.AICare;
 
-import pt.isep.meia.AICare.models.Question;
-import pt.isep.meia.AICare.models.Answer;
-import pt.isep.meia.AICare.models.SurveySession;
+import pt.isep.meia.AICare.domain.model.Conclusion;
+import pt.isep.meia.AICare.domain.model.Evidence;
+import pt.isep.meia.AICare.domain.model.Hypothesis;
+import pt.isep.meia.AICare.domain.entities.Question
+import java.util.UUID;
+import java.util.List;
 
 global Question nextQuestion;
+global Conclusion conclusion;
+global UUID surveyId;
+global List<Evidence> evidences;
+global String lastRule;
 
-// Rule to set the first question when a new session starts
-rule "Set First Question"
-when
-    SurveySession()
-then
-    nextQuestion = new Question("q1", "What is your name?");
+import function pt.isep.meia.AICare.application.utils.AnswerChecker.answer
+import pt.isep.meia.AICare.domain.model.Hypothesis;
+
+query "Conclusions"
+    $conclusion : Conclusion()
 end
 
-// Rule to determine the next question based on the answer to "q1"
-rule "Handle Name Answer"
-when
-    Answer(questionId == "q1")
-then
-    nextQuestion = new Question("q2", "How old are you?");
+rule "start"
+    when
+        eval(evidences.isEmpty())
+    then
+        Question q = new Question(surveyId, Evidence.BLOOD_EAR);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "start";
 end
 
-// Rule to determine the next question based on the answer to "q2"
-rule "Handle Age Answer"
-when
-    Answer(questionId == "q2", response matches "[0-9]+")
-then
-    nextQuestion = new Question("q3", "What is your favorite color?");
+rule "r1"
+    when
+        eval(answer(evidences, Evidence.BLOOD_EAR, "yes"))
+    then
+        Hypothesis h = new Hypothesis("haemorrhage", "upper type");
+        insert(h);
+
+        Question q = new Question(surveyId, Evidence.EARACHE);
+        System.out.println(q.toString());
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r1";
 end
 
-// Rule to end the survey if there are no more questions
-rule "End Survey"
-salience -1
-when
-    Answer(questionId == "q3")
-then
-    nextQuestion = null; // This will signal the survey to end
+rule "r2"
+    when
+        eval(answer(evidences, Evidence.BLOOD_EAR, "no"))
+    then
+        Hypothesis h = new Hypothesis("haemorrhage", "lower type");
+        insert(h);
+
+        Question q = new Question(surveyId, Evidence.BLOOD_NOSE);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r2";
+end
+
+rule "r3"
+    when
+        Hypothesis(description == "haemorrhage", value == "upper type")
+        eval(answer(evidences, Evidence.EARACHE, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.OTORRHAGIA);
+        insert(c);
+        conclusion = c;
+        System.out.println("Inserted first question: " + c.toString());
+        System.out.println("nextQuestion: " + conclusion.toString());
+        lastRule = "r3";
+end
+
+rule "r4"
+    when
+        Hypothesis(description == "haemorrhage", value == "upper type")
+        eval(answer(evidences, Evidence.DEAFNESS, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.OTORRHAGIA);
+        insert(c);
+        conclusion = c;
+        lastRule = "r4";
+end
+
+rule "r5"
+    when
+        Hypothesis(description == "haemorrhage", value == "upper type")
+        eval(answer(evidences, Evidence.CEREBROSPINAL, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.SKULL_FRACTURE);
+        insert(c);
+        conclusion = c;
+        lastRule = "r5";
+end
+
+rule "r6"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_NOSE, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.EPISTAXE);
+        insert(c);
+        conclusion = c;
+        lastRule = "r6";
+end
+
+rule "r7"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_MOUTH, "yes"))
+        eval(answer(evidences, Evidence.BLOOD_BROWN, "yes"))
+        eval(answer(evidences, Evidence.VOMITING, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.HEMATHESE);
+        insert(c);
+        conclusion = c;
+        lastRule = "r7";
+end
+
+rule "r8"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_MOUTH, "yes"))
+        eval(answer(evidences, Evidence.BLOOD_BROWN, "no"))
+        eval(answer(evidences, Evidence.VOMITING, "no"))
+    then
+        Conclusion c = new Conclusion(Conclusion.MOUTH_HAEMORRHAGE);
+        conclusion = c;
+        insert(c);
+        lastRule = "r8";
+end
+
+rule "r9"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_VAGINA, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.METRORRHAGIA);
+        insert(c);
+        conclusion = c;
+        lastRule = "r9";
+end
+
+rule "r10"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_PENIS, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.HEMATURIA);
+        insert(c);
+        conclusion = c;
+        lastRule = "10";
+end
+
+rule "r11"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_ANUS, "yes"))
+        eval(answer(evidences, Evidence.BLOOD_COFFEE, "yes"))
+    then
+        Conclusion c = new Conclusion(Conclusion.MELENA);
+        insert(c);
+        conclusion = c;
+        lastRule = "r11";
+end
+
+rule "r12"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, Evidence.BLOOD_ANUS, "yes"))
+        eval(answer(evidences, Evidence.BLOOD_COFFEE, "no"))
+    then
+        Conclusion c = new Conclusion(Conclusion.RECTAL_BLEEDING);
+        insert(c);
+        conclusion = c;
+        lastRule = "r12";
+end
+
+rule "unknown"
+    when
+        eval(lastRule == "r12")
+        eval(!evidences.isEmpty())
+        not Conclusion()
+    then
+        Conclusion c = new Conclusion(Conclusion.UNKNOWN);
+        insert(c);
+        conclusion = c;
 end
