@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Hypothesis extends Fact {
+public class Hypothesis {
     private String description;
     private String value;
 

@@ -8,15 +8,15 @@ import pt.isep.meia.AICare.application.configs.DroolsConfig;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.domain.entities.Survey;
-import pt.isep.meia.AICare.domain.model.Conclusion;
+import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.infrastructure.repositories.AnswersRepository;
+import pt.isep.meia.AICare.infrastructure.repositories.ConclusionsRepository;
 import pt.isep.meia.AICare.infrastructure.repositories.QuestionsRepository;
 import pt.isep.meia.AICare.infrastructure.repositories.SurveysRepository;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,17 +26,20 @@ public class SurveyService {
     private final DroolsConfig droolsConfig;
     private final QuestionsRepository questionsRepository;
     private final AnswersRepository answersRepository;
+    private final ConclusionsRepository conclusionsRepository;
 
     @Autowired
     public SurveyService(
             DroolsConfig droolsConfig,
             SurveysRepository surveysRepository,
             QuestionsRepository questionsRepository,
-            AnswersRepository answersRepository) {
+            AnswersRepository answersRepository,
+            ConclusionsRepository conclusionsRepository) {
         this.surveysRepository = surveysRepository;
         this.droolsConfig = droolsConfig;
         this.questionsRepository = questionsRepository;
         this.answersRepository = answersRepository;
+        this.conclusionsRepository = conclusionsRepository;
     }
 
     public Survey getSurveyById(UUID surveyId) {
@@ -45,8 +48,7 @@ public class SurveyService {
     }
 
     public Survey createSurvey(UUID patientId) {
-        var createdSurvey = surveysRepository.save(new Survey(patientId, LocalDateTime.now()));
-        return createdSurvey;
+        return surveysRepository.save(new Survey(patientId));
     }
 
     public Result getNextQuestion(UUID surveyId) throws IOException {
@@ -75,13 +77,13 @@ public class SurveyService {
         session.setGlobal("evidences", evidences);
         session.fireAllRules();
 
-        for (var obj : session.getObjects()) {
-            System.out.println(obj);
-        }
-
         Conclusion conclusion = getConclusionFromSession(session);
 
         if(conclusion != null){
+            var createdConclusion = conclusionsRepository.save(conclusion);
+            var surveyToUpdate = survey.get();
+            surveyToUpdate.setConclusionId(createdConclusion.getId());
+            surveysRepository.save(surveyToUpdate);
             return Result.fromConclusion(conclusion);
         }
 

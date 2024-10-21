@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.domain.entities.Patient;
 import pt.isep.meia.AICare.application.services.PatientService;
+import pt.isep.meia.AICare.domain.entities.Survey;
 
 import java.net.URI;
 import java.util.List;
@@ -45,5 +46,11 @@ public class PatientsController {
     public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/surveys")
+    public ResponseEntity<List<Survey>> getSurveysByPatientId(@PathVariable UUID id) {
+        var surveys = patientService.getSurveysByPatientId(id);
+        return ResponseEntity.ok(surveys);
     }
 }

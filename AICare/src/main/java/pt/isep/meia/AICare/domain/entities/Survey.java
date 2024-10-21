@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Setter
@@ -27,15 +26,13 @@ public class Survey {
     @Column(columnDefinition = "BINARY(16)", nullable = false)
     private UUID patientId;
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID conclusionId;
 
     public Survey() {
     }
 
-    public Survey(UUID patientId, LocalDateTime startTime) {
+    public Survey(UUID patientId) {
         this.patientId = patientId;
-        this.startTime = startTime;
     }
-
 }
