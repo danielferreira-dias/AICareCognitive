@@ -30,9 +30,8 @@ register_user(Request) :-
 %--------------------------------------------------------------------------------
 
 % Regla para cargar un archivo de base de conocimiento
-carrega_bc :- 
-    consult('/Users/Carlo/Desktop/BDC.pl'),
-    write('Base de conocimiento cargada.'), nl.
+:- consult('BDC.pl'),
+   write('Base de conocimiento cargada.'), nl.
 
 %--------------------------------------------------------------------------------
 
@@ -109,3 +108,11 @@ mostrar_atividades_permitidas_guardadas :-
     ;   writeln('No hay actividades permitidas registradas.')
     ).
 
+conclusoes(Lista) :-
+    get_doencas(Doencas),
+    get_gostos(Gostos),
+    get_condicoes(Condicoes),
+    iniciar(Doencas),
+    iniciar2(Condicoes),
+    iniciar3(Gostos),
+    atividades_permitidas_guardadas(Lista).

@@ -1,16 +1,92 @@
+:- dynamic evidence/2.
 
 % FATOS
 %--------------------------------------------
 
 %DEFINIÇÃO DAS DOENÇAS:
-doenca(parkinson_inicial).
-doenca(parkinson_avancada).
-doenca(alzheimer_inicial).
-doenca(alzheimer_avancada).
-doenca(demencia_vascular_avancada).
-doenca(demencia_vascular_inicial).
+doenca(alzheimer_inicial) :-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_alzheimer,yes),
+    evidence(diagnosis_alzheimer_stage,initial).
+doenca(alzheimer_inicial) :-
+    findall(yes, (
+        evidence(observation_alzheimer_spacial_disorientation, yes);
+        evidence(observation_alzheimer_memory_loss_frustration, yes);
+        evidence(observation_alzheimer_slight_memory_loss, yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 2.
+doenca(alzheimer_avancada) :-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_alzheimer,yes),
+    evidence(diagnosis_alzheimer_stage,advanced).
+doenca(alzheimer_avancada) :-
+    doenca(alzheimer_inicial),
+    findall(yes, (
+        evidence(observation_alzheimer_stare,yes);
+        evidence(observation_alzheimer_needs_permanent_watch,yes);
+        evidence(observation_alzheimer_cant_make_stimuli,yes);
+        evidence(observation_alzheimer_fall_history,yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 1.
+doenca(parkinson_inicial) :-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_parkinson,yes),
+    evidence(diagnosis_parkinson_stage,initial).
+doenca(parkinson_inicial) :-
+    findall(yes, (
+        evidence(observation_parkinson_shaking,yes);
+        evidence(observation_parkinson_bent_spine,yes);
+        evidence(observation_parkinson_balance_loss,yes);
+        evidence(observation_parkinson_initial_hear_loss,yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 2.
+doenca(parkinson_avancada):-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_parkinson,yes),
+    evidence(diagnosis_parkinson_stage,advanced).
+doenca(parkinson_avancada) :-
+    doenca(parkinson_inicial),
+    findall(yes, (
+        evidence(observation_parkinson_locomotion_difficulties,yes);
+        evidence(observation_parkinson_intense_shaking,yes);
+        evidence(observation_parkinson_fine_motor_control,yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 1.
+doenca(demencia_vascular_inicial):-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_vascular_dementia,yes),
+    evidence(diagnosis_vascular_dementia_stage,initial).
+doenca(demencia_vascular_inicial) :-
+    findall(yes, (
+        evidence(observation_vascular_dementia_slight_memory_loss,yes);
+        evidence(observation_vascular_dementia_depression_anxiety,yes);
+        evidence(observation_vascular_dementia_thinking_problems,yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 2.
+doenca(demencia_vascular_avancada):-
+    evidence(diagnosis,yes),
+    evidence(diagnosis_vascular_dementia,yes),
+    evidence(diagnosis_vascular_dementia_stage,advanced).
+doenca(demencia_vascular_avancada) :-
+    doenca(demencia_vascular_inicial),
+    findall(yes, (
+        evidence(observation_vascular_dementia_heavy_memory_loss,yes);
+        evidence(observation_vascular_dementia_people_recognition,yes);
+        evidence(observation_vascular_dementia_history_aggressiveness_insomnia_agitation,yes);
+        evidence(observation_vascular_dementia_body_control,yes)
+    ), Results),
+    length(Results, Count),
+    Count >= 1.
 
 
+get_doencas(Doencas) :-
+    findall(X, doenca(X), DoencasList),
+    sort(DoencasList, Doencas).
 %--------------------------------------------
 
 
@@ -154,50 +230,86 @@ nao_pode(parkinson_avancada, jogos_missako).
 
 % CONDIÇÕES (OUTROS ASPECTOS)
 %1 Integracao_social
-condicao(integracao_social, relacoes_sociais_boas). 
-condicao(integracao_social, graves_problemas_de_integracao). 
-condicao(integracao_social, pessoa_isolada).
+condicao(integracao_social, relacoes_sociais_boas) :-
+    evidence(integracao_social, relacoes_sociais_boas). 
+condicao(integracao_social, graves_problemas_de_integracao) :-
+    evidence(integracao_social, graves_problemas_de_integracao). 
+condicao(integracao_social, pessoa_isolada) :-
+    evidence(integracao_social, pessoa_isolada).
 %2 Visao
-condicao(visao, boa_visao).
-condicao(visao, visao_com_dificuldade). 
-condicao(visao, cegueira).
+condicao(visao, boa_visao) :-
+    evidence(visao, boa_visao).
+condicao(visao, visao_com_dificuldade) :-
+    evidence(visao, visao_com_dificuldade). 
+condicao(visao, cegueira) :-
+    evidence(visao, cegueira).
 %3 Audicao
-condicao(audicao, boa_audicao). 
-condicao(audicao, audicao_com_dificuldade). 
-condicao(audicao, surdez).
+condicao(audicao, boa_audicao) :-
+    evidence(audicao, boa_audicao). 
+condicao(audicao, audicao_com_dificuldade) :-
+    evidence(audicao, audicao_com_dificuldade). 
+condicao(audicao, surdez) :-
+    evidence(audicao, surdez).
 %4 Fala
-condicao(fala, fala_normalmente). 
-condicao(fala, expressa_se_com_dificuldade). 
-condicao(fala, nao_se_faz_compreender).
+condicao(fala, fala_normalmente) :-
+    evidence(fala, fala_normalmente). 
+condicao(fala, expressa_se_com_dificuldade) :-
+    evidence(fala, expressa_se_com_dificuldade). 
+condicao(fala, nao_se_faz_compreender) :-
+    evidence(fala, nao_se_faz_compreender).
 %5 Olfato
-condicao(olfato, olfato_funciona_normalmente). 
-condicao(olfato, olfato_tem_dificuldade). 
-condicao(olfato, olfato_perda_total_olfato).
+condicao(olfato, olfato_funciona_normalmente) :-
+    evidence(olfato, olfato_funciona_normalmente). 
+condicao(olfato, olfato_tem_dificuldade) :-
+    evidence(olfato, olfato_tem_dificuldade). 
+condicao(olfato, olfato_perda_total_olfato) :-
+    evidence(olfato, olfato_perda_total_olfato).
 %6 Mobilidade_superior
-condicao(mobilidade_superior, superior_funciona_normalmente). 
-condicao(mobilidade_superior, superior_tem_dificuldade). 
-condicao(mobilidade_superior, superior_no_consegue_mover).
+condicao(mobilidade_superior, superior_funciona_normalmente) :-
+    evidence(mobilidade_superior, superior_funciona_normalmente). 
+condicao(mobilidade_superior, superior_tem_dificuldade) :-
+    evidence(mobilidade_superior, superior_tem_dificuldade). 
+condicao(mobilidade_superior, superior_no_consegue_mover) :-
+    evidence(mobilidade_superior, superior_no_consegue_mover).
 %7 Mobilidade_inferior
-condicao(mobilidade_inferior, inferior_funciona_normalmente). 
-condicao(mobilidade_inferior, inferior_tem_dificuldade). 
-condicao(mobilidade_inferior, inferior_no_consegue_mover).
+condicao(mobilidade_inferior, inferior_funciona_normalmente) :-
+    evidence(mobilidade_inferior, inferior_funciona_normalmente). 
+condicao(mobilidade_inferior, inferior_tem_dificuldade) :-
+    evidence(mobilidade_inferior, inferior_tem_dificuldade). 
+condicao(mobilidade_inferior, inferior_no_consegue_mover) :-
+    evidence(mobilidade_inferior, inferior_no_consegue_mover).
 %8 Manuseamento_objectos
-condicao(manuseamento_objectos, manipulacao_correta). 
-condicao(manuseamento_objectos, so_alguns). 
-condicao(manuseamento_objectos, nao_pode_faze_lo).
+condicao(manuseamento_objectos, manipulacao_correta) :-
+    evidence(manuseamento_objectos, manipulacao_correta). 
+condicao(manuseamento_objectos, so_alguns) :-
+    evidence(manuseamento_objectos, so_alguns). 
+condicao(manuseamento_objectos, nao_pode_faze_lo) :-
+    evidence(manuseamento_objectos, nao_pode_faze_lo).
 %9 Ler
-condicao(ler, ler_sem_dificuldade). 
-condicao(ler, ler_alguma_dificultade). 
-condicao(ler, ler_nao_consegue).
+condicao(ler, ler_sem_dificuldade) :-
+    evidence(ler, ler_sem_dificuldade). 
+condicao(ler, ler_alguma_dificultade) :-
+    evidence(ler, ler_alguma_dificultade). 
+condicao(ler, ler_nao_consegue) :-
+    evidence(ler, ler_nao_consegue).
 %10 Escrever
-condicao(escrever, escrever_sem_dificuldade). 
-condicao(escrever, escrever_alguma_dificultade). 
-condicao(escrever, escrever_nao_consegue).
+condicao(escrever, escrever_sem_dificuldade) :-
+    evidence(escrever, escrever_sem_dificuldade). 
+condicao(escrever, escrever_alguma_dificultade) :-
+    evidence(escrever, escrever_alguma_dificultade). 
+condicao(escrever, escrever_nao_consegue) :-
+    evidence(escrever, escrever_nao_consegue).
 %11 Mobilidade
-condicao(mobilidade, sem_dificuldade). 
-condicao(mobilidade, alguma_dificuldade). 
-condicao(mobilidade, dependencia_total).
+condicao(mobilidade, sem_dificuldade) :-
+    evidence(mobilidade, sem_dificuldade). 
+condicao(mobilidade, alguma_dificuldade) :-
+    evidence(mobilidade, alguma_dificuldade). 
+condicao(mobilidade, dependencia_total) :-
+    evidence(mobilidade, dependencia_total).
 
+get_condicoes(Condicoes):-
+    findall(X, condicao(X, _), CondicoesList),
+    sort(CondicoesList, Condicoes).
 
 %--------------------------------------------
 
@@ -480,20 +592,32 @@ no_adecuado(dependencia_total, jogos_mimica).
 
 
 % GOSTOS
-gosto(teatro).
-gosto(museu).
-gosto(musica).
-gosto(leitura).
-gosto(grupo_recreativo).
-gosto(arte).
-gosto(desporto).
-gosto(cozinha).
-gosto(cozinha).
-gosto(trabalhos_manuales).
+gosto(teatro):-
+    evidence(teatro, yes).
+gosto(museu):-
+    evidence(museu,yes).
+gosto(musica):-
+    evidence(musica,yes).
+gosto(leitura):-
+    evidence(leitura,yes).
+gosto(grupo_recreativo):-
+    evidence(grupo_recreativo,yes).
+gosto(arte):-
+    evidence(arte,yes).
+gosto(desporto):-
+    evidence(desporto,yes).
+gosto(cozinha):-
+    evidence(cozinha,yes).
+gosto(cozinha):-
+    evidence(cozinha,yes).
+gosto(trabalhos_manuales):-
+    evidence(trabalhos_manuales,yes).
 
+get_gostos(Gostos) :-
+    findall(X, gosto(X), GostosList),
+    sort(GostosList, Gostos).
 
 %--------------------------------------------
-
 
 % GOSTOS/ACTIVIDADE (PREFERENCIAS)
 %1-Teatro
