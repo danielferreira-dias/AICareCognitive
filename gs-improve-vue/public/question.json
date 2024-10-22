@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "question": "Question 1",
+    "type": "checkbox",
+    "o6ptions": [
+      { "value": "Option 1", "label": "Answer A" },
+      { "value": "Option 2", "label": "Answer B" }
+    ]
+  },
+  {
+    "id": 2,
+    "question": "Question 2",
+    "type": "radiobutton",
+    "options": [
+      { "value": "Option 1", "label": "Answer A" },
+      { "value": "Option 2", "label": "Answer B" }
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Question 3",
+    "type": "checkbox",
+    "options": [
+      { "value": "Option 1", "label": "Answer A" },
+      { "value": "Option 2", "label": "Answer B" },
+      { "value": "Option 3", "label": "Answer C" }
+    ]
+  },
+  {
+    "id": 4,
+    "question": "Question 4",
+    "type": "radiobutton",
+    "options": [
+      { "value": "Option 1", "label": "Answer A" },
+      { "value": "Option 2", "label": "Answer B" }
+    ]
+  },
+  {
+    "id": 5,
+    "question": "Question 5",
+    "type": "checkbox",
+    "options": [
+      { "value": "Option 1", "label": "Answer A" },
+      { "value": "Option 2", "label": "Answer B" }
+    ]
+  }
+]
