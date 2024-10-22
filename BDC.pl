@@ -1,3 +1,7 @@
+
+% FATOS
+%--------------------------------------------
+
 %DEFINIÇÃO DAS DOENÇAS:
 doenca(parkinson_inicial).
 doenca(parkinson_avancada).
@@ -138,11 +142,11 @@ nao_pode(parkinson_avancada, jogos_destreza_manual).
 nao_pode(parkinson_avancada, exercicios_leitura_escrita).
 nao_pode(parkinson_avancada, caminhadas).
 nao_pode(parkinson_avancada, utilizacao_instrumentos).
+nao_pode(parkinson_avancada, adivinhar_musicas).
 nao_pode(parkinson_avancada, jogos_petanca).
 nao_pode(parkinson_avancada, jogos_bowling).
 nao_pode(parkinson_avancada, jogos_mimica).
 nao_pode(parkinson_avancada, jogos_missako).
-nao_pode(parkinson_avancada, adivinhar_musicas).
 
 
 %--------------------------------------------
@@ -235,16 +239,16 @@ no_adecuado(pessoa_isolada, interpretacao_personagens).
 %2 Visao
 %Visao_com_dificuldade (GRAVIDADE MEDIA)
 no_adecuado(visao_com_dificuldade, tecnica_construcao).
-no_adecuado(cegueira, trabalhos_feltro).
-no_adecuado(cegueira, pequenos_arranjos).
+no_adecuado(visao_com_dificuldade, trabalhos_feltro).
+no_adecuado(visao_com_dificuldade, pequenos_arranjos).
 no_adecuado(visao_com_dificuldade, trabalhos_decoracao_centro).
 no_adecuado(visao_com_dificuldade, confeccao_sobremesas).
 no_adecuado(visao_com_dificuldade, jogos_reconhecimento_imagem).
 no_adecuado(visao_com_dificuldade, exercicios_leitura_escrita).
 no_adecuado(visao_com_dificuldade, jogos_diferencas).
 no_adecuado(visao_com_dificuldade, musicograma).
-no_adecuado(cegueira, jogos_petanca).
-no_adecuado(cegueira, jogos_bowling).
+no_adecuado(visao_com_dificuldade, jogos_petanca).
+no_adecuado(visao_com_dificuldade, jogos_bowling).
 no_adecuado(visao_com_dificuldade, jogos_bingo).
 no_adecuado(visao_com_dificuldade, leitura_textos_dramaticos).
 
@@ -494,130 +498,47 @@ gosto(trabalhos_manuales).
 % GOSTOS/ACTIVIDADE (PREFERENCIAS)
 %1-Teatro
 preferencia(teatro, leitura_textos_dramaticos).
-relacionado(teatro, interpretacao_personagens).
-relacionado(teatro, jogos_mimica).
+preferencia(teatro, interpretacao_personagens).
+preferencia(teatro, jogos_mimica).
 %2-Museu
-relacionado(museu, quadros). 
-relacionado(museu, pequenos_arranjos).
-relacionado(museu, caminhadas).
+preferencia(museu, quadros). 
+preferencia(museu, pequenos_arranjos).
+preferencia(museu, caminhadas).
 %3-Musica
-relacionado(musica, karaoke).
-relacionado(musica, musicograma).
-relacionado(musica, adivinhar_musicas).
-relacionado(musica, utilizacao_instrumentos). 
+preferencia(musica, karaoke).
+preferencia(musica, musicograma).
+preferencia(musica, adivinhar_musicas).
+preferencia(musica, utilizacao_instrumentos). 
 %4-Leitura
-relacionado(leitura, leitura_textos_dramaticos). 
-relacionado(leitura, exercicios_leitura_escrita).
-relacionado(leitura, exercicios_tarefas_verbais).
+preferencia(leitura, leitura_textos_dramaticos). 
+preferencia(leitura, exercicios_leitura_escrita).
+preferencia(leitura, exercicios_tarefas_verbais).
 %5-Grupo_recreativo
-relacionado(grupo_recreativo, jogos_petanca). 
-relacionado(grupo_recreativo, jogos_bowling). 
-relacionado(grupo_recreativo, jogos_mimica).
-relacionado(grupo_recreativo, jogos_bingo).
-relacionado(grupo_recreativo, jogos_lencinho_adaptado).
-relacionado(grupo_recreativo, execucao_trabalhos_festas).
-relacionado(grupo_recreativo, trabalhos_decoracao_centro).
+preferencia(grupo_recreativo, jogos_petanca). 
+preferencia(grupo_recreativo, jogos_bowling). 
+preferencia(grupo_recreativo, jogos_mimica).
+preferencia(grupo_recreativo, jogos_bingo).
+preferencia(grupo_recreativo, jogos_lencinho_adaptado).
+preferencia(grupo_recreativo, execucao_trabalhos_festas).
+preferencia(grupo_recreativo, trabalhos_decoracao_centro).
 %6-Arte
-relacionado(arte, quadros).
-relacionado(arte, trabalhos_decoracao_centro).
-relacionado(arte, trabalhos_feltro).
-relacionado(arte, pequenos_arranjos).
+preferencia(arte, quadros).
+preferencia(arte, trabalhos_decoracao_centro).
+preferencia(arte, trabalhos_feltro).
+preferencia(arte, pequenos_arranjos).
 %7-Desporto
-relacionado(desporto, caminhadas).
-relacionado(desporto, jogos_petanca).
-relacionado(desporto, jogos_bowling).
+preferencia(desporto, caminhadas).
+preferencia(desporto, jogos_petanca).
+preferencia(desporto, jogos_bowling).
 %8-Cozinha
-relacionado(cozinha, confeccao_sobremesas).
+preferencia(cozinha, confeccao_sobremesas).
 %9-Trabalhos_manuales
-relacionado(trabalhos_manuales, tecnica_construcao).
-relacionado(trabalhos_manuales, materiais_reciclados). 
-relacionado(trabalhos_manuales, trabalhos_feltro). 
-relacionado(trabalhos_manuales, pequenos_arranjos).
-relacionado(trabalhos_manuales, quadros). 
-relacionado(trabalhos_manuales, trabalhos_decoracao_centro).
-relacionado(trabalhos_manuales, manicure).
-relacionado(trabalhos_manuales, maquilhagem). 
-relacionado(trabalhos_manuales, massagens). 
-
-
-% REGLAS
-% Declarar el hecho como dinámico
-:- dynamic actividades_guardadas/1.
-:- discontiguous guardar_actividades/1.
-
-% Predicado para iniciar la interacción con el usuario
-iniciar :-
-    writeln('¿Que enfermedades tiene el anciano? (Escribe "fin" para terminar)'),
-    leer_enfermedades(Enfermedades),
-    atividades_permitidas(Enfermedades, AtividadesPermitidas),
-    writeln('Las actividades permitidas son:'),
-    writeln(AtividadesPermitidas),
-    guardar_actividades(AtividadesPermitidas).
-
-% Predicado para leer enfermedades del usuario una por una
-leer_enfermedades(Enfermedades) :-
-    writeln('Ingrese una enfermedad:'),
-    read(Enfermedad),
-    agregar_enfermedad(Enfermedad, Enfermedades).
-
-% Agrega enfermedades a la lista hasta que el usuario ingrese "fin"
-agregar_enfermedad(fin, []).  % Caso base: si el usuario escribe "fin", termina
-agregar_enfermedad(Enfermedad, [Enfermedad | Resto]) :-
-    Enfermedad \= fin,  % Continúa si la entrada no es "fin"
-    leer_enfermedades(Resto).
-
-% Guardar la lista de actividades en memoria
-guardar_actividades(AtividadesPermitidas) :-
-    % Si hay una lista guardada, eliminarla
-    retractall(actividades_guardadas(_)),
-    % Guardar la nueva lista de actividades
-    assert(actividades_guardadas(AtividadesPermitidas)).
-
-% Consultar las actividades guardadas
-consultar_actividades :-
-    actividades_guardadas(AtividadesPermitidas),
-    writeln('Actividades permitidas actualmente guardadas:'),
-    writeln(AtividadesPermitidas).
-
-
-% Regla para encontrar todas las actividades permitidas para una persona dada su lista de enfermedades.
-atividades_permitidas(Enfermedades, ActividadesPermitidas) :-
-    findall(A, atividade(A), TodasActividades),
-    excluir_atividades(Enfermedades, TodasActividades, ActividadesPermitidas).
-
-% Regla auxiliar que excluye actividades no permitidas basadas en la lista de enfermedades.
-excluir_atividades([], Actividades, Actividades).
-excluir_atividades([Enfermedad|RestoEnfermedades], Actividades, ActividadesPermitidas) :-
-    findall(A, nao_pode(Enfermedad, A), AtividadesNaoPermitidas),
-    subtract(Actividades, AtividadesNaoPermitidas, AtividadesFiltradas),
-    excluir_atividades(RestoEnfermedades, AtividadesFiltradas, ActividadesPermitidas).
-
-atividades_nao_permitidas(Enfermedades, AtividadesNaoPermitidas) :-
-    findall(A, (member(Enfermedad, Enfermedades), nao_pode(Enfermedad, A)), TodasNaoPermitidas),
-    sort(TodasNaoPermitidas, AtividadesNaoPermitidas).
-
-
-
-% Regla para obtener actividades permitidas considerando enfermedades y condiciones físicas
-atividades_permitidas_com_condicoes(Enfermedades, Condiciones, AtividadesPermitidas) :-
-    atividades_permitidas(Enfermedades, AtividadesIntermedias),
-    excluir_atividades_por_condicoes(Condiciones, AtividadesIntermedias, AtividadesPermitidas).
-
-% Regla para excluir actividades según condiciones físicas
-excluir_atividades_por_condicoes([], Atividades, Atividades).  % Caso base: sin condiciones, devuelve la lista original
-excluir_atividades_por_condicoes([Condicion | Resto], Atividades, AtividadesFiltradas) :-
-    findall(A, no_adecuado(Condicion, A), AtividadesNaoAdecuadas),
-    subtract(Atividades, AtividadesNaoAdecuadas, AtividadesIntermedias),
-    excluir_atividades_por_condicoes(Resto, AtividadesIntermedias, AtividadesFiltradas).
-
-
-%pode_fazer_atividade(Doenca, Atividade) :-
- %   doenca(Doenca),                  % Verifica que la enfermedad existe
-  %  atividade(Atividade),            % Verifica que la actividad existe
-   % \+ nao_pode(Doenca, Atividade).  % Verifica que no hay restricción para la actividad
-
-%atividades_nao_podem(Doenca, AtividadesNaoPodem) :-
- %   findall(Atividade, nao_pode(Doenca, Atividade), AtividadesNaoPodem).
-
-%atividades_podem(Doenca, AtividadesPodem) :-
- %   findall(Atividade, (atividade(Atividade), \+ nao_pode(Doenca, Atividade)), AtividadesPodem).
+preferencia(trabalhos_manuales, tecnica_construcao).
+preferencia(trabalhos_manuales, materiais_reciclados). 
+preferencia(trabalhos_manuales, trabalhos_feltro). 
+preferencia(trabalhos_manuales, pequenos_arranjos).
+preferencia(trabalhos_manuales, quadros). 
+preferencia(trabalhos_manuales, trabalhos_decoracao_centro).
+preferencia(trabalhos_manuales, manicure).
+preferencia(trabalhos_manuales, maquilhagem). 
+preferencia(trabalhos_manuales, massagens). 
