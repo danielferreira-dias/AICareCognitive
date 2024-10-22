@@ -6,7 +6,7 @@
 :- use_module(library(http/http_server_files)).
 :- dynamic evidence/2.
 
-:- consult('knowledge_base.pl').
+:- consult('questionnaire.pl').
 
 :- http_handler(root(next_question), get_next_question, []).
 :- http_handler(root(answer), post_answer, []).
@@ -16,17 +16,18 @@ server(Port) :-
     http_server(http_dispatch, [port(Port)]).
 
 get_next_question(_) :-
-    (   next_question(Question)
+    (   next_question(Question, PossibleAnswers)
     ->  (   is_conclusion(Question)
         ->  reply_json_dict(_{type: "conclusion", conclusion: Question})
-        ;   reply_json_dict(_{type: "question", question: Question})
+        ;   reply_json_dict(_{type: "question", question: Question, possibleAnswers: PossibleAnswers})
         ),
         retractall(evidence(_, _))
     ;   reply_json_dict(_{error: "No further questions or conclusions could be determined."})
     ).
 
 is_conclusion(Question) :-
-    conclusion(Question).
+    is_list(Question),
+    forall(member(Q, Question), activity(Q)).
 
 post_answer(Request) :-
     catch(
