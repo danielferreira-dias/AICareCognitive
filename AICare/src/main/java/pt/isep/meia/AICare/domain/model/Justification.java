@@ -1,8 +1,13 @@
 package pt.isep.meia.AICare.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class Justification {
-    private String rule;
+    private String evidence;
+    private String response;
 }

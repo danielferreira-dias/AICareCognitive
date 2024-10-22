@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.services.SurveyService;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
+import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
 
@@ -63,7 +64,13 @@ public class SurveysController {
 
     @GetMapping("{surveyId}/answered-question")
     public ResponseEntity<List<Evidence>> getAllAnsweredQuestions(@PathVariable UUID surveyId) {
-        var firstQuestion = surveyService.getAllAnsweredQuestionsById(surveyId);
-        return ResponseEntity.ok(firstQuestion);
+        var answeredQuestions = surveyService.getAllAnsweredQuestionsById(surveyId);
+        return ResponseEntity.ok(answeredQuestions);
+    }
+
+    @GetMapping("{surveyId}/why")
+    public ResponseEntity<List<Justification>> getWhy(@PathVariable UUID surveyId) throws IOException {
+        var justifications = surveyService.getWhy(surveyId);
+        return ResponseEntity.ok(justifications);
     }
 }

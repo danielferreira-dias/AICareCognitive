@@ -1,7 +1,11 @@
 package pt.isep.meia.AICare;
 
+import pt.isep.meia.AICare.domain.constants.AnswerConstants;
+import pt.isep.meia.AICare.domain.constants.ConclusionConstants;
+import pt.isep.meia.AICare.domain.constants.EvidenceConstants;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Hypothesis;
+import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question
 import java.util.UUID;
@@ -12,10 +16,10 @@ global Conclusion conclusion;
 global UUID surveyId;
 global List<Evidence> evidences;
 global String lastRule;
+global List<Justification> why;
+global List<Justification> whyNot;
 
 import function pt.isep.meia.AICare.application.utils.AnswerChecker.answer
-import pt.isep.meia.AICare.domain.model.Hypothesis
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 
 query "Conclusions"
     $conclusion : Conclusion()
@@ -26,7 +30,7 @@ rule "start"
         eval(evidences.isEmpty())
     then
         System.out.println("Starting survey");
-        Question q = new Question(surveyId, Evidence.BLOOD_EAR);
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_EAR);
         insert(q);
         nextQuestion = q;
         lastRule = "start";
@@ -34,155 +38,304 @@ end
 
 rule "r1"
     when
-        eval(answer(evidences, Evidence.BLOOD_EAR, "yes"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_EAR, AnswerConstants.YES))
     then
         Hypothesis h = new Hypothesis("haemorrhage", "upper type");
         insert(h);
 
-        Question q = new Question(surveyId, Evidence.EARACHE);
+        Question q = new Question(surveyId, EvidenceConstants.EARACHE);
         insert(q);
         nextQuestion = q;
         lastRule = "r1";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_EAR, AnswerConstants.YES));
 end
 
 rule "r2"
     when
-        eval(answer(evidences, Evidence.BLOOD_EAR, "no"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_EAR, AnswerConstants.NO))
     then
         Hypothesis h = new Hypothesis("haemorrhage", "lower type");
         insert(h);
 
-        Question q = new Question(surveyId, Evidence.BLOOD_NOSE);
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_NOSE);
         insert(q);
         nextQuestion = q;
         lastRule = "r2";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_EAR, AnswerConstants.NO));
 end
 
 rule "r3"
     when
         Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, Evidence.EARACHE, "yes"))
+        eval(answer(evidences, EvidenceConstants.EARACHE, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.OTORRHAGIA);
+        Conclusion c = new Conclusion(ConclusionConstants.OTORRHAGIA);
         insert(c);
         conclusion = c;
-        System.out.println("Inserted first question: " + c.toString());
-        System.out.println("nextQuestion: " + conclusion.toString());
         lastRule = "r3";
+
+        why.add(new Justification(EvidenceConstants.EARACHE, AnswerConstants.YES));
 end
 
 rule "r4"
     when
         Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, Evidence.DEAFNESS, "yes"))
+        eval(answer(evidences, EvidenceConstants.EARACHE, AnswerConstants.NO))
     then
-        Conclusion c = new Conclusion(Conclusion.OTORRHAGIA);
-        insert(c);
-        conclusion = c;
+        Question q = new Question(surveyId, EvidenceConstants.DEAFNESS);
+        insert(q);
+        nextQuestion = q;
         lastRule = "r4";
+
+        why.add(new Justification(EvidenceConstants.EARACHE, AnswerConstants.NO));
 end
 
 rule "r5"
     when
         Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, Evidence.CEREBROSPINAL, "yes"))
+        eval(answer(evidences, EvidenceConstants.DEAFNESS, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.SKULL_FRACTURE);
+        Conclusion c = new Conclusion(ConclusionConstants.OTORRHAGIA);
         insert(c);
         conclusion = c;
         lastRule = "r5";
+
+        why.add(new Justification(EvidenceConstants.DEAFNESS, AnswerConstants.YES));
 end
 
 rule "r6"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_NOSE, "yes"))
+        Hypothesis(description == "haemorrhage", value == "upper type")
+        eval(answer(evidences, EvidenceConstants.DEAFNESS, AnswerConstants.NO))
     then
-        Conclusion c = new Conclusion(Conclusion.EPISTAXE);
-        insert(c);
-        conclusion = c;
+        Question q = new Question(surveyId, EvidenceConstants.CEREBROSPINAL);
+        insert(q);
+        nextQuestion = q;
         lastRule = "r6";
+
+        why.add(new Justification(EvidenceConstants.DEAFNESS, AnswerConstants.NO));
 end
 
 rule "r7"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_MOUTH, "yes"))
-        eval(answer(evidences, Evidence.BLOOD_BROWN, "yes"))
-        eval(answer(evidences, Evidence.VOMITING, "yes"))
+        Hypothesis(description == "haemorrhage", value == "upper type")
+        eval(answer(evidences, EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.HEMATHESE);
+        Conclusion c = new Conclusion(ConclusionConstants.SKULL_FRACTURE);
         insert(c);
         conclusion = c;
         lastRule = "r7";
+
+        why.add(new Justification(EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES));
 end
 
 rule "r8"
     when
         Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_MOUTH, "yes"))
-        eval(answer(evidences, Evidence.BLOOD_BROWN, "no"))
-        eval(answer(evidences, Evidence.VOMITING, "no"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_NOSE, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.MOUTH_HAEMORRHAGE);
+        Conclusion c = new Conclusion(ConclusionConstants.EPISTAXE);
         insert(c);
         conclusion = c;
         lastRule = "r8";
+
+        why.add(new Justification(EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES));
 end
 
 rule "r9"
     when
         Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_VAGINA, "yes"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_NOSE, AnswerConstants.NO))
     then
-        Conclusion c = new Conclusion(Conclusion.METRORRHAGIA);
-        insert(c);
-        conclusion = c;
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_MOUTH);
+        insert(q);
+        nextQuestion = q;
         lastRule = "r9";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_NOSE, AnswerConstants.NO));
 end
 
 rule "r10"
     when
         Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_PENIS, "yes"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.HEMATURIA);
-        insert(c);
-        conclusion = c;
-        lastRule = "10";
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_BROWN);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r10";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES));
 end
 
 rule "r11"
     when
         Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_ANUS, "yes"))
-        eval(answer(evidences, Evidence.BLOOD_COFFEE, "yes"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.MELENA);
-        insert(c);
-        conclusion = c;
+        Question q = new Question(surveyId, EvidenceConstants.VOMITING);
+        insert(q);
+        nextQuestion = q;
         lastRule = "r11";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES));
 end
 
 rule "r12"
     when
         Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, Evidence.BLOOD_ANUS, "yes"))
-        eval(answer(evidences, Evidence.BLOOD_COFFEE, "no"))
+        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.YES))
+        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.YES))
     then
-        Conclusion c = new Conclusion(Conclusion.RECTAL_BLEEDING);
+        Conclusion c = new Conclusion(ConclusionConstants.HEMATHESE);
         insert(c);
         conclusion = c;
         lastRule = "r12";
+
+        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.YES));
+end
+
+rule "r13"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.VOMITING);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r13";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO));
+end
+
+rule "r14"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
+        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.NO))
+    then
+        Conclusion c = new Conclusion(ConclusionConstants.MOUTH_HAEMORRHAGE);
+        insert(c);
+        conclusion = c;
+        lastRule = "r14";
+
+        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.NO));
+end
+
+rule "r15"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
+        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.YES))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_VAGINA);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r15";
+
+        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.YES));
+end
+
+rule "r16"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_VAGINA, AnswerConstants.YES))
+    then
+        Conclusion c = new Conclusion(ConclusionConstants.METRORRHAGIA);
+        insert(c);
+        conclusion = c;
+        lastRule = "r16";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_VAGINA, AnswerConstants.YES));
+end
+
+rule "r17"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_VAGINA, AnswerConstants.NO))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_PENIS);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r17";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_VAGINA, AnswerConstants.NO));
+end
+
+rule "r18"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.YES))
+    then
+        Conclusion c = new Conclusion(ConclusionConstants.HEMATURIA);
+        insert(c);
+        conclusion = c;
+        lastRule = "r18";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.YES));
+end
+
+rule "r19"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_ANUS);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r19";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO));
+end
+
+rule "r20"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_ANUS);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r20";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO));
+end
+
+rule "r21"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.BLOOD_COFFEE);
+        insert(q);
+        nextQuestion = q;
+        lastRule = "r21";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES));
+end
+
+rule "r22"
+    when
+        Hypothesis(description == "haemorrhage", value == "lower type")
+        eval(answer(evidences, EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES))
+        eval(answer(evidences, EvidenceConstants.BLOOD_COFFEE, AnswerConstants.NO))
+    then
+        Conclusion c = new Conclusion(ConclusionConstants.RECTAL_BLEEDING);
+        insert(c);
+        conclusion = c;
+        lastRule = "r22";
+
+        why.add(new Justification(EvidenceConstants.BLOOD_COFFEE, AnswerConstants.NO));
 end
 
 rule "unknown"
     when
-        eval(lastRule == "r12")
-        eval(!evidences.isEmpty())
+        not Question()
         not Conclusion()
     then
-        Conclusion c = new Conclusion(Conclusion.UNKNOWN);
+        Conclusion c = new Conclusion(ConclusionConstants.UNKNOWN);
         insert(c);
         conclusion = c;
 end

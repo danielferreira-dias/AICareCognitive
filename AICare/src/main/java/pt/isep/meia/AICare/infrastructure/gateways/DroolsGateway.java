@@ -8,9 +8,11 @@ import pt.isep.meia.AICare.application.configs.DroolsConfig;
 import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.domain.model.Evidence;
+import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +46,25 @@ public class DroolsGateway {
         var nextQuestion = getLastQuestionFromSession(session);
 
         return Result.fromQuestion(nextQuestion);
+    }
+
+    public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences) throws IOException {
+        var session = droolsConfig.getKieSession();
+        if (session == null) {
+            return null;
+        }
+
+        var justifications = new ArrayList<Justification>();
+
+        session.setGlobal("surveyId", surveyId);
+        session.setGlobal("evidences", evidences);
+        session.setGlobal("why", justifications);
+        session.setGlobal("whyNot", new ArrayList<Justification>());
+        session.fireAllRules();
+
+        justifications.forEach(System.out::println);
+
+        return justifications;
     }
 
     private Question getLastQuestionFromSession(KieSession session) {

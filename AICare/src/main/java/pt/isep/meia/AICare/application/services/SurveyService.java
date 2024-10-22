@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
+import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.ResultTypeEnum;
@@ -101,5 +102,10 @@ public class SurveyService {
 
     public List<Evidence> getAllAnsweredQuestionsById(UUID surveyId) {
         return answersRepository.findEvidencesBySurveyId(surveyId);
+    }
+
+    public List<Justification> getWhy(UUID surveyId) throws IOException {
+        var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
+        return engineService.getWhy(surveyId, evidences);
     }
 }
