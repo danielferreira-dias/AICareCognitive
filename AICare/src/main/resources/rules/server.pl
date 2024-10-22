@@ -1,4 +1,3 @@
-% Load required libraries
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_json)).
@@ -7,18 +6,15 @@
 :- use_module(library(http/http_server_files)).
 :- dynamic evidence/2.
 
-% Consult the knowledge base
 :- consult('knowledge_base.pl').
 
-% Define HTTP handlers
 :- http_handler(root(next_question), get_next_question, []).
 :- http_handler(root(answer), post_answer, []).
+:- http_handler(root(bulk_answer), post_bulk_answer, []).
 
-% Start the server on port 8081
 server(Port) :-
     http_server(http_dispatch, [port(Port)]).
 
-% Handler to get the next question or conclusion
 get_next_question(_) :-
     (   next_question(Question)
     ->  (   is_conclusion(Question)
@@ -29,11 +25,9 @@ get_next_question(_) :-
     ;   reply_json_dict(_{error: "No further questions or conclusions could be determined."})
     ).
 
-% Helper predicate to determine if the result is a conclusion (e.g., it's not a question)
 is_conclusion(Question) :-
-    conclusion(Question),!.
+    conclusion(Question).
 
-% Handler to receive answers and assert them as facts
 post_answer(Request) :-
     catch(
         (   http_read_json_dict(Request, Dict),
@@ -51,6 +45,30 @@ post_answer(Request) :-
             reply_json_dict(_{error: "Internal server error"})
         )
     ).
+
+post_bulk_answer(Request) :-
+    catch(
+        (   http_read_json_dict(Request, Dict),
+            (   is_list(Dict)
+            ->  bulk_assert_evidence(Dict),
+                reply_json_dict(_{status: "success"})
+            ;   reply_json_dict(_{error: "Invalid input, expected a list of evidence-answer objects."})
+            )
+        ),
+        _,
+        (
+            reply_json_dict(_{error: "Internal server error"})
+        )
+    ).
+
+bulk_assert_evidence([]).
+bulk_assert_evidence([H|T]) :-
+    get_dict(evidence, H, Evidence),
+    get_dict(answer, H, Answer),
+    atom_string(EvidenceAtom, Evidence),
+    atom_string(AnswerAtom, Answer),
+    assert_evidence(EvidenceAtom, AnswerAtom),
+    bulk_assert_evidence(T).
 
 assert_evidence(Evidence, Answer) :-
     retractall(evidence(Evidence, _)),

@@ -1,16 +1,13 @@
 package pt.isep.meia.AICare.application.services;
 
 import lombok.var;
-import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.isep.meia.AICare.application.configs.DroolsConfig;
 import pt.isep.meia.AICare.domain.entities.Answer;
-import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.domain.entities.Survey;
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
+import pt.isep.meia.AICare.domain.model.ResultTypeEnum;
 import pt.isep.meia.AICare.infrastructure.repositories.AnswersRepository;
 import pt.isep.meia.AICare.infrastructure.repositories.ConclusionsRepository;
 import pt.isep.meia.AICare.infrastructure.repositories.QuestionsRepository;
@@ -23,20 +20,20 @@ import java.util.UUID;
 @Service
 public class SurveyService {
     private final SurveysRepository surveysRepository;
-    private final DroolsConfig droolsConfig;
     private final QuestionsRepository questionsRepository;
     private final AnswersRepository answersRepository;
     private final ConclusionsRepository conclusionsRepository;
+    private final EngineService engineService;
 
     @Autowired
     public SurveyService(
-            DroolsConfig droolsConfig,
+            EngineService engineService,
             SurveysRepository surveysRepository,
             QuestionsRepository questionsRepository,
             AnswersRepository answersRepository,
             ConclusionsRepository conclusionsRepository) {
+        this.engineService = engineService;
         this.surveysRepository = surveysRepository;
-        this.droolsConfig = droolsConfig;
         this.questionsRepository = questionsRepository;
         this.answersRepository = answersRepository;
         this.conclusionsRepository = conclusionsRepository;
@@ -66,57 +63,43 @@ public class SurveyService {
             return Result.fromQuestion(question);
         }
 
-        KieSession session = droolsConfig.getKieSession();
-        if (session == null) {
+        var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
+
+        var result = engineService.getNextQuestion(surveyId, evidences);
+
+        if(result == null){
             return null;
         }
 
-        var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
-
-        session.setGlobal("surveyId", surveyId);
-        session.setGlobal("evidences", evidences);
-        session.fireAllRules();
-
-        Conclusion conclusion = getConclusionFromSession(session);
-
-        if(conclusion != null){
-            var createdConclusion = conclusionsRepository.save(conclusion);
+        if(result.getType().equals(ResultTypeEnum.CONCLUSION)){
+            var createdConclusion = conclusionsRepository.save(result.getConclusion());
             var surveyToUpdate = survey.get();
             surveyToUpdate.setConclusionId(createdConclusion.getId());
             surveysRepository.save(surveyToUpdate);
-            return Result.fromConclusion(conclusion);
+            return Result.fromConclusion(createdConclusion);
         }
 
-        Question nextQuestion = getLastQuestionFromSession(session);
-
-        var createdQuestion = questionsRepository.save(nextQuestion);
+        var createdQuestion = questionsRepository.save(result.getQuestion());
 
         return Result.fromQuestion(createdQuestion);
     }
 
     public Answer answerQuestion(Answer answer) {
+        var question = questionsRepository.findById(answer.getQuestionId());
+        if (!question.isPresent()) {
+            return null;
+        }
+
+        var result = engineService.postAnswer(question.get().getText(), answer.getResponse());
+
+        if (!result) {
+            return null;
+        }
+
         return answersRepository.save(answer);
     }
 
     public List<Evidence> getAllAnsweredQuestionsById(UUID surveyId) {
         return answersRepository.findEvidencesBySurveyId(surveyId);
-    }
-
-    private Question getLastQuestionFromSession(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(Question.class))
-                .stream()
-                .filter(obj -> obj instanceof Question)
-                .map(obj -> (Question) obj)
-                .reduce((first, second) -> second)
-                .orElse(null);
-    }
-
-    private Conclusion getConclusionFromSession(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(Conclusion.class))
-                .stream()
-                .filter(obj -> obj instanceof Conclusion)
-                .map(obj -> (Conclusion) obj)
-                .findFirst()
-                .orElse(null);
     }
 }

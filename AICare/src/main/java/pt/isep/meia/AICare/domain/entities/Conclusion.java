@@ -12,16 +12,16 @@ import java.util.UUID;
 @Getter
 @Entity
 public class Conclusion {
-    public static final String OTORRHAGIA = "Otorrhagia";
-    public static final String SKULL_FRACTURE = "Skull fracture";
-    public static final String EPISTAXE = "Epistaxe";
-    public static final String HEMATHESE = "Hemathese";
-    public static final String MOUTH_HAEMORRHAGE = "Mouth haemorrhage";
-    public static final String METRORRHAGIA = "Metrorrhagia";
-    public static final String HEMATURIA = "Hematuria";
-    public static final String MELENA = "Melena";
-    public static final String RECTAL_BLEEDING = "Rectal bleeding";
-    public static final String UNKNOWN = "Consult the doctor!";
+    public static final String OTORRHAGIA = "otorrhagia";
+    public static final String SKULL_FRACTURE = "skull_fracture";
+    public static final String EPISTAXE = "epistaxe";
+    public static final String HEMATHESE = "hemathese";
+    public static final String MOUTH_HAEMORRHAGE = "mouth_haemorrhage";
+    public static final String METRORRHAGIA = "metrorrhagia";
+    public static final String HEMATURIA = "hematuria";
+    public static final String MELENA = "melena";
+    public static final String RECTAL_BLEEDING = "rectal_bleeding";
+    public static final String UNKNOWN = "unknown";
 
     @Id
     @GeneratedValue(generator = "UUID")

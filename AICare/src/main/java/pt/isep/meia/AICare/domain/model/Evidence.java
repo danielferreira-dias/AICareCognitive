@@ -10,19 +10,18 @@ import pt.isep.meia.AICare.domain.entities.Question;
 @Setter
 @AllArgsConstructor
 public class Evidence {
-    public static final String BLOOD_EAR = "Is there blood in the ear";
-    public static final String EARACHE = "Do you have earache";
-    public static final String DEAFNESS = "Do you have deafness";
-    public static final String CEREBROSPINAL = "Is there cerebrospinal fluid spill";
-    public static final String HEADACHE = "Do you have headache";
-    public static final String BLOOD_NOSE = "Is there blood in the nose";
-    public static final String BLOOD_MOUTH = "Is there blood in the mouth";
-    public static final String BLOOD_BROWN = "Is the blood colour dark brown";
-    public static final String VOMITING = "Is there vomiting";
-    public static final String BLOOD_VAGINA = "Is there blood in the vagina";
-    public static final String BLOOD_PENIS = "Is there blood in the penis";
-    public static final String BLOOD_ANUS = "Is there blood in the anus";
-    public static final String BLOOD_COFFEE = "Has the blood in the anus the appearance of coffee grounds";
+    public static final String BLOOD_EAR = "blood_ear";
+    public static final String EARACHE = "earache";
+    public static final String DEAFNESS = "deafness";
+    public static final String CEREBROSPINAL = "cerebrospinal";
+    public static final String BLOOD_NOSE = "blood_nose";
+    public static final String BLOOD_MOUTH = "blood_mouth";
+    public static final String BLOOD_BROWN = "blood_brown";
+    public static final String VOMITING = "vomiting";
+    public static final String BLOOD_VAGINA = "blood_vagina";
+    public static final String BLOOD_PENIS = "blood_penis";
+    public static final String BLOOD_ANUS = "blood_anus";
+    public static final String BLOOD_COFFEE = "blood_coffee";
 
     private Question question;
     private Answer answer;

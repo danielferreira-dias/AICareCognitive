@@ -25,6 +25,7 @@ rule "start"
     when
         eval(evidences.isEmpty())
     then
+        System.out.println("Starting survey");
         Question q = new Question(surveyId, Evidence.BLOOD_EAR);
         insert(q);
         nextQuestion = q;
@@ -124,8 +125,8 @@ rule "r8"
         eval(answer(evidences, Evidence.VOMITING, "no"))
     then
         Conclusion c = new Conclusion(Conclusion.MOUTH_HAEMORRHAGE);
-        conclusion = c;
         insert(c);
+        conclusion = c;
         lastRule = "r8";
 end
 
