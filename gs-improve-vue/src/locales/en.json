@@ -1,0 +1,15 @@
+{
+    "navbar":{
+        "patients": "Patients"
+    },
+    "patients":{
+        "title": "Patient List",
+        "table": {
+            "name": "Name",
+            "age": "Age",
+            "gender": "Gender",
+            "actions": "Actions"
+        },
+        "addPatient": "Add Patient"
+    }
+}

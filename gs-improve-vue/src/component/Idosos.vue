@@ -2,21 +2,21 @@
   <div class="w-full h-full bg-white text-black">
     <div class="p-8">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl rounded-t-lg font-bold text-gray-500">Patient List</h1>
+        <h1 class="text-2xl rounded-t-lg font-bold text-gray-500">{{ $t('patients.title') }}</h1>
         <!-- Plus Button -->
         <button @click="showAddPatientModal = true"
           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-          + Add Patient
+          + {{ $t('patients.addPatient') }}
         </button>
       </div>
 
       <table class="min-w-full bg-white border rounded-xl border-gray-300">
         <thead>
           <tr class="bg-gray-200">
-            <th class="text-left py-3 px-4 text-gray-600 font-bold rounded-tl-lg">Name</th>
-            <th class="text-left py-3 px-4 text-gray-600 font-bold">Age</th>
-            <th class="text-left py-3 px-4 text-gray-600 font-bold">Gender</th>
-            <th class="text-left py-3 px-4 text-gray-600 font-bold rounded-tr-lg">Actions</th>
+            <th class="text-left py-3 px-4 text-gray-600 font-bold rounded-tl-lg">{{ $t('patients.table.name') }}</th>
+            <th class="text-left py-3 px-4 text-gray-600 font-bold">{{ $t('patients.table.age') }}</th>
+            <th class="text-left py-3 px-4 text-gray-600 font-bold">{{ $t('patients.table.gender') }}</th>
+            <th class="text-left py-3 px-4 text-gray-600 font-bold rounded-tr-lg">{{ $t('patients.table.actions') }}</th>
           </tr>
         </thead>
         <tbody>
