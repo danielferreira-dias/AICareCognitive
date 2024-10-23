@@ -14,3 +14,8 @@ export const createPatient = async (createPatientRequestDto) => {
     const response = await axiosClient.post('/patients', createPatientRequestDto);
     return response.data;
 };
+
+export const deletePatientById = async (patientId) => {
+    const response = await axiosClient.delete(`/patients/${patientId}`);
+    return response.data;
+};

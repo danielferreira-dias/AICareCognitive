@@ -3,7 +3,7 @@
     "id": 1,
     "question": "Question 1",
     "type": "checkbox",
-    "o6ptions": [
+    "options": [
       { "value": "Option 1", "label": "Answer A" },
       { "value": "Option 2", "label": "Answer B" }
     ]
