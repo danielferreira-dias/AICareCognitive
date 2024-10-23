@@ -74,5 +74,3 @@ bulk_assert_evidence([H|T]) :-
 assert_evidence(Evidence, Answer) :-
     retractall(evidence(Evidence, _)),
     assert(evidence(Evidence, Answer)).
-
-:- initialization(server(8081)).

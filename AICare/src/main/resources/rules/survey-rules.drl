@@ -14,7 +14,6 @@ import pt.isep.meia.AICare.domain.entities.Question
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import lombok.var;
 
 import function pt.isep.meia.AICare.application.utils.DroolsHelper.answer;
 import function pt.isep.meia.AICare.application.utils.DroolsHelper.getSymptomCount
