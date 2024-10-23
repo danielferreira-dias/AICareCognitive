@@ -26,20 +26,9 @@
                 <div class="space-y-4 flex flex-row md:flex-col">
                     <nav class="flex-1 space-y-2 flex flex-row md:flex-col">
                         <a href="#" title="" class="flex items-center px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-indigo-600 rounded-lg group">
-                            
-                            Page 1
+                            Idosos
                         </a>
-
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 hover:text-white rounded-lg hover:bg-indigo-600 group">
-                            
-                            Page 2
-                        </a>
-
-                        
                     </nav>
-
-                    
-                 
                 </div>
 
                 
