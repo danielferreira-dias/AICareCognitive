@@ -21,24 +21,17 @@
         </thead>
         <tbody>
           <template v-for="patient in patients" :key="patient.name">
-            <tr class="hover:bg-gray-100 cursor-pointer" @click="togglePatient(patient)">
+            <tr class="hover:bg-gray-100 cursor-pointer">
               <td class="py-3 px-4 border-b">{{ patient.name }}</td>
               <td class="py-3 px-4 border-b">{{ patient.age }}</td>
               <td class="py-3 px-4 border-b">{{ patient.gender }}</td>
               <td class="py-3 px-4 border-b">
+              <td class="py-3 px-4 border-b flex space-x-2">
+                <font-awesome-icon icon="comments" class="text-blue-600 cursor-pointer hover:text-blue-800 transition"
+                  @click="goToQuestionPage(patient)" />
                 <font-awesome-icon icon="trash-alt" class="text-red-600 cursor-pointer hover:text-red-800 transition"
                   @click.stop="showDeleteConfirmation(patient)" />
               </td>
-            </tr>
-
-            <!-- Slide Down Additional Patient Info -->
-            <tr v-if="selectedPatient && selectedPatient.id.trim().toLowerCase() === patient.id.trim().toLowerCase()"
-              class="transition-all ease-in duration-300">
-              <td colspan="4" class="py-4 px-4 bg-gray-50">
-                <div class="text-gray-600 flex flex-row w-full justify-evenly">
-                  <p>Start a Survey about {{ selectedPatient.name }}.</p>
-                  <div class="w-14 h-fit bg-purple-900 text-white rounded-lg text-center">Start</div>
-                </div>
               </td>
             </tr>
           </template>
@@ -121,9 +114,6 @@ export default {
         console.error('Error fetching patients:', error);
       }
     },
-    togglePatient(patient) {
-      this.selectedPatient = patient;
-    },
     async addPatient() {
       try {
         const newPatient = await createPatient(this.newPatient);
@@ -148,6 +138,9 @@ export default {
       } catch (error) {
         console.error('Error deleting patient:', error);
       }
+    },
+    goToQuestionPage(patient) {
+      this.$router.push({ name: 'Question', params: { patientId: patient.id } });
     }
   },
   mounted() {
