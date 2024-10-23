@@ -10,7 +10,7 @@
 import Navbar from './component/Navbar.vue';
 export default {
   components: {
-    Navbar
+    Navbar,
   }
 };
 </script>

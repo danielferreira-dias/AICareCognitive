@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full bg-white rounded-r-lg flex flex-col text-center  shadow-black">
+  <div class="h-full bg-white rounded-r-lg flex flex-col text-center border-l-lg  shadow-black">
       <!-- Title -->
       <div class="w-full h-fit text-2xl md:text-4xl font-bold my-10">AICare Survey</div>
 
@@ -87,7 +87,7 @@ export default {
   methods: {
     async fetchQuestions() {
       try {
-        const response = await fetch("public/question.json");
+        const response = await fetch("/question.json");
         this.questions = await response.json();
         this.loading = false;
       } catch (error) {

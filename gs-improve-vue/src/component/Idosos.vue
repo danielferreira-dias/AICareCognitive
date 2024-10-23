@@ -25,13 +25,11 @@
               <td class="py-3 px-4 border-b">{{ patient.name }}</td>
               <td class="py-3 px-4 border-b">{{ patient.age }}</td>
               <td class="py-3 px-4 border-b">{{ patient.gender }}</td>
-              <td class="py-3 px-4 border-b">
               <td class="py-3 px-4 border-b flex space-x-2">
                 <font-awesome-icon icon="comments" class="text-blue-600 cursor-pointer hover:text-blue-800 transition"
                   @click="goToQuestionPage(patient)" />
                 <font-awesome-icon icon="trash-alt" class="text-red-600 cursor-pointer hover:text-red-800 transition"
                   @click.stop="showDeleteConfirmation(patient)" />
-              </td>
               </td>
             </tr>
           </template>
@@ -140,7 +138,7 @@ export default {
       }
     },
     goToQuestionPage(patient) {
-      this.$router.push({ name: 'Question', params: { patientId: patient.id } });
+      this.$router.push({ name: 'ChatPage', params: { patientId: patient.id } });
     }
   },
   mounted() {
