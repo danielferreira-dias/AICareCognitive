@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[80%] md:w-2/3 h-fit bg-white rounded-lg flex flex-col text-center shadow-lg shadow-black">
+  <div class="w-full h-full bg-white rounded-r-lg flex flex-col text-center  shadow-black">
       <!-- Title -->
       <div class="w-full h-fit text-2xl md:text-4xl font-bold my-10">AICare Survey</div>
 
