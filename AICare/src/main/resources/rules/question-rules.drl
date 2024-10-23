@@ -1,0 +1,349 @@
+package pt.isep.meia.AICare;
+
+import pt.isep.meia.AICare.domain.constants.AnswerConstants;
+import pt.isep.meia.AICare.domain.constants.EvidenceConstants;
+import pt.isep.meia.AICare.domain.entities.Question;
+import pt.isep.meia.AICare.domain.model.Evidence;
+import pt.isep.meia.AICare.domain.model.SurveyCompleted;
+import java.util.UUID;
+import java.util.List;
+import java.util.Arrays
+
+global Question nextQuestion;
+global UUID surveyId;
+global List<Evidence> evidences;
+
+import function pt.isep.meia.AICare.application.utils.DroolsHelper.answer
+
+// Rule to start the survey by asking the first diagnosis question
+rule "start_diagnosis"
+    when
+        eval(evidences.isEmpty())
+    then
+        System.out.println("Starting survey - Asking diagnosis question");
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+        drools.halt();
+end
+
+// Rules for Diagnosis and Stages
+rule "ask_alzheimer"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_ALZHEIMER);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_alzheimer_stage"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_parkinson"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_PARKINSON);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_parkinson_stage"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_vascular_dementia"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_vascular_dementia_stage"
+    when
+        eval(answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
+        eval(!answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
+        insert(q);
+        nextQuestion = q;
+end
+
+// Rules for Conditions
+rule "ask_social_integration"
+    when
+        eval(!answer(evidences, EvidenceConstants.SOCIAL_INTEGRATION))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.SOCIAL_INTEGRATION);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.GOOD_SOCIAL_RELATIONS,
+            AnswerConstants.SEVERE_INTEGRATION_ISSUES,
+            AnswerConstants.ISOLATED_PERSON
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_vision"
+    when
+        eval(!answer(evidences, EvidenceConstants.VISION))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.VISION);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.GOOD_VISION,
+            AnswerConstants.VISION_WITH_DIFFICULTIES,
+            AnswerConstants.BLINDNESS
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_hearing"
+    when
+        eval(!answer(evidences, EvidenceConstants.HEARING))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.HEARING);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.GOOD_HEARING,
+            AnswerConstants.HEARING_WITH_DIFFICULTIES,
+            AnswerConstants.DEAFNESS
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_speech"
+    when
+        eval(!answer(evidences, EvidenceConstants.SPEECH))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.SPEECH);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.SPEAKS_NORMALLY,
+            AnswerConstants.EXPRESSES_WITH_DIFFICULTY,
+            AnswerConstants.CANNOT_BE_UNDERSTOOD
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_smell"
+    when
+        eval(!answer(evidences, EvidenceConstants.SMELL))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.SMELL);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.FUNCTIONS_NORMALLY,
+            AnswerConstants.DIFFICULTIES_IDENTIFYING_ODORS,
+            AnswerConstants.COMPLETE_LOSS_OF_SMELL
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_upper_motor_skills"
+    when
+        eval(!answer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.UPPER_MOTOR_SKILLS);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.FUNCTIONS_NORMALLY,
+            AnswerConstants.HAS_DIFFICULTY,
+            AnswerConstants.CANNOT_MOVE
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_lower_motor_skills"
+    when
+        eval(!answer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.LOWER_MOTOR_SKILLS);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.FUNCTIONS_NORMALLY,
+            AnswerConstants.HAS_DIFFICULTY,
+            AnswerConstants.CANNOT_MOVE
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_writing"
+    when
+        eval(!answer(evidences, EvidenceConstants.WRITING))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.WRITING);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.WRITES_WITHOUT_DIFFICULTY,
+            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.CANNOT_WRITE
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_reading_condition"
+    when
+        eval(!answer(evidences, EvidenceConstants.READING_CONDITION))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.LOWER_MOTOR_SKILLS);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.READS_WITHOUT_DIFFICULTY,
+            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.CANNOT_READ
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_object_handling"
+    when
+        eval(!answer(evidences, EvidenceConstants.OBJECT_HANDLING))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.OBJECT_HANDLING);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.CORRECT_MANIPULATION,
+            AnswerConstants.ONLY_SOME_CORRECTLY,
+            AnswerConstants.CANNOT_HANDLE
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_mobility"
+    when
+        eval(!answer(evidences, EvidenceConstants.MOBILITY))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.MOBILITY);
+        q.setPossibleAnswers(Arrays.asList(
+            AnswerConstants.MOVES_EASILY,
+            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.TOTAL_DEPENDENCE
+        ));
+        insert(q);
+        nextQuestion = q;
+end
+
+// Rules for Preferences
+rule "ask_preference_theatre"
+    when
+        eval(!answer(evidences, EvidenceConstants.THEATRE))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.THEATRE);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_museum"
+    when
+        eval(!answer(evidences, EvidenceConstants.MUSEUM))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.MUSEUM);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_music"
+    when
+        eval(!answer(evidences, EvidenceConstants.MUSIC))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.MUSIC);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_reading"
+    when
+        eval(!answer(evidences, EvidenceConstants.READING_PREFERENCE))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.READING_PREFERENCE);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_recreational_group"
+    when
+        eval(!answer(evidences, EvidenceConstants.RECREATIONAL_GROUP))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.RECREATIONAL_GROUP);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_art"
+    when
+        eval(!answer(evidences, EvidenceConstants.ART))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.ART);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_sports"
+    when
+        eval(!answer(evidences, EvidenceConstants.SPORTS))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.SPORTS);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_cooking"
+    when
+        eval(!answer(evidences, EvidenceConstants.COOKING))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.COOKING);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "ask_preference_handicrafts"
+    when
+        eval(!answer(evidences, EvidenceConstants.HANDICRAFTS))
+    then
+        Question q = new Question(surveyId, EvidenceConstants.HANDICRAFTS);
+        q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
+        insert(q);
+        nextQuestion = q;
+end
+
+rule "Survey Completed"
+    when
+        not (Question())
+    then
+        insert(new SurveyCompleted());
+end

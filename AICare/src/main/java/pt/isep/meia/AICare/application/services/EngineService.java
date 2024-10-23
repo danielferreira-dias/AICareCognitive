@@ -56,9 +56,9 @@ public class EngineService {
     }
 
     public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences) throws IOException {
-        if(engineProperties.getType().equals("drools")){
-            return droolsGateway.getWhy(surveyId, evidences);
-        }
+//        if(engineProperties.getType().equals("drools")){
+//            return droolsGateway.getWhy(surveyId, evidences);
+//        }
         return new ArrayList<>();
     }
 }

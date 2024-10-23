@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,6 +26,11 @@ public class Question {
 
     private String text;
 
+    @ElementCollection
+    @CollectionTable(name = "question_possible_answers", joinColumns = @JoinColumn(name = "question_id"))
+    @Column(name = "possible_answer")
+    private List<String> possibleAnswers;
+
     public Question() {
     }
 
@@ -42,6 +45,7 @@ public class Question {
                 "id=" + id +
                 ", surveyId=" + surveyId +
                 ", text='" + text + '\'' +
+                ", possibleAnswers=" + possibleAnswers +
                 '}';
     }
 }

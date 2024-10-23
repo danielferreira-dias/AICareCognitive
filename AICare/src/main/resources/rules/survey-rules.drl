@@ -1,341 +1,520 @@
 package pt.isep.meia.AICare;
 
+import pt.isep.meia.AICare.application.utils.DroolsHelper;
 import pt.isep.meia.AICare.domain.constants.AnswerConstants;
-import pt.isep.meia.AICare.domain.constants.ConclusionConstants;
+import pt.isep.meia.AICare.domain.constants.ActivityConstants;
 import pt.isep.meia.AICare.domain.constants.EvidenceConstants;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Hypothesis;
 import pt.isep.meia.AICare.domain.model.Justification;
+import pt.isep.meia.AICare.domain.model.Restrict
+import pt.isep.meia.AICare.domain.model.PreferredActivity;
 import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question
-import java.util.UUID;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import lombok.var;
 
-global Question nextQuestion;
-global Conclusion conclusion;
-global UUID surveyId;
+import function pt.isep.meia.AICare.application.utils.DroolsHelper.answer;
+import function pt.isep.meia.AICare.application.utils.DroolsHelper.getSymptomCount
+
 global List<Evidence> evidences;
-global String lastRule;
-global List<Justification> why;
-global List<Justification> whyNot;
+global List<Restrict> restrictions;
 
-import function pt.isep.meia.AICare.application.utils.AnswerChecker.answer
-
-query "Conclusions"
-    $conclusion : Conclusion()
-end
-
-rule "start"
+rule "Alzheimer Initial Stage - Diagnosis Evidence"
     when
-        eval(evidences.isEmpty())
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.INITIAL))
     then
-        System.out.println("Starting survey");
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_EAR);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "start";
-end
-
-rule "r1"
-    when
-        eval(answer(evidences, EvidenceConstants.BLOOD_EAR, AnswerConstants.YES))
-    then
-        Hypothesis h = new Hypothesis("haemorrhage", "upper type");
+        Hypothesis h = new Hypothesis("disease", "alzheimer_initial");
         insert(h);
-
-        Question q = new Question(surveyId, EvidenceConstants.EARACHE);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r1";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_EAR, AnswerConstants.YES));
 end
 
-rule "r2"
+// Alzheimer's Initial Stage Rule 2 - Symptom Count Matching
+rule "Alzheimer Initial Stage - Symptom Count"
     when
-        eval(answer(evidences, EvidenceConstants.BLOOD_EAR, AnswerConstants.NO))
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_ALZHEIMER_SPATIAL_DISORIENTATION,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_MEMORY_LOSS_FRUSTRATION,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_SLIGHT_MEMORY_LOSS
+            )) >= 2)
     then
-        Hypothesis h = new Hypothesis("haemorrhage", "lower type");
+        Hypothesis h = new Hypothesis("disease", "alzheimer_initial");
         insert(h);
-
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_NOSE);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r2";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_EAR, AnswerConstants.NO));
 end
 
-rule "r3"
+// Alzheimer's Advanced Stage Rule 1 - Direct Evidence Matching
+rule "Alzheimer Advanced Stage - Diagnosis Evidence"
     when
-        Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, EvidenceConstants.EARACHE, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.ADVANCED))
     then
-        Conclusion c = new Conclusion(ConclusionConstants.OTORRHAGIA);
-        insert(c);
-        conclusion = c;
-        lastRule = "r3";
-
-        why.add(new Justification(EvidenceConstants.EARACHE, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "alzheimer_advanced");
+        insert(h);
 end
 
-rule "r4"
+// Alzheimer's Advanced Stage Rule 2 - Condition + Symptom Count Matching
+rule "Alzheimer Advanced Stage - Condition Symptom Count"
     when
-        Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, EvidenceConstants.EARACHE, AnswerConstants.NO))
+        Hypothesis(description == "disease", value == "alzheimer_initial")
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_ALZHEIMER_STARE,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_NEEDS_PERMANENT_WATCH,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_CANT_EXECUTE_STIMULI,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_FALL_HISTORY
+            )) >= 1)
     then
-        Question q = new Question(surveyId, EvidenceConstants.DEAFNESS);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r4";
-
-        why.add(new Justification(EvidenceConstants.EARACHE, AnswerConstants.NO));
+        Hypothesis h = new Hypothesis("disease", "alzheimer_advanced");
+        insert(h);
 end
 
-rule "r5"
+// Parkinson Initial Stage Rule 1 - Direct Evidence Matching
+rule "Parkinson Initial Stage - Diagnosis Evidence"
     when
-        Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, EvidenceConstants.DEAFNESS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.INITIAL))
     then
-        Conclusion c = new Conclusion(ConclusionConstants.OTORRHAGIA);
-        insert(c);
-        conclusion = c;
-        lastRule = "r5";
-
-        why.add(new Justification(EvidenceConstants.DEAFNESS, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "parkinson_initial");
+        insert(h);
 end
 
-rule "r6"
+// Parkinson Initial Stage Rule 2 - Symptom Count Matching
+rule "Parkinson Initial Stage - Symptom Count"
     when
-        Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, EvidenceConstants.DEAFNESS, AnswerConstants.NO))
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_PARKINSON_SHAKING,
+                EvidenceConstants.OBSERVATION_PARKINSON_BENT_SPINE,
+                EvidenceConstants.OBSERVATION_PARKINSON_BALANCE_LOSS,
+                EvidenceConstants.OBSERVATION_PARKINSON_INITIAL_HEARING_LOSS
+            )) >= 2)
     then
-        Question q = new Question(surveyId, EvidenceConstants.CEREBROSPINAL);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r6";
-
-        why.add(new Justification(EvidenceConstants.DEAFNESS, AnswerConstants.NO));
+        Hypothesis h = new Hypothesis("disease", "parkinson_initial");
+        insert(h);
 end
 
-rule "r7"
+// Parkinson Advanced Stage Rule 1 - Direct Evidence Matching
+rule "Parkinson Advanced Stage - Diagnosis Evidence"
     when
-        Hypothesis(description == "haemorrhage", value == "upper type")
-        eval(answer(evidences, EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.ADVANCED))
     then
-        Conclusion c = new Conclusion(ConclusionConstants.SKULL_FRACTURE);
-        insert(c);
-        conclusion = c;
-        lastRule = "r7";
-
-        why.add(new Justification(EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "parkinson_advanced");
+        insert(h);
 end
 
-rule "r8"
+// Parkinson Advanced Stage Rule 2 - Condition + Symptom Count Matching
+rule "Parkinson Advanced Stage - Condition Symptom Count"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_NOSE, AnswerConstants.YES))
+        Hypothesis(description == "disease", value == "parkinson_initial")
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_PARKINSON_LOCOMOTION_DIFFICULTIES,
+                EvidenceConstants.OBSERVATION_PARKINSON_INTENSE_SHAKING,
+                EvidenceConstants.OBSERVATION_PARKINSON_FINE_MOTOR_CONTROL
+            )) >= 1)
     then
-        Conclusion c = new Conclusion(ConclusionConstants.EPISTAXE);
-        insert(c);
-        conclusion = c;
-        lastRule = "r8";
-
-        why.add(new Justification(EvidenceConstants.CEREBROSPINAL, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "parkinson_advanced");
+        insert(h);
 end
 
-rule "r9"
+// Vascular Dementia Initial Stage Rule 1 - Direct Evidence Matching
+rule "Vascular Dementia Initial Stage - Diagnosis Evidence"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_NOSE, AnswerConstants.NO))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.INITIAL))
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_MOUTH);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r9";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_NOSE, AnswerConstants.NO));
+        Hypothesis h = new Hypothesis("disease", "vascular_dementia_initial");
+        insert(h);
 end
 
-rule "r10"
+// Vascular Dementia Initial Stage Rule 2 - Symptom Count Matching
+rule "Vascular Dementia Initial Stage - Symptom Count"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES))
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_SLIGHT_MEMORY_LOSS,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_DEPRESSION_ANXIETY,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_THINKING_PROBLEMS
+            )) >= 2)
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_BROWN);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r10";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "vascular_dementia_initial");
+        insert(h);
 end
 
-rule "r11"
+// Vascular Dementia Advanced Stage Rule 1 - Direct Evidence Matching
+rule "Vascular Dementia Advanced Stage - Diagnosis Evidence"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
+        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.ADVANCED))
     then
-        Question q = new Question(surveyId, EvidenceConstants.VOMITING);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r11";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_MOUTH, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "vascular_dementia_advanced");
+        insert(h);
 end
 
-rule "r12"
+// Vascular Dementia Advanced Stage Rule 2 - Condition + Symptom Count Matching
+rule "Vascular Dementia Advanced Stage - Condition Symptom Count"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.YES))
-        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.YES))
+        Hypothesis(description == "disease", value == "vascular_dementia_initial")
+        eval(DroolsHelper.getSymptomCount(evidences,
+            Arrays.asList(
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_HEAVY_MEMORY_LOSS,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_PEOPLE_RECOGNITION,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_HISTORY_AGGRESSIVENESS_INSOMNIA_AGITATION,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_BODY_CONTROL
+            )) >= 1)
     then
-        Conclusion c = new Conclusion(ConclusionConstants.HEMATHESE);
-        insert(c);
-        conclusion = c;
-        lastRule = "r12";
-
-        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.YES));
+        Hypothesis h = new Hypothesis("disease", "vascular_dementia_advanced");
+        insert(h);
 end
 
-rule "r13"
+// Vascular Dementia Initial - Restricted Activities
+rule "Restrict Activities for Vascular Dementia Initial"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
+        Hypothesis(description == "disease", value == "vascular_dementia_initial")
     then
-        Question q = new Question(surveyId, EvidenceConstants.VOMITING);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r13";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
+        insert(new Restrict(ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE));
 end
 
-rule "r14"
+// Vascular Dementia Advanced - Restricted Activities
+rule "Restrict Activities for Vascular Dementia Advanced"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
-        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.NO))
+        Hypothesis(description == "disease", value == "vascular_dementia_advanced")
     then
-        Conclusion c = new Conclusion(ConclusionConstants.MOUTH_HAEMORRHAGE);
-        insert(c);
-        conclusion = c;
-        lastRule = "r14";
-
-        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
+        insert(new Restrict(ActivityConstants.FELT_WORK));
+        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new Restrict(ActivityConstants.DESSERT_MAKING));
+        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new Restrict(ActivityConstants.PAINTINGS));
+        insert(new Restrict(ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE));
+        insert(new Restrict(ActivityConstants.SPATIAL_RECOGNITION_EXERCISES));
+        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
+        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
+        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
 end
 
-rule "r15"
+// Alzheimer Initial - Restricted Activities
+rule "Restrict Activities for Alzheimer Initial"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_BROWN, AnswerConstants.NO))
-        eval(answer(evidences, EvidenceConstants.VOMITING, AnswerConstants.YES))
+        Hypothesis(description == "disease", value == "alzheimer_initial")
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_VAGINA);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r15";
-
-        why.add(new Justification(EvidenceConstants.VOMITING, AnswerConstants.YES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new Restrict(ActivityConstants.BINGO_GAMES));
+        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
+        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
 end
 
-rule "r16"
+// Alzheimer Advanced - Restricted Activities
+rule "Restrict Activities for Alzheimer Advanced"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_VAGINA, AnswerConstants.YES))
+        Hypothesis(description == "disease", value == "alzheimer_advanced")
     then
-        Conclusion c = new Conclusion(ConclusionConstants.METRORRHAGIA);
-        insert(c);
-        conclusion = c;
-        lastRule = "r16";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_VAGINA, AnswerConstants.YES));
+        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+        insert(new Restrict(ActivityConstants.RECYCLED_MATERIALS));
+        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new Restrict(ActivityConstants.FELT_WORK));
+        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new Restrict(ActivityConstants.PAINTINGS));
+        insert(new Restrict(ActivityConstants.VERBAL_TASK_EXERCISES));
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
+        insert(new Restrict(ActivityConstants.ODOR_DIFFERENTIATION));
+        insert(new Restrict(ActivityConstants.INSTRUMENTS_USE));
+        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
+        insert(new Restrict(ActivityConstants.BINGO_GAMES));
+        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
+        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
+        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
 end
 
-rule "r17"
+// Parkinson Initial - Restricted Activities
+rule "Restrict Activities for Parkinson Initial"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_VAGINA, AnswerConstants.NO))
+        Hypothesis(description == "disease", value == "parkinson_initial")
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_PENIS);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r17";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_VAGINA, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
+        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
+        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
 end
 
-rule "r18"
+// Parkinson Advanced - Restricted Activities
+rule "Restrict Activities for Parkinson Advanced"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.YES))
+        Hypothesis(description == "disease", value == "parkinson_advanced")
     then
-        Conclusion c = new Conclusion(ConclusionConstants.HEMATURIA);
-        insert(c);
-        conclusion = c;
-        lastRule = "r18";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.YES));
+        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new Restrict(ActivityConstants.FELT_WORK));
+        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new Restrict(ActivityConstants.PAINTINGS));
+        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
+        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.WALKING));
+        insert(new Restrict(ActivityConstants.INSTRUMENTS_USE));
+        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
+        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
+        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
+        insert(new Restrict(ActivityConstants.MIME_GAMES));
+        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
+end
+// Social Integration - Severe Integration Issues
+rule "Restrict Activities for Severe Integration Issues"
+    when
+        eval(answer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.SEVERE_INTEGRATION_ISSUES))
+    then
+        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
+        insert(new Restrict(ActivityConstants.IMAGE_RECOGNITION_GAMES));
+        insert(new Restrict(ActivityConstants.KARAOKE));
+        insert(new Restrict(ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES));
+        insert(new Restrict(ActivityConstants.MIME_GAMES));
+        insert(new Restrict(ActivityConstants.BINGO_GAMES));
+        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
 end
 
-rule "r19"
+// Social Integration - Isolated Person
+rule "Restrict Activities for Isolated Person"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO))
+        eval(answer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.ISOLATED_PERSON))
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_ANUS);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r19";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
+        insert(new Restrict(ActivityConstants.DESSERT_MAKING));
+        insert(new Restrict(ActivityConstants.IMAGE_RECOGNITION_GAMES));
+        insert(new Restrict(ActivityConstants.KARAOKE));
+        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
+        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
+        insert(new Restrict(ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES));
+        insert(new Restrict(ActivityConstants.MIME_GAMES));
+        insert(new Restrict(ActivityConstants.BINGO_GAMES));
+        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
+        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
+        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new Restrict(ActivityConstants.MASSAGES));
+        insert(new Restrict(ActivityConstants.MAKEUP));
+        insert(new Restrict(ActivityConstants.CHARACTER_INTERPRETATION));
 end
 
-rule "r20"
+// Vision - Vision Difficulties
+rule "Restrict Activities for Vision Difficulties"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO))
+        eval(answer(evidences, EvidenceConstants.VISION, AnswerConstants.VISION_WITH_DIFFICULTIES))
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_ANUS);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r20";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_PENIS, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
 end
 
-rule "r21"
+// Vision - Blindness
+rule "Restrict Activities for Blindness"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES))
+        eval(answer(evidences, EvidenceConstants.VISION, AnswerConstants.BLINDNESS))
     then
-        Question q = new Question(surveyId, EvidenceConstants.BLOOD_COFFEE);
-        insert(q);
-        nextQuestion = q;
-        lastRule = "r21";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES));
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new Restrict(ActivityConstants.VERBAL_TASK_EXERCISES));
 end
 
-rule "r22"
+// Hearing - Hearing Difficulties
+rule "Restrict Activities for Hearing Difficulties"
     when
-        Hypothesis(description == "haemorrhage", value == "lower type")
-        eval(answer(evidences, EvidenceConstants.BLOOD_ANUS, AnswerConstants.YES))
-        eval(answer(evidences, EvidenceConstants.BLOOD_COFFEE, AnswerConstants.NO))
+        eval(answer(evidences, EvidenceConstants.HEARING, AnswerConstants.HEARING_WITH_DIFFICULTIES))
     then
-        Conclusion c = new Conclusion(ConclusionConstants.RECTAL_BLEEDING);
-        insert(c);
-        conclusion = c;
-        lastRule = "r22";
-
-        why.add(new Justification(EvidenceConstants.BLOOD_COFFEE, AnswerConstants.NO));
+        insert(new Restrict(ActivityConstants.KARAOKE));
+        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
 end
 
-rule "unknown"
+// Hearing - Deafness
+rule "Restrict Activities for Deafness"
     when
-        not Question()
-        not Conclusion()
+        eval(answer(evidences, EvidenceConstants.HEARING, AnswerConstants.DEAFNESS))
     then
-        Conclusion c = new Conclusion(ConclusionConstants.UNKNOWN);
-        insert(c);
-        conclusion = c;
+        insert(new Restrict(ActivityConstants.KARAOKE));
+        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
+        insert(new Restrict(ActivityConstants.MUSICOGRAM));
+end
+
+// Speech - Speech Difficulties
+rule "Restrict Activities for Speech Difficulties"
+    when
+        eval(answer(evidences, EvidenceConstants.SPEECH, AnswerConstants.EXPRESSES_WITH_DIFFICULTY))
+    then
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+end
+
+// Speech - Non-Verbal
+rule "Restrict Activities for Non-Verbal Individuals"
+    when
+        eval(answer(evidences, EvidenceConstants.SPEECH, AnswerConstants.CANNOT_BE_UNDERSTOOD))
+    then
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new Restrict(ActivityConstants.CHARACTER_INTERPRETATION));
+end
+
+// Smell - Loss of Smell
+rule "Restrict Activities for Loss of Smell"
+    when
+        eval(answer(evidences, EvidenceConstants.SMELL, AnswerConstants.COMPLETE_LOSS_OF_SMELL))
+    then
+        insert(new Restrict(ActivityConstants.ODOR_DIFFERENTIATION));
+        insert(new Restrict(ActivityConstants.SENSES_RECOGNITION_EXERCISES));
+end
+
+// Mobility - Total Dependence
+rule "Restrict Activities for Total Mobility Dependence"
+    when
+        eval(answer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))
+    then
+        insert(new Restrict(ActivityConstants.WALKING));
+        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
+        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
+end
+
+// Upper Motor Skills - Cannot Move
+rule "Restrict Activities for Upper Motor Skills Impairment"
+    when
+        eval(answer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+    then
+        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+end
+
+// Lower Motor Skills - Cannot Move
+rule "Restrict Activities for Lower Motor Skills Impairment"
+    when
+        eval(answer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+    then
+        insert(new Restrict(ActivityConstants.WALKING));
+        insert(new Restrict(ActivityConstants.PHYSIOTHERAPY));
+end
+
+// Object Handling - Cannot Handle
+rule "Restrict Activities for Object Handling Impairment"
+    when
+        eval(answer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.CANNOT_HANDLE))
+    then
+        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
+        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+end
+
+// Reading - Cannot Read
+rule "Restrict Activities for Reading Difficulties"
+    when
+        eval(answer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.CANNOT_READ))
+    then
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+end
+
+// Writing - Cannot Write
+rule "Restrict Activities for Writing Difficulties"
+    when
+        eval(answer(evidences, EvidenceConstants.WRITING, AnswerConstants.CANNOT_WRITE))
+    then
+        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+end
+
+// Preference - Theatre
+rule "Prefer Activities for Theatre Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.THEATRE, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new PreferredActivity(ActivityConstants.CHARACTER_INTERPRETATION));
+        insert(new PreferredActivity(ActivityConstants.MIME_GAMES));
+end
+
+// Preference - Museum
+rule "Prefer Activities for Museum Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.MUSEUM, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.PAINTINGS));
+        insert(new PreferredActivity(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new PreferredActivity(ActivityConstants.WALKING));
+end
+
+// Preference - Music
+rule "Prefer Activities for Music Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.MUSIC, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.KARAOKE));
+        insert(new PreferredActivity(ActivityConstants.GUESS_THE_SONG));
+        insert(new PreferredActivity(ActivityConstants.INSTRUMENTS_USE));
+end
+
+// Preference - Reading
+rule "Prefer Activities for Reading Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.READING_PREFERENCE, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.DRAMATIC_TEXT_READING));
+        insert(new PreferredActivity(ActivityConstants.READING_WRITING_EXERCISES));
+        insert(new PreferredActivity(ActivityConstants.VERBAL_TASK_EXERCISES));
+end
+
+// Preference - Recreational Group
+rule "Prefer Activities for Recreational Group Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.RECREATIONAL_GROUP, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.PETANQUE_GAMES));
+        insert(new PreferredActivity(ActivityConstants.BOWLING_GAMES));
+        insert(new PreferredActivity(ActivityConstants.MIME_GAMES));
+        insert(new PreferredActivity(ActivityConstants.BINGO_GAMES));
+end
+
+// Preference - Art
+rule "Prefer Activities for Art Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.ART, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.PAINTINGS));
+        insert(new PreferredActivity(ActivityConstants.CENTRE_DECORATION_WORK));
+        insert(new PreferredActivity(ActivityConstants.FELT_WORK));
+end
+
+// Preference - Sports
+rule "Prefer Activities for Sports Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.SPORTS, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.WALKING));
+        insert(new PreferredActivity(ActivityConstants.PETANQUE_GAMES));
+        insert(new PreferredActivity(ActivityConstants.BOWLING_GAMES));
+end
+
+// Preference - Cooking
+rule "Prefer Activities for Cooking Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.COOKING, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.DESSERT_MAKING));
+end
+
+// Preference - Handicrafts
+rule "Prefer Activities for Handicrafts Enthusiasts"
+    when
+        eval(answer(evidences, EvidenceConstants.HANDICRAFTS, AnswerConstants.YES))
+    then
+        insert(new PreferredActivity(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+        insert(new PreferredActivity(ActivityConstants.RECYCLED_MATERIALS));
+        insert(new PreferredActivity(ActivityConstants.FELT_WORK));
 end

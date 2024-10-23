@@ -74,9 +74,6 @@ public class SurveyService {
 
         if(result.getType().equals(ResultTypeEnum.CONCLUSION)){
             var createdConclusion = conclusionsRepository.save(result.getConclusion());
-            var surveyToUpdate = survey.get();
-            surveyToUpdate.setConclusionId(createdConclusion.getId());
-            surveysRepository.save(surveyToUpdate);
             return Result.fromConclusion(createdConclusion);
         }
 

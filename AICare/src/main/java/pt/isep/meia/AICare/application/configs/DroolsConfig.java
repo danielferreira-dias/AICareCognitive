@@ -22,6 +22,7 @@ public class DroolsConfig {
     private KieFileSystem getKieFileSystem() throws IOException {
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         kieFileSystem.write(ResourceFactory.newClassPathResource("rules/survey-rules.drl"));
+        kieFileSystem.write(ResourceFactory.newClassPathResource("rules/question-rules.drl"));
         return kieFileSystem;
 
     }

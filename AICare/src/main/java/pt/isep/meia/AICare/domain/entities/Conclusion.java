@@ -3,10 +3,8 @@ package pt.isep.meia.AICare.domain.entities;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,16 +19,18 @@ public class Conclusion {
     @Column(columnDefinition = "BINARY(16)", updatable = false, nullable = false)
     private UUID id;
 
-    private String description;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "conclusion_id")
+    private List<Activity> activities;
+
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID surveyId;
 
     public Conclusion() {
     }
 
-    public Conclusion(String description) {
-        this.description = description;
-    }
-
-    public String toString() {
-        return ("Conclusion: " + description);
+    public Conclusion(UUID surveyId, List<Activity> activities) {
+        this.surveyId = surveyId;
+        this.activities = activities;
     }
 }

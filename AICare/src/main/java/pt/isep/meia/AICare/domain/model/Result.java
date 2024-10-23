@@ -3,12 +3,16 @@ package pt.isep.meia.AICare.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.var;
+import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologTypeEnum;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,6 +26,20 @@ public class Result {
         return new Result(ResultTypeEnum.QUESTION, question, null);
     }
 
+    public static Result fromActivities(UUID surveyId, List<String> activities) {
+        var activityEntities = activities.stream()
+                .map(description -> {
+                    Activity activity = new Activity();
+                    activity.setDescription(description);
+                    return activity;
+                })
+                .collect(Collectors.toList());
+
+        var conclusion = new Conclusion(surveyId, activityEntities);
+
+        return new Result(ResultTypeEnum.CONCLUSION, null, conclusion);
+    }
+
     public static Result fromConclusion(Conclusion conclusion) {
         return new Result(ResultTypeEnum.CONCLUSION, null, conclusion);
     }
@@ -30,7 +48,7 @@ public class Result {
         if(prologResultDto.getType().equals(PrologTypeEnum.question)){
             return new Result(ResultTypeEnum.QUESTION, new Question(surveyId, prologResultDto.getQuestion()), null);
         } else {
-            return new Result(ResultTypeEnum.CONCLUSION, null, new Conclusion(prologResultDto.getConclusion()));
+            return Result.fromActivities(surveyId, prologResultDto.getConclusion());
         }
     }
 }
