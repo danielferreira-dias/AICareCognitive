@@ -11,6 +11,10 @@ export default {
             type: String,
             required: true
         },
+        textKey: {
+            type: String,
+            required: true
+        },
         questionId: {
             type: String,
             required: true
@@ -22,7 +26,7 @@ export default {
     },
     methods: {
         handleClick() {
-            this.onAnswer(this.questionId, this.text);
+            this.onAnswer(this.questionId, this.textKey);
         }
     }
 };

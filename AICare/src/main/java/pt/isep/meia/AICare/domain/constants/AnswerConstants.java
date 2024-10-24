@@ -55,6 +55,4 @@ public class AnswerConstants {
     // Mobility Answers
     public static final String MOVES_EASILY = "moves_without_difficulty";
     public static final String TOTAL_DEPENDENCE = "total_dependence";
-
-
 }
