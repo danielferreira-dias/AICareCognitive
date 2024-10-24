@@ -1,48 +1,70 @@
 [
   {
-    "id": 1,
-    "question": "Question 1",
-    "type": "checkbox",
-    "options": [
-      { "value": "Option 1", "label": "Answer A" },
-      { "value": "Option 2", "label": "Answer B" }
-    ]
+    "type": "question",
+    "question": {
+      "id": "c3e2ea78-898e-4461-90f4-4879f95fac01",
+      "surveyId": "b08ce3bc-91f6-44c5-8592-56e11abbaf12",
+      "text": "Question 1",
+      "possibleAnswers": [
+        "Answer A",
+        "Answer B"
+      ]
+    },
+    "conclusion": null
   },
   {
-    "id": 2,
-    "question": "Question 2",
-    "type": "radiobutton",
-    "options": [
-      { "value": "Option 1", "label": "Answer A" },
-      { "value": "Option 2", "label": "Answer B" }
-    ]
+    "type": "question",
+    "question": {
+      "id": "c3e2ea78-898e-4461-90f4-4879f95fac02",
+      "surveyId": "b08ce3bc-91f6-44c5-8592-56e11abbaf12",
+      "text": "Question 2",
+      "possibleAnswers": [
+        "Answer A",
+        "Answer B"
+      ]
+    },
+    "conclusion": null
   },
   {
-    "id": 3,
-    "question": "Question 3",
-    "type": "checkbox",
-    "options": [
-      { "value": "Option 1", "label": "Answer A" },
-      { "value": "Option 2", "label": "Answer B" },
-      { "value": "Option 3", "label": "Answer C" }
-    ]
+    "type": "question",
+    "question": {
+      "id": "c3e2ea78-898e-4461-90f4-4879f95fac02",
+      "surveyId": "b08ce3bc-91f6-44c5-8592-56e11abbaf12",
+      "text": "Question 3",
+      "possibleAnswers": [
+        "Answer A",
+        "Answer B",
+        "Answer C"
+      ]
+    },
+    "conclusion": null
   },
   {
-    "id": 4,
-    "question": "Question 4",
-    "type": "radiobutton",
-    "options": [
-      { "value": "Option 1", "label": "Answer A" },
-      { "value": "Option 2", "label": "Answer B" }
-    ]
+    "type": "question",
+    "question": {
+      "id": "c3e2ea78-898e-4461-90f4-4879f95fac02",
+      "surveyId": "b08ce3bc-91f6-44c5-8592-56e11abbaf12",
+      "text": "Question 4",
+      "possibleAnswers": [
+        "Answer A",
+        "Answer B",
+        "Answer C"
+      ]
+    },
+    "conclusion": null
   },
   {
-    "id": 5,
-    "question": "Question 5",
-    "type": "checkbox",
-    "options": [
-      { "value": "Option 1", "label": "Answer A" },
-      { "value": "Option 2", "label": "Answer B" }
-    ]
+    "type": "question",
+    "question": {
+      "id": "c3e2ea78-898e-4461-90f4-4879f95fac02",
+      "surveyId": "b08ce3bc-91f6-44c5-8592-56e11abbaf12",
+      "text": "Question 5",
+      "possibleAnswers": [
+        "Answer A",
+        "Answer B",
+        "Answer C"
+      ]
+    },
+    "conclusion": null
   }
 ]

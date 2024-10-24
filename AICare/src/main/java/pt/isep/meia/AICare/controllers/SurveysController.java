@@ -59,11 +59,11 @@ public class SurveysController {
     public ResponseEntity<Answer> postSurveyQuestionAnswer(@PathVariable String surveyId, @RequestBody Answer answer) {
         var createdAnswer = surveyService.answerQuestion(answer);
         return ResponseEntity
-                .created(URI.create("/api/surveys/" + surveyId + "/answered-question"))
+                .created(URI.create("/api/surveys/" + surveyId + "/answered-questions"))
                 .body(createdAnswer);
     }
 
-    @GetMapping("{surveyId}/answered-question")
+    @GetMapping("{surveyId}/answered-questions")
     public ResponseEntity<List<Evidence>> getAllAnsweredQuestions(@PathVariable UUID surveyId) {
         var answeredQuestions = surveyService.getAllAnsweredQuestionsById(surveyId);
         return ResponseEntity.ok(answeredQuestions);

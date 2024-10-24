@@ -31,7 +31,7 @@ public class Question {
     @Column(name = "possible_answer")
     private List<String> possibleAnswers;
 
-    private int order;
+    private int questionOrder;
 
     public Question() {
     }
@@ -41,9 +41,9 @@ public class Question {
         this.text = text;
     }
 
-    public Question(UUID surveyId, String text, int order) {
+    public Question(UUID surveyId, String text, int questionOrder) {
         this(surveyId, text);
-        this.order = order;
+        this.questionOrder = questionOrder;
     }
 
     @Override
@@ -52,6 +52,7 @@ public class Question {
                 "id=" + id +
                 ", surveyId=" + surveyId +
                 ", text='" + text + '\'' +
+                ", order=" + questionOrder +
                 ", possibleAnswers=" + possibleAnswers +
                 '}';
     }

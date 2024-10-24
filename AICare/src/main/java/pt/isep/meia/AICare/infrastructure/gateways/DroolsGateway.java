@@ -2,6 +2,7 @@ package pt.isep.meia.AICare.infrastructure.gateways;
 
 import lombok.var;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.application.configs.DroolsConfig;
@@ -33,7 +34,6 @@ public class DroolsGateway {
         }
 
         session.setGlobal("surveyId", surveyId);
-        session.setGlobal("questionOrder", order);
         session.setGlobal("evidences", evidences);
         session.fireAllRules();
 
@@ -42,7 +42,8 @@ public class DroolsGateway {
         if (!surveyCompleted) {
             var nextQuestion = getLastQuestionFromSession(session);
             if (nextQuestion != null) {
-                nextQuestion.setOrder(order);
+//                clearSession(session);
+                nextQuestion.setQuestionOrder(order);
                 return Result.fromQuestion(nextQuestion);
             }
         }
@@ -68,6 +69,7 @@ public class DroolsGateway {
                 .filter(activity -> !prioritizedActivities.contains(activity))
                 .forEach(orderedActivities::add);
 
+//        clearSession(session);
         return Result.fromActivities(surveyId, orderedActivities);
 
     }
@@ -101,5 +103,19 @@ public class DroolsGateway {
                 .filter(obj -> obj instanceof Restrict)
                 .map(obj -> (Restrict) obj)
                 .collect(Collectors.toList());
+    }
+
+    private void clearSession(KieSession session) {
+        List<FactHandle> handles = new ArrayList<>();
+
+        // Collect all FactHandles first
+        for (Object fact : session.getObjects()) {
+            handles.add(session.getFactHandle(fact));
+        }
+
+        // Delete all facts using the collected FactHandles
+        for (FactHandle handle : handles) {
+            session.delete(handle);
+        }
     }
 }

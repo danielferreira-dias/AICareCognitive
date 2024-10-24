@@ -23,7 +23,7 @@ public class Result {
     private Conclusion conclusion;
 
     public static Result fromQuestion(Question question) {
-        return new Result(ResultTypeEnum.QUESTION, question, null);
+        return new Result(ResultTypeEnum.question, question, null);
     }
 
     public static Result fromActivities(UUID surveyId, List<String> activities) {
@@ -37,16 +37,16 @@ public class Result {
 
         var conclusion = new Conclusion(surveyId, activityEntities);
 
-        return new Result(ResultTypeEnum.CONCLUSION, null, conclusion);
+        return new Result(ResultTypeEnum.conclusion, null, conclusion);
     }
 
     public static Result fromConclusion(Conclusion conclusion) {
-        return new Result(ResultTypeEnum.CONCLUSION, null, conclusion);
+        return new Result(ResultTypeEnum.conclusion, null, conclusion);
     }
 
     public static Result fromPrologResult(UUID surveyId, PrologResultDto prologResultDto, int order) {
         if(prologResultDto.getType().equals(PrologTypeEnum.question)){
-            return new Result(ResultTypeEnum.QUESTION, new Question(surveyId, prologResultDto.getQuestion(), order), null);
+            return new Result(ResultTypeEnum.question, new Question(surveyId, prologResultDto.getQuestion(), order), null);
         } else {
             return Result.fromActivities(surveyId, prologResultDto.getConclusion());
         }

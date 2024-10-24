@@ -74,7 +74,7 @@ public class SurveyService {
             return null;
         }
 
-        if(result.getType().equals(ResultTypeEnum.CONCLUSION)){
+        if(result.getType().equals(ResultTypeEnum.conclusion)){
             var createdConclusion = conclusionsRepository.save(result.getConclusion());
             return Result.fromConclusion(createdConclusion);
         }

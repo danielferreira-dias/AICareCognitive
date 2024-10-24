@@ -2,115 +2,151 @@
   <div class="h-full bg-white rounded-lg flex flex-col text-center border shadow-md">
     <div class="w-full h-fit text-2xl md:text-4xl font-bold my-10">AICare Survey</div>
 
-    <div class="flex-1 flex flex-col items-center p-5 bg-gray-100 rounded-b-lg">
-      <div v-if="currentQuestion" class="flex w-full justify-start mb-4">
-        <div class="bg-blue-500 text-white p-4 rounded-lg max-w-xs">
-          {{ currentQuestion.question }}
-        </div>
-      </div>
-      
-      </div>
-      <div v-if="currentQuestion && currentQuestion.options" class="flex flex-col items-center w-full bottom-0">
-        <div v-if="currentQuestion.type === 'checkbox'" class="flex flex-col items-start">
-          <div v-for="(option, index) in currentQuestion.options" :key="index" class="mb-2 flex items-center">
-            <input
-              type="checkbox"
-              :id="`checkbox-${currentQuestion.id}-${index}`"
-              :value="option.value"
-              v-model="selectedAnswers"
-              class="mr-2"
-            />
-            <label :for="`checkbox-${currentQuestion.id}-${index}`" class="text-lg">
-              {{ option.label }}
-            </label>
+    <div class="flex-1 flex flex-col items-center p-5 bg-gray-100 rounded-b-lg overflow-hidden">
+      <!-- Chat history container with scroll and max height -->
+      <div ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4">
+        <div v-for="(message, index) in chatHistory" :key="index" class="flex w-full mb-4">
+          <div v-if="message.type === 'question'" class="flex justify-start w-full">
+            <div class="bg-blue-500 text-white p-4 rounded-lg max-w-xs">
+              {{ $t(`surveys.chat.questions.${message.text}`) }}
+            </div>
+          </div>
+          <div v-else-if="message.type === 'answer'" class="flex justify-end w-full">
+            <div class="bg-gray-200 text-black p-4 rounded-lg max-w-xs">
+              {{ $t(`surveys.chat.answers.${message.text}`) }}
+            </div>
           </div>
         </div>
+      </div>
 
-        <div v-if="currentQuestion.type === 'radiobutton'" class="flex flex-col items-start">
-          <div v-for="(option, index) in currentQuestion.options" :key="index" class="mb-2 flex items-center">
-            <input
-              type="radio"
-              :id="`radio-${currentQuestion.id}-${index}`"
-              :value="option.value"
-              v-model="selectedAnswer"
-              :name="`radio-group-${currentQuestion.id}`"
-              class="mr-2"
-            />
-            <label :for="`radio-${currentQuestion.id}-${index}`" class="text-lg">
-              {{ option.label }}
-            </label>
+      <!-- Display possible answers as horizontally stacked buttons on the user's side -->
+      <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mb-4">
+        <div class="flex space-x-2">
+          <div v-for="(answer, index) in currentResult.question.possibleAnswers" :key="index" class="mb-2">
+            <button @click="selectAnswer(currentResult.question.id, answer)"
+              class="bg-gray-200 text-black px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+              {{ $t(`surveys.chat.answers.${answer}`) }}
+            </button>
           </div>
         </div>
+      </div>
 
       <div v-else-if="loading" class="text-2xl">Loading...</div>
-    </div>
-
-    <div class="my-5" v-if="currentQuestion">
-      <button
-        @click="submitAnswer"
-        class="text-white px-6 py-2 rounded-lg bg-black">
-        Submit
-      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { getSurveysAnsweredQuestions, getSurveysNextQuestion, answerSurvey } from '../api/services/surveyService';
+
 export default {
+  props: {
+    survey: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      questions: [],           // Stores the fetched questions
-      currentIndex: 0,        // Tracks the current question index
-      loading: true,          // Flag for loading state
+      results: [],             // Stores the fetched questions
+      currentIndex: 0,         // Tracks the current question index
+      loading: true,           // Flag for loading state
       selectedAnswer: null,    // For radio button selection
       selectedAnswers: [],     // For checkbox selections
+      chatHistory: [],         // Array to store all messages (questions and answers)
+      currentResult: null
     };
   },
   computed: {
-    currentQuestion() {
-      return this.questions[this.currentIndex] || null;
-    },
     progressBarWidth() {
-      return ((this.currentIndex) / this.questions.length) * 100;
+      return ((this.currentIndex) / this.results.length) * 100;
+    }
+  },
+  watch: {
+    // Watch for changes to the survey prop
+    survey(newSurvey, oldSurvey) {
+      if (newSurvey.id !== oldSurvey.id) {
+        this.resetSurveyChat(); // Call method to reset and reload
+      }
     }
   },
   methods: {
-    async fetchQuestions() {
+    async fetchAnsweredQuestions() {
       try {
-        const response = await fetch("/question.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
-        this.questions = await response.json();
+        const answeredQuestions = await getSurveysAnsweredQuestions(this.survey.id);
+        answeredQuestions.forEach(answeredQuestion => {
+          this.addToChatHistory("question", answeredQuestion.question.text, answeredQuestion.question.id);
+          this.addToChatHistory("answer", answeredQuestion.answer.response, answeredQuestion.question.id);
+        });
         this.loading = false;
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        console.error("Error fetching answered questions:", error);
         this.loading = false;
       }
     },
-    submitAnswer() {
-      // Handling submission logic
-      if (this.currentQuestion.type === 'radiobutton') {
-        console.log('Selected radio answer:', this.selectedAnswer);
-      } else if (this.currentQuestion.type === 'checkbox') {
-        console.log('Selected checkbox answers:', this.selectedAnswers);
-      }
-
-      // Move to next question or finish survey
-      if (this.currentIndex < this.questions.length - 1) {
-        this.currentIndex++;
-        this.resetSelections(); // Reset selections for the new question
-      } else {
-        alert("Survey complete!");
+    async fetchNextQuestion() {
+      try {
+        const nextQuestion = await getSurveysNextQuestion(this.survey.id);
+        this.handleResult(nextQuestion);
+      } catch (error) {
+        console.error("Error fetching answered questions:", error);
+        this.loading = false;
       }
     },
-    resetSelections() {
-      this.selectedAnswer = null;   // Reset radio button selection
-      this.selectedAnswers = [];    // Reset checkbox selections
+    async selectAnswer(questionId, answer) {
+      try {
+        const questionAnswer = {
+          questionId: questionId,
+          response: answer
+        };
+        const createdAnswer = await answerSurvey(this.survey.id, questionAnswer);
+        this.addToChatHistory("answer", createdAnswer.response, questionId);
+        this.fetchNextQuestion();
+      } catch (error) {
+        console.error('Error answering survey:', error);
+      }
+    },
+    handleResult(result) {
+      if (result) {
+        if (result.type === "question") {
+          this.addToChatHistory(result.type, result.question.text, result.question.id);
+          this.currentResult = result;
+        }
+      }
+    },
+    addToChatHistory(type, text, questionId) {
+      this.chatHistory.push({
+        type: type,
+        text: text,
+        questionId: questionId
+      });
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+    },
+    scrollToBottom() {
+      const container = this.$refs.chatContainer;
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    },
+    resetSurveyChat() {
+      // Reset state and reload the survey
+      this.results = [];
+      this.currentIndex = 0;
+      this.loading = true;
+      this.selectedAnswer = null;
+      this.selectedAnswers = [];
+      this.chatHistory = [];
+      this.currentResult = null;
+      
+      // Fetch new survey data
+      this.fetchAnsweredQuestions();
+      this.fetchNextQuestion();
     }
   },
   mounted() {
-    this.fetchQuestions();
+    this.resetSurveyChat(); // Initial load
   },
 };
 </script>

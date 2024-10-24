@@ -41,6 +41,12 @@
             "createPopupMessage": "Tem a certeza de que deseja criar um novo questionário?",
             "createPopupCancel": "Cancelar",
             "createPopupConfirm": "Confirmar"
+        },
+        "chat": {
+            "answers": {
+                "yes": "Sim",
+                "no": "Não"
+            }
         }
     }
 }

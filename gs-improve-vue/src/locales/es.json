@@ -41,6 +41,12 @@
             "createPopupMessage": "¿Está seguro de que desea crear una nueva encuesta?",
             "createPopupCancel": "Cancelar",
             "createPopupConfirm": "Confirmar"
+        },
+        "chat": {
+            "answers": {
+                "yes": "Sí",
+                "no": "No"
+            }
         }
     }
 }

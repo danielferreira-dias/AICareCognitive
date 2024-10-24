@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.configs.EngineProperties;
+import pt.isep.meia.AICare.domain.dtos.EngineDto;
 
 @RestController
 @RequestMapping("/api/engine")
@@ -17,21 +18,21 @@ public class EngineController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> setEngine(@RequestParam String type) {
-        if (!"drools".equalsIgnoreCase(type) && !"prolog".equalsIgnoreCase(type)) {
-            return ResponseEntity.badRequest().body("Unknown engine type");
+    public ResponseEntity<EngineDto> setEngine(@RequestBody EngineDto requestDto) {
+        if (!"drools".equalsIgnoreCase(requestDto.engine) && !"prolog".equalsIgnoreCase(requestDto.engine)) {
+            return ResponseEntity.badRequest().body(requestDto);
         }
-        engineProperties.setType(type);
-        return ResponseEntity.ok("Engine type set to " + type);
+        engineProperties.setType(requestDto.engine);
+        return ResponseEntity.ok(requestDto);
     }
 
     @GetMapping()
-    public ResponseEntity<String> getEngine() {
+    public ResponseEntity<EngineDto> getEngine() {
         String type = engineProperties.getType();
         if (type == null) {
-            return ResponseEntity.badRequest().body("No engine type set");
+            return ResponseEntity.badRequest().body(new EngineDto());
         }
 
-        return ResponseEntity.ok("Engine is set to " + type);
+        return ResponseEntity.ok(new EngineDto(type));
     }
 }

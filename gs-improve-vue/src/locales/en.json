@@ -41,6 +41,12 @@
             "createPopupMessage": "Are you sure you want to create a new survey?",
             "createPopupCancel": "Cancel",
             "createPopupConfirm": "Confirm"
+        },
+        "chat": {
+            "answers": {
+                "yes": "Yes",
+                "no": "No"
+            }
         }
     }
 }

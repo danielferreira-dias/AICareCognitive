@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface AnswersRepository extends JpaRepository<Answer, UUID> {
     @Query("SELECT new pt.isep.meia.AICare.domain.model.Evidence(q, a) " +
             "FROM Answer a JOIN Question q ON a.questionId = q.id " +
-            "WHERE q.surveyId = :surveyId")
+            "WHERE q.surveyId = :surveyId " +
+            "ORDER BY q.questionOrder")
     List<Evidence> findEvidencesBySurveyId(@Param("surveyId") UUID surveyId);
 }
