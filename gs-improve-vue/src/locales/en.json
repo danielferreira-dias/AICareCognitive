@@ -42,6 +42,12 @@
             "createPopupCancel": "Cancel",
             "createPopupConfirm": "Confirm"
         },
+        "deleteSurvey": {
+          "title": "Delete Survey",
+          "message": "Are you sure you want to delete this survey?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
         "chat": {
             "title": "AICare Survey",
             "answers": {

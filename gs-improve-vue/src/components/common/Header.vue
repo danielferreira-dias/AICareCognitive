@@ -15,8 +15,16 @@
             </nav>
         </div>
 
-        <!-- Language Switcher Section -->
-        <div class="flex space-x-4">
+        <!-- Dropdown and Language Switcher Section -->
+        <div class="flex items-center space-x-4">
+            <!-- Dropdown for Drools/Prolog -->
+            <select v-model="selectedEngine" @change="changeEngine"
+                class="bg-indigo-600 text-white border-none cursor-pointer">
+                <option value="prolog">Prolog</option>
+                <option value="drools">Drools</option>
+            </select>
+
+            <!-- Language Switcher -->
             <span :class="['flag-icon', 'flag-icon-gb', 'cursor-pointer', 'transition', getFlagClass('en')]"
                 @click="changeLanguage('en')"></span>
             <span :class="['flag-icon', 'flag-icon-pt', 'cursor-pointer', 'transition', getFlagClass('pt')]"
@@ -28,11 +36,26 @@
 </template>
 
 <script>
+import { getCurrentEngine, updateCurrentEngine } from '../../api/services/engineService';
+
 export default {
-    mounted() {
+    data() {
+        return {
+            selectedEngine: 'drools' // Default to 'drools'
+        };
+    },
+    async mounted() {
         const savedLanguage = localStorage.getItem('preferredLanguage');
         if (savedLanguage) {
             this.$i18n.locale = savedLanguage;
+        }
+
+        // Fetch the current engine from the engine service on load
+        try {
+            const result = await getCurrentEngine();
+            this.selectedEngine = result.engine || 'drools'; // Default to 'drools' if not set
+        } catch (error) {
+            console.error('Error fetching current engine:', error);
         }
     },
     methods: {
@@ -42,6 +65,16 @@ export default {
         },
         getFlagClass(lang) {
             return this.$i18n.locale === lang ? 'flag-selected' : 'flag-deselected';
+        },
+        async changeEngine() {
+            try {
+                const updateEngineDto = {
+                    engine: this.selectedEngine,
+                };
+                await updateCurrentEngine(updateEngineDto); // Update the selected engine via the service
+            } catch (error) {
+                console.error('Error updating engine:', error);
+            }
         }
     }
 };
@@ -66,5 +99,24 @@ export default {
     /* Keep full color */
     opacity: 1;
     /* Ensure full opacity */
+}
+
+/* Style for the dropdown */
+select {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    padding: 4px 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+}
+
+select option {
+    background-color: #4f46e5;
+    /* Indigo-600 */
+    color: #fff;
+    /* White */
 }
 </style>

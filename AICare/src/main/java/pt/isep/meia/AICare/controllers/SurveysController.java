@@ -74,4 +74,10 @@ public class SurveysController {
         var justifications = surveyService.getWhy(surveyId);
         return ResponseEntity.ok(justifications);
     }
+
+    @DeleteMapping("{surveyId}")
+    public ResponseEntity<Void> deleteSurvey(@PathVariable UUID surveyId) {
+        surveyService.deleteSurvey(surveyId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -113,4 +113,8 @@ public class SurveyService {
         var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
         return engineService.getWhy(surveyId, evidences);
     }
+
+    public void deleteSurvey(UUID surveyId) {
+        surveysRepository.deleteById(surveyId);
+    }
 }

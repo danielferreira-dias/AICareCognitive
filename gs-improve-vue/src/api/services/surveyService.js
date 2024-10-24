@@ -1,7 +1,6 @@
 import axiosClient from '../clients/axiosClient';
 
 export const getSurveysAnsweredQuestions =  async (surveyId) => {
-    console.log(`/surveys/${surveyId}/answered-questions`);
     const response = await axiosClient.get(`/surveys/${surveyId}/answered-questions`);
     return response.data;
 };
@@ -23,5 +22,10 @@ export const createSurvey = async (createSurveyRequestDto) => {
 
 export const answerSurvey = async (surveyId, answerSurveyRequestDto) => {
     const response = await axiosClient.post(`/surveys/${surveyId}/answer`, answerSurveyRequestDto);
+    return response.data;
+};
+
+export const deleteSurvey = async (surveyId) => {
+    const response = await axiosClient.delete(`/surveys/${surveyId}`);
     return response.data;
 };

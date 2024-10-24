@@ -7,7 +7,10 @@
       <h3 class="text-lg font-bold text-gray-500">
         {{ $t('surveys.list.doneAt') }} {{ formatDate(survey.createDate) }}
       </h3>
-      <div class="flex items-center">
+      <div class="flex items-center space-x-2">
+        <!-- Trash Icon for Deletion -->
+        <font-awesome-icon icon="trash-alt" class="text-red-600 cursor-pointer hover:text-red-800 transition"
+          @click.stop="confirmDelete" />
         <div :class="['h-2 w-2 rounded-full', survey.hasConclusion ? 'bg-green-500' : 'bg-red-500']"></div>
       </div>
     </div>
@@ -30,7 +33,10 @@ export default {
     }
   },
   methods: {
-    formatDate
+    formatDate,
+    confirmDelete() {
+      this.$emit('confirmDelete', this.survey); // Emit an event to trigger the delete confirmation
+    }
   }
 };
 </script>

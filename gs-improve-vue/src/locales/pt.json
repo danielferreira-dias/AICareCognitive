@@ -42,6 +42,12 @@
             "createPopupCancel": "Cancelar",
             "createPopupConfirm": "Confirmar"
         },
+        "deleteSurvey": {
+          "title": "Eliminar Questionário",
+          "message": "Tem a certeza de que quer eliminar este questionário?",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar"
+        },
         "chat": {
             "title": "Questionário AICare",
             "answers": {
