@@ -5,7 +5,7 @@
 
 % Rule to load a knowledge base file
 :- consult('knowledge_base.pl'),
-   write('Knowledge base loaded.'), nl.
+   write('Knowledge base loaded!'), nl.
 
 %--------------------------------------------------------------------------------
 
@@ -65,6 +65,12 @@ is_in_list(List, Element) :-
 
 %--------------------------------------------------------------------------------
 
+% Display the saved allowed activities
+show_allowed_activities_saved :-
+    allowed_activities_saved(Activities),
+    maplist(writeln, Activities).
+
+%--------------------------------------------------------------------------------   
 conclusions(List) :-
     get_diseases(Diseases),
     get_preferences(Preferences),

@@ -6,7 +6,8 @@
 :- use_module(library(http/http_server_files)).
 :- dynamic evidence/2.
 
-:- consult('questionnaire.pl').
+:- consult('questionnaire.pl'),
+    write('Questionnaire loaded!'), nl.
 
 :- http_handler(root(next_question), get_next_question, []).
 :- http_handler(root(answer), post_answer, []).

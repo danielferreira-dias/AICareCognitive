@@ -1,7 +1,8 @@
 :- dynamic evidence/2.
 
+%------------------------------------------------------------------------
 % FACTS
-%--------------------------------------------
+%------------------------------------------------------------------------
 
 % DISEASE DEFINITIONS:
 disease(alzheimer_initial) :-
@@ -10,7 +11,7 @@ disease(alzheimer_initial) :-
     evidence(diagnosis_alzheimer_stage, initial).
 disease(alzheimer_initial) :-
     findall(yes, (
-        evidence(observation_alzheimer_spatial_disorientation, yes);
+        evidence(observation_alzheimer_spacial_disorientation, yes); 
         evidence(observation_alzheimer_memory_loss_frustration, yes);
         evidence(observation_alzheimer_slight_memory_loss, yes)
     ), Results),
@@ -24,12 +25,14 @@ disease(alzheimer_advanced) :-
     disease(alzheimer_initial),
     findall(yes, (
         evidence(observation_alzheimer_stare, yes);
-        evidence(observation_alzheimer_needs_permanent_watch, yes);
-        evidence(observation_alzheimer_cant_execute_stimuli, yes);
-        evidence(observation_alzheimer_fall_history, yes)
+        evidence(observation_alzheimer_needs_constant_supervision, yes);
+        evidence(observation_alzheimer_unable_to_follow_stimuli, yes);
+        evidence(observation_alzheimer_history_of_falls, yes)
     ), Results),
     length(Results, Count),
     Count >= 1.
+
+
 disease(parkinson_initial) :-
     evidence(diagnosis, yes),
     evidence(diagnosis_parkinson, yes),
@@ -37,9 +40,10 @@ disease(parkinson_initial) :-
 disease(parkinson_initial) :-
     findall(yes, (
         evidence(observation_parkinson_shaking, yes);
+        evidence(observation_parkinson_locomotion_difficulties, yes);
         evidence(observation_parkinson_bent_spine, yes);
         evidence(observation_parkinson_balance_loss, yes);
-        evidence(observation_parkinson_initial_hearing_loss, yes)
+        evidence(observation_hearing_loss_onset, yes)
     ), Results),
     length(Results, Count),
     Count >= 2.
@@ -50,12 +54,14 @@ disease(parkinson_advanced):-
 disease(parkinson_advanced) :-
     disease(parkinson_initial),
     findall(yes, (
-        evidence(observation_parkinson_locomotion_difficulties, yes);
-        evidence(observation_parkinson_intense_shaking, yes);
-        evidence(observation_parkinson_fine_motor_control, yes)
+        evidence(observation_parkinson_fine_motor_control, yes);
+        evidence(observation_parkinson_intense_tremors, yes);
+        evidence(observation_parkinson_coordination_difficulties, yes)
     ), Results),
     length(Results, Count),
     Count >= 1.
+
+    
 disease(vascular_dementia_initial):-
     evidence(diagnosis, yes),
     evidence(diagnosis_vascular_dementia, yes),
@@ -75,10 +81,10 @@ disease(vascular_dementia_advanced):-
 disease(vascular_dementia_advanced) :-
     disease(vascular_dementia_initial),
     findall(yes, (
-        evidence(observation_vascular_dementia_heavy_memory_loss, yes);
+        evidence(observation_vascular_dementia_memory_recall_difficulties, yes);
         evidence(observation_vascular_dementia_people_recognition, yes);
-        evidence(observation_vascular_dementia_history_aggressiveness_insomnia_agitation, yes);
-        evidence(observation_vascular_dementia_body_control, yes)
+        evidence(observation_vascular_dementia_aggressiveness_insomnia_agitation, yes);
+        evidence(observation_vascular_dementia_motor_problems, yes)
     ), Results),
     length(Results, Count),
     Count >= 1.
@@ -87,8 +93,8 @@ disease(vascular_dementia_advanced) :-
 get_diseases(Diseases) :-
     findall(X, disease(X), DiseasesList),
     sort(DiseasesList, Diseases).
-%--------------------------------------------
 
+%------------------------------------------------------------------------
 
 % ACTIVITY DEFINITIONS:
 %Plastic Expression
@@ -151,9 +157,7 @@ activity(makeup).
 activity(dramatic_text_reading).
 activity(character_interpretation).
 
-
-%--------------------------------------------
-
+%------------------------------------------------------------------------
 
 % DISEASE/ACTIVITY RELATION (CANNOT PERFORM):
 %Vascular Dementia - Initial
@@ -224,9 +228,7 @@ cannot(parkinson_advanced, bowling_games).
 cannot(parkinson_advanced, mime_games).
 cannot(parkinson_advanced, missako_games).
 
-
-%--------------------------------------------
-
+%------------------------------------------------------------------------
 
 % CONDITIONS (OTHER ASPECTS)
 %1 Social Integration
@@ -236,6 +238,7 @@ condition(social_integration, severe_integration_issues) :-
     evidence(social_integration, severe_integration_issues).
 condition(social_integration, isolated_person) :-
     evidence(social_integration, isolated_person).
+
 %2 Vision
 condition(vision, good_vision) :-
     evidence(vision, good_vision).
@@ -243,6 +246,7 @@ condition(vision, vision_with_difficulties) :-
     evidence(vision, vision_with_difficulties).
 condition(vision, blindness) :-
     evidence(vision, blindness).
+
 %3 Hearing
 condition(hearing, good_hearing) :-
     evidence(hearing, good_hearing).
@@ -250,74 +254,81 @@ condition(hearing, hearing_with_difficulties) :-
     evidence(hearing, hearing_with_difficulties).
 condition(hearing, deafness) :-
     evidence(hearing, deafness).
+    
 %4 Speech
 condition(speech, speaks_normally) :-
     evidence(speech, speaks_normally).
-condition(speech, expresses_with_difficulty) :-
-    evidence(speech, expresses_with_difficulty).
+condition(speech, speaks_with_difficulty) :-
+    evidence(speech, speaks_with_difficulty).
 condition(speech, cannot_be_understood) :-
     evidence(speech, cannot_be_understood).
+
 %5 Smell
-condition(smell, functions_normally) :-
-    evidence(smell, functions_normally).
-condition(smell, difficulties_identifying_odors) :-
-    evidence(smell, difficulties_identifying_odors).
-condition(smell, complete_loss_of_smell) :-
-    evidence(smell, complete_loss_of_smell).
+condition(smell, smell_normally) :-
+    evidence(smell, smell_normally).
+condition(smell, smell_with_difficulty) :-
+    evidence(smell, smell_with_difficulty).
+condition(smell, no_sense_of_smell) :-
+    evidence(smell, no_sense_of_smell).
+
 %6 Upper Motor Skills
-condition(upper_motor_skills, functions_normally) :-
-    evidence(upper_motor_skills, functions_normally).
-condition(upper_motor_skills, has_difficulty) :-
-    evidence(upper_motor_skills, has_difficulty).
-condition(upper_motor_skills, cannot_move) :-
-    evidence(upper_motor_skills, cannot_move).
+condition(upper_motor_skills, ums_functions_normally) :-
+    evidence(upper_motor_skills, ums_functions_normally).
+condition(upper_motor_skills, ums_has_difficulty) :-
+    evidence(upper_motor_skills, ums_has_difficulty).
+condition(upper_motor_skills, unable_to_use_upper_limbs) :-
+    evidence(upper_motor_skills, unable_to_use_upper_limbs).
+
 %7 Lower Motor Skills
-condition(lower_motor_skills, functions_normally) :-
-    evidence(lower_motor_skills, functions_normally).
-condition(lower_motor_skills, has_difficulty) :-
-    evidence(lower_motor_skills, has_difficulty).
-condition(lower_motor_skills, cannot_move) :-
+condition(lower_motor_skills, lms_functions_normally) :-
+    evidence(lower_motor_skills, lms_functions_normally).
+condition(lower_motor_skills, lms_has_difficulty) :-
+    evidence(lower_motor_skills, lms_has_difficulty).
+condition(lower_motor_skills, unable_to_use_lower_limbs) :-
     evidence(lower_motor_skills, cannot_move).
+
 %8 Object Handling
-condition(object_handling, correct_manipulation) :-
-    evidence(object_handling, correct_manipulation).
-condition(object_handling, only_some_correctly) :-
-    evidence(object_handling, only_some_correctly).
+condition(object_handling, full_control) :-
+    evidence(object_handling, full_control).
+condition(object_handling, partial_control) :-
+    evidence(object_handling, partial_control).
 condition(object_handling, cannot_handle) :-
     evidence(object_handling, cannot_handle).
+
 %9 Reading
-condition(reading, reads_without_difficulty) :-
-    evidence(reading, reads_without_difficulty).
-condition(reading, has_some_difficulty) :-
-    evidence(reading, has_some_difficulty).
+condition(reading, reading_normally) :-
+    evidence(reading, reading_normally).
+condition(reading, reading_with_difficulty) :-
+    evidence(reading, reading_with_difficulty).
 condition(reading, cannot_read) :-
     evidence(reading, cannot_read).
+
 %10 Writing
-condition(writing, writes_without_difficulty) :-
-    evidence(writing, writes_without_difficulty).
-condition(writing, has_some_difficulty) :-
-    evidence(writing, has_some_difficulty).
+condition(writing, writes_normally) :-
+    evidence(writing, writes_normally).
+condition(writing, writes_with_difficulty) :-
+    evidence(writing, writes_with_difficulty).
 condition(writing, cannot_write) :-
     evidence(writing, cannot_write).
+
 %11 Mobility
-condition(mobility, moves_without_difficulty) :-
-    evidence(mobility, moves_without_difficulty).
-condition(mobility, has_some_difficulty) :-
-    evidence(mobility, has_some_difficulty).
+condition(mobility, moves_easily) :-
+    evidence(mobility, moves_easily).
+condition(mobility, needs_assistance) :-
+    evidence(mobility, needs_assistance).
 condition(mobility, total_dependence) :-
     evidence(mobility, total_dependence).
+
 
 get_conditions(Conditions):-
     findall(X, condition(X, _), ConditionsList),
     sort(ConditionsList, Conditions).
 
-%--------------------------------------------
+%------------------------------------------------------------------------
 
-
-% GAMES BASED ON CONDITIONS
-
+% GAMES BASED ON CONDITIONS:
 %1 Social Integration
-% Severe Integration Problems (Severity: Medium)
+% Severe Integration Issues (Severity: Medium)
 inadequate(severe_integration_issues, execution_festival_work).
 inadequate(severe_integration_issues, centre_decoration_work).
 inadequate(severe_integration_issues, image_recognition_games).
@@ -347,11 +358,240 @@ inadequate(isolated_person, makeup).
 inadequate(isolated_person, dramatic_text_reading).
 inadequate(isolated_person, character_interpretation).
 
+%2 Vision
+% Vision Difficulties (Severity: Medium)
+inadequate(vision_with_difficulties, construction_technique).
+inadequate(vision_with_difficulties, felt_work).
+inadequate(vision_with_difficulties, small_arrangements).
+inadequate(vision_with_difficulties, centre_decoration_work).
+inadequate(vision_with_difficulties, dessert_making).
+inadequate(vision_with_difficulties, image_recognition_games).
+inadequate(vision_with_difficulties, reading_writing_exercises).
+inadequate(vision_with_difficulties, differences_games).
+inadequate(vision_with_difficulties, musicogram).
+inadequate(vision_with_difficulties, petanque_games).
+inadequate(vision_with_difficulties, bowling_games).
+inadequate(vision_with_difficulties, bingo_games).
+inadequate(vision_with_difficulties, dramatic_text_reading).
 
-%--------------------------------------------
+% Blindness (Severity: High)
+inadequate(blindness, construction_technique).
+inadequate(blindness, recycled_materials).
+inadequate(blindness, execution_festival_work).
+inadequate(blindness, felt_work).
+inadequate(blindness, small_arrangements).
+inadequate(blindness, paintings).
+inadequate(blindness, centre_decoration_work).
+inadequate(blindness, dessert_making).
+inadequate(blindness, image_recognition_games).
+inadequate(blindness, reading_writing_exercises).
+inadequate(blindness, differences_games).
+inadequate(blindness, walking).
+inadequate(blindness, instruments_use).
+inadequate(blindness, musicogram).
+inadequate(blindness, petanque_games).
+inadequate(blindness, bowling_games).
+inadequate(blindness, adapted_handkerchief_games).
+inadequate(blindness, mime_games).
+inadequate(blindness, bingo_games).
+inadequate(blindness, dramatic_text_reading).
+inadequate(blindness, character_interpretation).
 
+%3 Hearing
+% Hearing Difficulties (Moderate Severity)
+inadequate(hearing_with_difficulties, karaoke).
+inadequate(hearing_with_difficulties, musicogram).
+inadequate(hearing_with_difficulties, instruments_use).
+inadequate(hearing_with_difficulties, guess_the_song).
+inadequate(hearing_with_difficulties, animal_voices_recognition).
+inadequate(hearing_with_difficulties, bingo_games).
+inadequate(hearing_with_difficulties, dramatic_text_reading).
 
-% PREFERENCES
+% Deafness (High Severity)
+inadequate(deafness, dessert_making).
+inadequate(deafness, karaoke).
+inadequate(deafness, musicogram).
+inadequate(deafness, instruments_use).
+inadequate(deafness, guess_the_song).
+inadequate(deafness, animal_voices_recognition).
+inadequate(deafness, verbal_task_exercises).
+inadequate(deafness, reading_writing_exercises).
+inadequate(deafness, missako_games).
+inadequate(deafness, bingo_games).
+inadequate(deafness, mime_games).
+inadequate(deafness, dramatic_text_reading).
+inadequate(deafness, character_interpretation).
+
+%4 Speech
+% Speech Difficulty (Moderate Severity)
+inadequate(speaks_with_difficulty, karaoke).
+inadequate(speaks_with_difficulty, character_interpretation).
+inadequate(speaks_with_difficulty, verbal_task_exercises).
+inadequate(speaks_with_difficulty, dramatic_text_reading).
+inadequate(speaks_with_difficulty, guess_the_song).
+inadequate(speaks_with_difficulty, musicogram).
+
+% Cannot Be Understood (High Severity)
+inadequate(cannot_be_understood, verbal_task_exercises).
+inadequate(cannot_be_understood, karaoke).
+inadequate(cannot_be_understood, character_interpretation).
+inadequate(cannot_be_understood, verbal_task_exercises).
+inadequate(cannot_be_understood, dramatic_text_reading).
+inadequate(cannot_be_understood, guess_the_song).
+inadequate(cannot_be_understood, musicogram).
+
+%5 Smell
+% Smell Difficulty (Moderate Severity)
+inadequate(smell_with_difficulty, odor_differentiation).
+inadequate(smell_with_difficulty, taste_reaction).
+
+% No sense of Smell (High Severity)
+inadequate(no_sense_of_smell, odor_differentiation).
+inadequate(no_sense_of_smell, taste_reaction).
+
+%6 Upper Mobility
+% Upper Mobility Difficulty (Moderate Severity)
+inadequate(ums_has_difficulty, construction_technique).
+inadequate(ums_has_difficulty, recycled_materials).
+inadequate(ums_has_difficulty, felt_work).
+inadequate(ums_has_difficulty, small_arrangements).
+inadequate(ums_has_difficulty, paintings).
+inadequate(ums_has_difficulty, centre_decoration_work).
+inadequate(ums_has_difficulty, manual_dexterity_games).
+inadequate(ums_has_difficulty, manicure).
+inadequate(ums_has_difficulty, makeup).
+inadequate(ums_has_difficulty, instruments_use).
+inadequate(ums_has_difficulty, petanque_games).
+inadequate(ums_has_difficulty, bowling_games).
+inadequate(ums_has_difficulty, tic_tac_toe_games).
+inadequate(ums_has_difficulty, domino_games).
+
+% Unable to Use Upper Limbs (High Severity)
+inadequate(unable_to_use_upper_limbs, construction_technique).
+inadequate(unable_to_use_upper_limbs, recycled_materials).
+inadequate(unable_to_use_upper_limbs, execution_festival_work).
+inadequate(unable_to_use_upper_limbs, felt_work).
+inadequate(unable_to_use_upper_limbs, small_arrangements).
+inadequate(unable_to_use_upper_limbs, paintings).
+inadequate(unable_to_use_upper_limbs, centre_decoration_work).
+inadequate(unable_to_use_upper_limbs, dessert_making).
+inadequate(unable_to_use_upper_limbs, differences_games).
+inadequate(unable_to_use_upper_limbs, manual_dexterity_games).
+inadequate(unable_to_use_upper_limbs, physiotherapy).
+inadequate(unable_to_use_upper_limbs, manicure).
+inadequate(unable_to_use_upper_limbs, makeup).
+inadequate(unable_to_use_upper_limbs, musicogram).
+inadequate(unable_to_use_upper_limbs, instruments_use).
+inadequate(unable_to_use_upper_limbs, warmup_exercises).
+inadequate(unable_to_use_upper_limbs, petanque_games).
+inadequate(unable_to_use_upper_limbs, bowling_games).
+inadequate(unable_to_use_upper_limbs, adapted_handkerchief_games).
+inadequate(unable_to_use_upper_limbs, mime_games).
+inadequate(unable_to_use_upper_limbs, bingo_games).
+inadequate(unable_to_use_upper_limbs, missako_games).
+inadequate(unable_to_use_upper_limbs, tic_tac_toe_games).
+inadequate(unable_to_use_upper_limbs, domino_games).
+inadequate(unable_to_use_upper_limbs, character_interpretation).
+
+%7 Upper Mobility
+% Lower Mobility Difficulty (Moderate Severity)
+inadequate(lms_has_difficulty, petanque_games).
+inadequate(lms_has_difficulty, bowling_games).
+inadequate(lms_has_difficulty, physiotherapy).
+
+% Unable to Use Lower Limbs (High Severity)
+inadequate(unable_to_use_lower_limbs, walking).
+inadequate(unable_to_use_lower_limbs, warmup_exercises).
+inadequate(unable_to_use_lower_limbs, physiotherapy).
+inadequate(unable_to_use_lower_limbs, petanque_games).
+inadequate(unable_to_use_lower_limbs, bowling_games).
+inadequate(unable_to_use_lower_limbs, adapted_handkerchief_games).
+inadequate(unable_to_use_lower_limbs, mime_games).
+
+%8 Object Handling
+% Partial Control (Moderate Severity)
+inadequate(partial_control, felt_work).
+inadequate(partial_control, small_arrangements).
+inadequate(partial_control, dessert_making).
+inadequate(partial_control, manual_dexterity_games).
+inadequate(partial_control, manicure).
+inadequate(partial_control, makeup).
+inadequate(partial_control, instruments_use).
+inadequate(partial_control, musicogram).
+
+% Cannot Handle Objects (High Severity)
+inadequate(cannot_handle, construction_technique).
+inadequate(cannot_handle, recycled_materials).
+inadequate(cannot_handle, execution_festival_work).
+inadequate(cannot_handle, felt_work).
+inadequate(cannot_handle, small_arrangements).
+inadequate(cannot_handle, paintings).
+inadequate(cannot_handle, centre_decoration_work).
+inadequate(cannot_handle, dessert_making).
+inadequate(cannot_handle, knowledge_exercises).
+inadequate(cannot_handle, manual_dexterity_games).
+inadequate(cannot_handle, manicure).
+inadequate(cannot_handle, makeup).
+inadequate(cannot_handle, instruments_use).
+inadequate(cannot_handle, musicogram).
+inadequate(cannot_handle, domino_games).
+inadequate(cannot_handle, missako_games).
+inadequate(cannot_handle, tic_tac_toe_games).
+inadequate(cannot_handle, petanque_games).
+inadequate(cannot_handle, bowling_games).
+
+%9 Reading
+% Reading Difficulty (Moderate Severity)
+inadequate(reading_with_difficulty, reading_writing_exercises).
+inadequate(reading_with_difficulty, dramatic_text_reading).
+inadequate(reading_with_difficulty, character_interpretation).
+inadequate(reading_with_difficulty, musicogram).
+inadequate(reading_with_difficulty, numerical_comprehension_exercises).
+
+% Cannot Read (High Severity) 
+inadequate(cannot_read, reading_writing_exercises).
+inadequate(cannot_read, numerical_comprehension_exercises).
+inadequate(cannot_read, musicogram).
+inadequate(cannot_read, dramatic_text_reading).
+inadequate(cannot_read, character_interpretation).
+inadequate(cannot_read, knowledge_exercises).
+inadequate(cannot_read, bingo_games).
+
+%10 Writing Difficulty
+% Writing (Moderate Severity)
+inadequate(writes_with_difficulty, reading_writing_exercises).
+inadequate(writes_with_difficulty, verbal_task_exercises).
+inadequate(writes_with_difficulty, character_interpretation).
+inadequate(writes_with_difficulty, musicogram).
+
+% Cannot Write (High Severity)
+inadequate(cannot_write, reading_writing_exercises).
+inadequate(cannot_write, verbal_task_exercises).
+inadequate(cannot_write, character_interpretation).
+inadequate(cannot_write, musicogram).
+inadequate(cannot_write, bingo_games).
+inadequate(cannot_write, knowledge_exercises).
+inadequate(cannot_write, numerical_comprehension_exercises).
+
+%11 Mobilidade
+% Mobility (Moderate Severity)
+inadequate(needs_assistance, petanque_games).
+inadequate(needs_assistance, bowling_games).
+inadequate(needs_assistance, warmup_exercises).
+inadequate(needs_assistance, physiotherapy).
+
+% Total Dependency (High Severity)
+inadequate(total_dependence, walking).
+inadequate(total_dependence, warmup_exercises).
+inadequate(total_dependence, physiotherapy).
+inadequate(total_dependence, petanque_games).
+inadequate(total_dependence, bowling_games).
+inadequate(total_dependence, adapted_handkerchief_games).
+inadequate(total_dependence, mime_games).
+
+%------------------------------------------------------------------------
+
+% PREFERENCES:
 likes(theatre):-
     evidence(theatre, yes).
 likes(museum):-
@@ -373,11 +613,12 @@ likes(cooking):-
 likes(handicrafts):-
     evidence(handicrafts, yes).
 
+
 get_preferences(Preferences) :-
     findall(X, likes(X), PreferencesList),
     sort(PreferencesList, Preferences).
 
-%--------------------------------------------
+%------------------------------------------------------------------------
 
 % LIKES/ACTIVITY (PREFERENCES)
 %1-Theatre
