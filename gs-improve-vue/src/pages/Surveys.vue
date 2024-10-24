@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-row h-screen w-full overflow-hidden">
-    <div class="w-[40%] h-full overflow-y-auto">
+  <div class="flex flex-col md:flex-row h-screen w-full overflow-hidden">
+    <div class="w-full md:w-[40%] md:h-full overflow-y-auto">
       <!-- Pass down a function to set selected survey -->
       <SurveyList :patientId="patientId" @selectSurvey="selectSurvey" />
     </div>

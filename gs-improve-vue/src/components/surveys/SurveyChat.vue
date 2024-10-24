@@ -1,8 +1,8 @@
 <template>
   <div class="h-full bg-white rounded-lg flex flex-col text-center border shadow-md">
-    <div class="w-full h-fit text-2xl md:text-4xl font-bold my-10">{{ $t('surveys.chat.title') }}</div>
+    <div class="w-full h-fit text-2xl md:text-4xl font-bold my-5">{{ $t('surveys.chat.title') }}</div>
 
-    <div class="flex-1 flex flex-col items-center p-5 bg-gray-100 rounded-b-lg overflow-hidden">
+    <div class="flex-1 flex flex-col items-center p-5 bg-gray-100 rounded-b-lg overflow-hidden h-screen">
       <!-- Loading message centered -->
       <div v-if="loading" class="flex flex-1 justify-center items-center">
         <p class="text-2xl">Loading...</p>

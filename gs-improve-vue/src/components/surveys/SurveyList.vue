@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 bg-white shadow-md h-full flex flex-col">
-    <div class="flex justify-between items-center mb-4">
+  <div class="p-6 bg-white shadow-md h-full flex flex-row md:flex-col">
+    <div class="flex justify-between items-center mb-4 p-4 gap-4">
       <h2 class="text-2xl font-semibold">{{ $t('surveys.list.title') }}</h2>
       <button @click="showCreateSurveyPopup = true"
         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
@@ -8,7 +8,7 @@
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto pb-16">
+    <div class="flex-1 overflow-y-auto pb-16 p-4">
       <ul class="space-y-4">
         <SurveyListItem v-for="survey in surveys" :key="survey.id" :survey="survey"
           :isSelected="survey.id === selectedSurveyId" @selectSurvey="selectSurvey"
