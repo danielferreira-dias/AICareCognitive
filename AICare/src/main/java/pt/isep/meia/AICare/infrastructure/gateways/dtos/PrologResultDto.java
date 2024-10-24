@@ -8,5 +8,6 @@ import java.util.List;
 public class PrologResultDto {
     private String question;
     private List<String> conclusion;
+    private List<String> possibleAnswers;
     private PrologTypeEnum type;
 }
