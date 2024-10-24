@@ -1,15 +1,46 @@
 {
-    "navbar":{
+    "navbar": {
         "patients": "Patients"
     },
-    "patients":{
+    "patients": {
         "title": "Patient List",
         "table": {
             "name": "Name",
             "age": "Age",
             "gender": "Gender",
-            "actions": "Actions"
+            "actions": "Actions",
+            "male": "Male",
+            "female": "Female",
+            "other": "Other"
         },
-        "addPatient": "Add Patient"
+        "addPatient": {
+            "addButton": "Add Patient",
+            "name": "Name",
+            "age": "Age",
+            "gender": "Gender",
+            "male": "Male",
+            "female": "Female",
+            "other": "Other",
+            "title": "Add New Patient",
+            "cancel": "Cancel",
+            "confirm": "Add"
+        },
+        "deletePatient": {
+            "title": "Confirm Delete",
+            "message": "Are you sure you want to delete {name}?",
+            "cancel": "Cancel",
+            "confirm": "Delete"
+        }
+    },
+    "surveys": {
+        "list": {
+            "doneAt": "Survey done at",
+            "title": "Survey List",
+            "createButton": "Create New Survey",
+            "createPopupTitle": "Create New Survey",
+            "createPopupMessage": "Are you sure you want to create a new survey?",
+            "createPopupCancel": "Cancel",
+            "createPopupConfirm": "Confirm"
+        }
     }
 }

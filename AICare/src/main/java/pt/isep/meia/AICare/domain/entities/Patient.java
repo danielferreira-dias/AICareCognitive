@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import pt.isep.meia.AICare.domain.model.GenderEnum;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Setter
@@ -26,11 +27,14 @@ public class Patient {
     private String name;
     private int age;
     private GenderEnum gender;
+    private Date createDate;
 
     public Patient() {
+        this.createDate = Date.from(java.time.Instant.now());
     }
 
     public Patient(String name, int age, GenderEnum gender) {
+        this();
         this.name = name;
         this.age = age;
         this.gender = gender;

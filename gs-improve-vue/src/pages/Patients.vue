@@ -3,10 +3,8 @@
     <div class="p-8">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl rounded-t-lg font-bold text-gray-500">{{ $t('patients.title') }}</h1>
-        <!-- Plus Button -->
-        <button @click="showAddPatientModal = true"
-          class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-          + {{ $t('patients.addPatient') }}
+        <button @click="showAddPatientModal = true" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+          + {{ $t('patients.addPatient.addButton') }}
         </button>
       </div>
 
@@ -24,7 +22,7 @@
             <tr class="hover:bg-gray-100 cursor-pointer">
               <td class="py-3 px-4 border-b">{{ patient.name }}</td>
               <td class="py-3 px-4 border-b">{{ patient.age }}</td>
-              <td class="py-3 px-4 border-b">{{ patient.gender }}</td>
+              <td class="py-3 px-4 border-b">{{ $t(`patients.table.${patient.gender.toLowerCase()}`) }}</td>
               <td class="py-3 px-4 border-b flex space-x-2">
                 <font-awesome-icon icon="comments" class="text-blue-600 cursor-pointer hover:text-blue-800 transition"
                   @click="goToQuestionPage(patient)" />
@@ -39,29 +37,31 @@
       <!-- Add Patient Modal -->
       <div v-if="showAddPatientModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg w-96">
-          <h2 class="text-xl font-bold mb-4">Add New Patient</h2>
+          <h2 class="text-xl font-bold mb-4">{{ $t('patients.addPatient.title') }}</h2>
           <form @submit.prevent="addPatient">
             <div class="mb-4">
-              <label class="block text-gray-700">Name</label>
+              <label class="block text-gray-700">{{ $t('patients.addPatient.name') }}</label>
               <input v-model="newPatient.name" type="text" class="w-full p-2 border rounded-lg" required />
             </div>
             <div class="mb-4">
-              <label class="block text-gray-700">Age</label>
+              <label class="block text-gray-700">{{ $t('patients.addPatient.age') }}</label>
               <input v-model="newPatient.age" type="number" class="w-full p-2 border rounded-lg" required />
             </div>
             <div class="mb-4">
-              <label class="block text-gray-700">Gender</label>
+              <label class="block text-gray-700">{{ $t('patients.addPatient.gender') }}</label>
               <select v-model="newPatient.gender" class="w-full p-2 border rounded-lg" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="Male">{{ $t('patients.addPatient.male') }}</option>
+                <option value="Female">{{ $t('patients.addPatient.female') }}</option>
+                <option value="Other">{{ $t('patients.addPatient.other') }}</option>
               </select>
             </div>
             <div class="flex justify-end">
-              <button @click="showAddPatientModal = false"
-                class="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2">Cancel</button>
-              <button type="submit"
-                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Add</button>
+              <button @click="showAddPatientModal = false" class="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2">
+                {{ $t('patients.addPatient.cancel') }}
+              </button>
+              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                {{ $t('patients.addPatient.confirm') }}
+              </button>
             </div>
           </form>
         </div>
@@ -70,13 +70,15 @@
       <!-- Delete Confirmation Modal -->
       <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg w-96">
-          <h2 class="text-xl font-bold mb-4">Confirm Delete</h2>
-          <p>Are you sure you want to delete {{ patientToDelete?.name }}?</p>
+          <h2 class="text-xl font-bold mb-4">{{ $t('patients.deletePatient.title') }}</h2>
+          <p>{{ $t('patients.deletePatient.message', { name: patientToDelete?.name }) }}</p>
           <div class="flex justify-end mt-4">
-            <button @click="showDeleteModal = false"
-              class="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2">Cancel</button>
-            <button @click="deletePatient"
-              class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Delete</button>
+            <button @click="showDeleteModal = false" class="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2">
+              {{ $t('patients.deletePatient.cancel') }}
+            </button>
+            <button @click="deletePatient" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+              {{ $t('patients.deletePatient.confirm') }}
+            </button>
           </div>
         </div>
       </div>
@@ -85,10 +87,10 @@
 </template>
 
 <script>
-import { getAllPatients, createPatient, deletePatientById } from '../api/services/patientsService';
+import { getAllPatients, createPatient, deletePatientById } from '../api/services/patientService';
 
 export default {
-  name: 'Idosos',
+  name: 'Patients',
   data() {
     return {
       selectedPatient: null,
@@ -138,7 +140,7 @@ export default {
       }
     },
     goToQuestionPage(patient) {
-      this.$router.push({ name: 'ChatPage', params: { patientId: patient.id } });
+      this.$router.push({ name: 'Surveys', params: { patientId: patient.id } });
     }
   },
   mounted() {

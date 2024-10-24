@@ -1,13 +1,11 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import PatientList from '../component/Idosos.vue';
-import Question from '../component/Question.vue';
-import SurveyList from '../component/SurveyList.vue';
-import ChatPage from '../component/ChatPage.vue';
+import Patients from '../pages/Patients.vue';
+import Surveys from '../pages/Surveys.vue';
 
 const routes = [
-    { path: '/', name: 'PatientList', component: PatientList },
-    { path: '/question/:patientId', name: 'ChatPage', component: ChatPage }
+    { path: '/', name: 'Patients', component: Patients },
+    { path: '/surveys/:patientId', name: 'Surveys', component: Surveys }
 ];
 
 const router = createRouter({

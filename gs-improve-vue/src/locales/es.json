@@ -8,8 +8,39 @@
             "name": "Nombre",
             "age": "Edad",
             "gender": "Género",
-            "actions": "Acciones"
+            "actions": "Acciones",
+            "male": "Masculino",
+            "female": "Femenino",
+            "other": "Otro"
         },
-        "addPatient": "Agregar Paciente"
+        "addPatient": {
+            "addButton": "Agregar Paciente",
+            "name": "Nombre",
+            "age": "Edad",
+            "gender": "Género",
+            "male": "Masculino",
+            "female": "Femenino",
+            "other": "Otro",
+            "title": "Agregar Nuevo Paciente",
+            "cancel": "Cancelar",
+            "confirm": "Agregar"
+        },
+        "deletePatient": {
+            "title": "Confirmar Eliminación",
+            "message": "¿Está seguro de que desea eliminar a {name}?",
+            "cancel": "Cancelar",
+            "confirm": "Eliminar"
+        }
+    },
+    "surveys": {
+        "list": {
+            "doneAt": "Encuesta realizada el",
+            "title": "Lista de Encuestas",
+            "createButton": "Crear Nueva Encuesta",
+            "createPopupTitle": "Crear Nueva Encuesta",
+            "createPopupMessage": "¿Está seguro de que desea crear una nueva encuesta?",
+            "createPopupCancel": "Cancelar",
+            "createPopupConfirm": "Confirmar"
+        }
     }
 }

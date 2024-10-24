@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PatientsRepository extends JpaRepository<Patient, UUID> {
-    @Query("SELECT s FROM Survey s WHERE s.patientId = :patientId")
+    @Query("SELECT s FROM Survey s WHERE s.patientId = :patientId ORDER BY s.createDate DESC")
     List<Survey> findSurveysOfPatient(@Param("patientId") UUID patientId);
+
+    List<Patient> findAllByOrderByCreateDateDesc();
 }

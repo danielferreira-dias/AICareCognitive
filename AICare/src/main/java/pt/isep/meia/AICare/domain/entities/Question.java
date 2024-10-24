@@ -31,12 +31,19 @@ public class Question {
     @Column(name = "possible_answer")
     private List<String> possibleAnswers;
 
+    private int order;
+
     public Question() {
     }
 
     public Question(UUID surveyId, String text) {
         this.surveyId = surveyId;
         this.text = text;
+    }
+
+    public Question(UUID surveyId, String text, int order) {
+        this(surveyId, text);
+        this.order = order;
     }
 
     @Override

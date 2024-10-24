@@ -44,9 +44,9 @@ public class Result {
         return new Result(ResultTypeEnum.CONCLUSION, null, conclusion);
     }
 
-    public static Result fromPrologResult(UUID surveyId, PrologResultDto prologResultDto) {
+    public static Result fromPrologResult(UUID surveyId, PrologResultDto prologResultDto, int order) {
         if(prologResultDto.getType().equals(PrologTypeEnum.question)){
-            return new Result(ResultTypeEnum.QUESTION, new Question(surveyId, prologResultDto.getQuestion()), null);
+            return new Result(ResultTypeEnum.QUESTION, new Question(surveyId, prologResultDto.getQuestion(), order), null);
         } else {
             return Result.fromActivities(surveyId, prologResultDto.getConclusion());
         }

@@ -66,7 +66,9 @@ public class SurveyService {
 
         var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
 
-        var result = engineService.getNextQuestion(surveyId, evidences);
+        var order = evidences.size() + 1;
+
+        var result = engineService.getNextQuestion(surveyId, evidences, order);
 
         if(result == null){
             return null;

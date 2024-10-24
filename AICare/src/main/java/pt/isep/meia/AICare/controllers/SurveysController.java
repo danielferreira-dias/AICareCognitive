@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.services.SurveyService;
+import pt.isep.meia.AICare.domain.dtos.CreateSurveyRequestDto;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.Justification;
@@ -38,8 +39,8 @@ public class SurveysController {
     }
 
     @PostMapping
-    public ResponseEntity<Survey> createSurvey(@RequestBody UUID patientId) {
-        var createdSurvey = surveyService.createSurvey(patientId);
+    public ResponseEntity<Survey> createSurvey(@RequestBody CreateSurveyRequestDto requestDto) {
+        var createdSurvey = surveyService.createSurvey(requestDto.getPatientId());
         return ResponseEntity
                 .created(URI.create("/api/surveys/" + createdSurvey.getId()))
                 .body(createdSurvey);

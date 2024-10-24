@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.application.configs.DroolsConfig;
 import pt.isep.meia.AICare.domain.constants.ActivityConstants;
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.domain.model.*;
 
@@ -27,49 +26,44 @@ public class DroolsGateway {
         this.droolsConfig = droolsConfig;
     }
 
-    public Result getNextQuestion(UUID surveyId, List<Evidence> evidences) throws IOException {
+    public Result getNextQuestion(UUID surveyId, List<Evidence> evidences, int order) throws IOException {
         var session = droolsConfig.getKieSession();
         if (session == null) {
             return null;
         }
 
-        // Initialize session globals
         session.setGlobal("surveyId", surveyId);
+        session.setGlobal("questionOrder", order);
         session.setGlobal("evidences", evidences);
         session.fireAllRules();
 
-        // Step 1: Check if the survey has been marked as completed
         boolean surveyCompleted = checkSurveyCompletion(session);
 
         if (!surveyCompleted) {
-            // Step 2: If survey not completed, check for the next question
             var nextQuestion = getLastQuestionFromSession(session);
             if (nextQuestion != null) {
+                nextQuestion.setOrder(order);
                 return Result.fromQuestion(nextQuestion);
             }
         }
 
-        // Step 3: If no more questions or survey completed, process filtered and ordered activities
-        List<Restrict> restrictions = getRestrictionsFromSession(session);
-        List<PreferredActivity> conclusions = getPreferredActivitiesFromSession(session);
+        var restrictions = getRestrictionsFromSession(session);
+        var conclusions = getPreferredActivitiesFromSession(session);
 
-        // Filter out restricted activities
-        List<String> restrictedActivityNames = restrictions.stream()
+        var restrictedActivityNames = restrictions.stream()
                 .map(Restrict::getActivity)
                 .collect(Collectors.toList());
 
-        List<String> permittedActivities = ActivityConstants.getAllActivities().stream()
+        var permittedActivities = ActivityConstants.getAllActivities().stream()
                 .filter(activity -> !restrictedActivityNames.contains(activity))
                 .collect(Collectors.toList());
 
-        // Order permitted activities, prioritizing those marked as conclusions
-        List<String> prioritizedActivities = conclusions.stream()
+        var prioritizedActivities = conclusions.stream()
                 .map(PreferredActivity::getDescription)
                 .distinct()
                 .collect(Collectors.toList());
 
-        // Place prioritized activities at the top
-        List<String> orderedActivities = new ArrayList<>(prioritizedActivities);
+        var orderedActivities = new ArrayList<>(prioritizedActivities);
         permittedActivities.stream()
                 .filter(activity -> !prioritizedActivities.contains(activity))
                 .forEach(orderedActivities::add);

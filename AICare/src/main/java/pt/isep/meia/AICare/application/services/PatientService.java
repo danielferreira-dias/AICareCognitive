@@ -19,7 +19,7 @@ public class PatientService {
     }
 
     public List<Patient> getAllPatients() {
-        return patientsRepository.findAll();
+        return patientsRepository.findAllByOrderByCreateDateDesc();
     }
 
     public Patient createPatient(Patient patient) {

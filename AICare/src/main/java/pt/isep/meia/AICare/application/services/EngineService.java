@@ -32,9 +32,9 @@ public class EngineService {
         this.prologGateway = prologGateway;
     }
 
-    public Result getNextQuestion(UUID surveyId, List<Evidence> evidences) throws IOException {
+    public Result getNextQuestion(UUID surveyId, List<Evidence> evidences, int order) throws IOException {
         if(engineProperties.getType().equals("drools")){
-            return droolsGateway.getNextQuestion(surveyId, evidences);
+            return droolsGateway.getNextQuestion(surveyId, evidences, order);
         }
         else{
             if(!evidences.isEmpty())
@@ -44,7 +44,7 @@ public class EngineService {
                     return null;
                 }
             }
-            return prologGateway.getNextQuestion(surveyId);
+            return prologGateway.getNextQuestion(surveyId, order);
         }
     }
 

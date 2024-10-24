@@ -33,10 +33,10 @@ public class PrologGateway {
         this.restTemplate = restTemplate;
     }
 
-    public Result getNextQuestion(UUID surveyId) {
+    public Result getNextQuestion(UUID surveyId, int order) {
         var endpoint = serverUrl + "/next_question";
         var response = restTemplate.getForEntity(endpoint, PrologResultDto.class);
-        return Result.fromPrologResult(surveyId, Objects.requireNonNull(response.getBody()));
+        return Result.fromPrologResult(surveyId, Objects.requireNonNull(response.getBody()), order);
     }
 
     public boolean postAnswer(String evidence, String answer) {
