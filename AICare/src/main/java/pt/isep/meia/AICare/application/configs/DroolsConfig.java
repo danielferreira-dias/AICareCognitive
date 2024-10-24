@@ -9,7 +9,7 @@ import org.kie.api.builder.KieModule;
 import org.kie.api.builder.KieRepository;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,6 @@ public class DroolsConfig {
         kieFileSystem.write(ResourceFactory.newClassPathResource("rules/survey-rules.drl"));
         kieFileSystem.write(ResourceFactory.newClassPathResource("rules/question-rules.drl"));
         return kieFileSystem;
-
     }
 
     @Bean
@@ -35,7 +34,6 @@ public class DroolsConfig {
         kb.buildAll();
         KieModule kieModule = kb.getKieModule();
         return kieServices.newKieContainer(kieModule.getReleaseId());
-
     }
 
     private void getKieRepository() {
@@ -48,8 +46,8 @@ public class DroolsConfig {
     }
 
     @Bean
-    public KieSession getKieSession() throws IOException {
-        System.out.println("session created...");
-        return getKieContainer().newKieSession();
+    public StatelessKieSession getStatelessKieSession() throws IOException {
+        System.out.println("Stateless session created...");
+        return getKieContainer().newStatelessKieSession();
     }
 }

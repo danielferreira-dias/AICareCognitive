@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import SurveyChat from '../components/SurveyChat.vue';
-import SurveyList from '../components/SurveyList.vue';
+import SurveyChat from '../components/surveys/SurveyChat.vue';
+import SurveyList from '../components/surveys/SurveyList.vue';
 
 export default {
   name: 'Surveys',

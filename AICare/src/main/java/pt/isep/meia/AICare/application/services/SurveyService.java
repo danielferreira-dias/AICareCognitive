@@ -55,6 +55,11 @@ public class SurveyService {
             return null;
         }
 
+        var conclusion = conclusionsRepository.findConclusionBySurveyId(surveyId);
+        if(conclusion != null){
+            return Result.fromConclusion(conclusion);
+        }
+
         var question = questionsRepository.findUnansweredQuestionsBySurveyId(surveyId)
                 .stream()
                 .findFirst()

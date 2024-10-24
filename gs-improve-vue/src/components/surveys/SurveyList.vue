@@ -7,9 +7,15 @@
     </button>
 
     <ul class="space-y-4">
-      <li v-for="survey in surveys" :key="survey.id"
-        class="border border-gray-300 p-2 rounded-md transition-transform transform hover:scale-105 cursor-pointer"
-        @click="selectSurvey(survey)">
+      <li
+        v-for="survey in surveys"
+        :key="survey.id"
+        @click="selectSurvey(survey)"
+        :class="[
+          'border border-gray-300 p-2 rounded-md transition-transform transform cursor-pointer',
+          { 'bg-gray-200': survey.id === selectedSurveyId, 'hover:scale-105': survey.id !== selectedSurveyId }
+        ]"
+      >
         <div class="flex flex-row justify-between items-center">
           <h3 class="text-lg font-bold text-gray-500">
             {{ $t('surveys.list.doneAt') }} {{ formatDate(survey.createDate) }}
@@ -42,9 +48,9 @@
 </template>
 
 <script>
-import { getSurveysByPatientId } from '../api/services/patientService';
-import { createSurvey } from '../api/services/surveyService';
-import { formatDate } from '../utils/formatDate';
+import { getSurveysByPatientId } from '../../api/services/patientService';
+import { createSurvey } from '../../api/services/surveyService';
+import { formatDate } from '../../utils/formatDate';
 
 export default {
   data() {
@@ -52,6 +58,7 @@ export default {
       surveys: [],
       patientId: this.$route.params.patientId,
       showCreateSurveyPopup: false,
+      selectedSurveyId: null, // Track the selected survey's ID
     };
   },
   mounted() {
@@ -83,6 +90,7 @@ export default {
     },
     formatDate,
     selectSurvey(survey) {
+      this.selectedSurveyId = survey.id; // Update selected survey ID
       this.$emit('selectSurvey', survey); // Emit event to parent with selected survey
     }
   }

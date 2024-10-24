@@ -1,8 +1,8 @@
 package pt.isep.meia.AICare.infrastructure.gateways;
 
 import lombok.var;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.command.Command;
+import org.kie.internal.command.CommandFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.application.configs.DroolsConfig;
@@ -28,28 +28,35 @@ public class DroolsGateway {
     }
 
     public Result getNextQuestion(UUID surveyId, List<Evidence> evidences, int order) throws IOException {
-        var session = droolsConfig.getKieSession();
-        if (session == null) {
+        var statelessSession = droolsConfig.getStatelessKieSession();
+        if (statelessSession == null) {
             return null;
         }
 
-        session.setGlobal("surveyId", surveyId);
-        session.setGlobal("evidences", evidences);
-        session.fireAllRules();
+        List<Object> objects = new ArrayList<>();
 
-        boolean surveyCompleted = checkSurveyCompletion(session);
+        // Create commands to insert objects and set globals
+        List<Command<?>> commands = new ArrayList<>();
+        commands.add(CommandFactory.newSetGlobal("surveyId", surveyId));
+        commands.add(CommandFactory.newSetGlobal("evidences", evidences));
+        commands.add(CommandFactory.newInsertElements(objects));
+
+        // Fire rules in a stateless manner
+        statelessSession.execute(CommandFactory.newBatchExecution(commands));
+
+        // Retrieve results from session (adjust based on how you pass and return objects)
+        boolean surveyCompleted = checkSurveyCompletion(objects);
 
         if (!surveyCompleted) {
-            var nextQuestion = getLastQuestionFromSession(session);
+            var nextQuestion = getLastQuestionFromEvidences(objects);
             if (nextQuestion != null) {
-//                clearSession(session);
                 nextQuestion.setQuestionOrder(order);
                 return Result.fromQuestion(nextQuestion);
             }
         }
 
-        var restrictions = getRestrictionsFromSession(session);
-        var conclusions = getPreferredActivitiesFromSession(session);
+        var restrictions = getRestrictionsFromEvidences(objects);
+        var conclusions = getPreferredActivitiesFromEvidences(objects);
 
         var restrictedActivityNames = restrictions.stream()
                 .map(Restrict::getActivity)
@@ -69,53 +76,33 @@ public class DroolsGateway {
                 .filter(activity -> !prioritizedActivities.contains(activity))
                 .forEach(orderedActivities::add);
 
-//        clearSession(session);
         return Result.fromActivities(surveyId, orderedActivities);
-
     }
 
-    private boolean checkSurveyCompletion(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(SurveyCompleted.class))
-                .stream()
+    private boolean checkSurveyCompletion(List<Object> objects) {
+        return objects.stream()
                 .anyMatch(obj -> obj instanceof SurveyCompleted);
     }
 
-    private Question getLastQuestionFromSession(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(Question.class))
-                .stream()
+    private Question getLastQuestionFromEvidences(List<Object> objects) {
+        return objects.stream()
                 .filter(obj -> obj instanceof Question)
                 .map(obj -> (Question) obj)
                 .reduce((first, second) -> second)
                 .orElse(null);
     }
 
-    private List<PreferredActivity> getPreferredActivitiesFromSession(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(PreferredActivity.class))
-                .stream()
+    private List<PreferredActivity> getPreferredActivitiesFromEvidences(List<Object> objects) {
+        return objects.stream()
                 .filter(obj -> obj instanceof PreferredActivity)
                 .map(obj -> (PreferredActivity) obj)
                 .collect(Collectors.toList());
     }
 
-    private List<Restrict> getRestrictionsFromSession(KieSession session) {
-        return session.getObjects(new org.kie.api.runtime.ClassObjectFilter(Restrict.class))
-                .stream()
+    private List<Restrict> getRestrictionsFromEvidences(List<Object> objects) {
+        return objects.stream()
                 .filter(obj -> obj instanceof Restrict)
                 .map(obj -> (Restrict) obj)
                 .collect(Collectors.toList());
-    }
-
-    private void clearSession(KieSession session) {
-        List<FactHandle> handles = new ArrayList<>();
-
-        // Collect all FactHandles first
-        for (Object fact : session.getObjects()) {
-            handles.add(session.getFactHandle(fact));
-        }
-
-        // Delete all facts using the collected FactHandles
-        for (FactHandle handle : handles) {
-            session.delete(handle);
-        }
     }
 }

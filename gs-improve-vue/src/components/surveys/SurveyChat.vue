@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getSurveysAnsweredQuestions, getSurveysNextQuestion, answerSurvey } from '../api/services/surveyService';
+import { getSurveysAnsweredQuestions, getSurveysNextQuestion, answerSurvey } from '../../api/services/surveyService';
 
 export default {
   props: {
