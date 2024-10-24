@@ -4,6 +4,7 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.domain.entities.Answer;
+import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
@@ -20,24 +21,24 @@ import java.util.UUID;
 
 @Service
 public class SurveyService {
+    private final ConclusionService conclusionService;
     private final SurveysRepository surveysRepository;
     private final QuestionsRepository questionsRepository;
     private final AnswersRepository answersRepository;
-    private final ConclusionsRepository conclusionsRepository;
     private final EngineService engineService;
 
     @Autowired
     public SurveyService(
             EngineService engineService,
+            ConclusionService conclusionService,
             SurveysRepository surveysRepository,
             QuestionsRepository questionsRepository,
-            AnswersRepository answersRepository,
-            ConclusionsRepository conclusionsRepository) {
+            AnswersRepository answersRepository) {
         this.engineService = engineService;
+        this.conclusionService = conclusionService;
         this.surveysRepository = surveysRepository;
         this.questionsRepository = questionsRepository;
         this.answersRepository = answersRepository;
-        this.conclusionsRepository = conclusionsRepository;
     }
 
     public Survey getSurveyById(UUID surveyId) {
@@ -55,7 +56,7 @@ public class SurveyService {
             return null;
         }
 
-        var conclusion = conclusionsRepository.findConclusionBySurveyId(surveyId);
+        var conclusion = conclusionService.getConclusionBySurveyId(surveyId);
         if(conclusion != null){
             return Result.fromConclusion(conclusion);
         }
@@ -80,7 +81,7 @@ public class SurveyService {
         }
 
         if(result.getType().equals(ResultTypeEnum.conclusion)){
-            var createdConclusion = conclusionsRepository.save(result.getConclusion());
+            var createdConclusion = conclusionService.save(result.getConclusion());
             return Result.fromConclusion(createdConclusion);
         }
 

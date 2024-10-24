@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import pt.isep.meia.AICare.domain.dtos.SurveyListItemDto;
 
 import java.util.Date;
 import java.util.UUID;
@@ -36,5 +37,9 @@ public class Survey {
     public Survey(UUID patientId) {
         this();
         this.patientId = patientId;
+    }
+
+    public SurveyListItemDto toListItemDto(Conclusion conclusion) {
+        return new SurveyListItemDto(this.id, this.createDate, conclusion != null);
     }
 }

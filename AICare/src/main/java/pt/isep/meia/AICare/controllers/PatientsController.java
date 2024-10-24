@@ -4,23 +4,31 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pt.isep.meia.AICare.application.services.ConclusionService;
+import pt.isep.meia.AICare.domain.dtos.Potato;
+import pt.isep.meia.AICare.domain.dtos.SurveyListItemDto;
+import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Patient;
 import pt.isep.meia.AICare.application.services.PatientService;
-import pt.isep.meia.AICare.domain.entities.Survey;
 
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/patients")
 public class PatientsController {
 
     private final PatientService patientService;
+    private final ConclusionService conclusionService;
 
     @Autowired
-    public PatientsController(PatientService patientService) {
+    public PatientsController(
+            PatientService patientService,
+            ConclusionService conclusionService) {
         this.patientService = patientService;
+        this.conclusionService = conclusionService;
     }
 
     @GetMapping
@@ -49,8 +57,16 @@ public class PatientsController {
     }
 
     @GetMapping("/{id}/surveys")
-    public ResponseEntity<List<Survey>> getSurveysByPatientId(@PathVariable UUID id) {
+    public ResponseEntity<List<SurveyListItemDto>> getSurveysByPatientId(@PathVariable UUID id) {
         var surveys = patientService.getSurveysByPatientId(id);
-        return ResponseEntity.ok(surveys);
+        var conclusions = conclusionService.getConclusionsBySurveys(surveys);
+        var result = surveys.stream()
+                .map(survey -> survey.toListItemDto(
+                        conclusions.stream()
+                                .filter(conclusion -> conclusion.getSurveyId().equals(survey.getId()))
+                                .findFirst()
+                                .orElse(null)))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 }

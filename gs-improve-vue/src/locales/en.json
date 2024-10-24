@@ -43,6 +43,7 @@
             "createPopupConfirm": "Confirm"
         },
         "chat": {
+            "title": "AICare Survey",
             "answers": {
                 "yes": "Yes",
                 "no": "No"

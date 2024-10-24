@@ -34,15 +34,16 @@
     },
     "surveys": {
         "list": {
-            "doneAt": "Encuesta realizada el",
-            "title": "Lista de Encuestas",
-            "createButton": "Crear Nueva Encuesta",
-            "createPopupTitle": "Crear Nueva Encuesta",
-            "createPopupMessage": "¿Está seguro de que desea crear una nueva encuesta?",
+            "doneAt": "Cuestionario realizada el",
+            "title": "Lista de Cuestionarios",
+            "createButton": "Crear Nuevo Cuestionario",
+            "createPopupTitle": "Crear Nuevo Cuestionario",
+            "createPopupMessage": "¿Está seguro de que desea crear un nuevo cuestionario?",
             "createPopupCancel": "Cancelar",
             "createPopupConfirm": "Confirmar"
         },
         "chat": {
+            "title": "Cuestionario AICare",
             "answers": {
                 "yes": "Sí",
                 "no": "No"

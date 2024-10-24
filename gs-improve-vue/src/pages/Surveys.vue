@@ -6,7 +6,7 @@
     </div>
     <div class="flex-1 h-full flex flex-col overflow-hidden">
       <!-- Only show SurveyChat if a survey is selected -->
-      <SurveyChat v-if="selectedSurvey" :survey="selectedSurvey" />
+      <SurveyChat v-if="selectedSurveyId" :surveyId="selectedSurveyId" />
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      selectedSurvey: null // This will store the selected survey
+      selectedSurveyId: null
     };
   },
   props: {
@@ -33,8 +33,8 @@ export default {
     }
   },
   methods: {
-    selectSurvey(survey) {
-      this.selectedSurvey = survey; // Update selected survey
+    selectSurvey(surveyId) {
+      this.selectedSurveyId = surveyId;
     }
   }
 };

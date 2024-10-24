@@ -43,6 +43,7 @@
             "createPopupConfirm": "Confirmar"
         },
         "chat": {
+            "title": "Questionário AICare",
             "answers": {
                 "yes": "Sim",
                 "no": "Não"
