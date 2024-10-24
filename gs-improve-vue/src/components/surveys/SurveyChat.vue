@@ -9,7 +9,7 @@
       </div>
 
       <!-- Chat history container with scroll and max height -->
-      <div v-else ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4">
+      <div v-else ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4 pb-16">
         <ChatMessage v-for="(message, index) in chatHistory" :key="index" :type="message.type"
           :text="$t(`surveys.chat.${message.type}s.${message.text}`)" />
       </div>
@@ -69,6 +69,7 @@ export default {
           this.addToChatHistory("answer", answeredQuestion.answer.response, answeredQuestion.question.id);
         });
         this.loading = false;
+        this.$nextTick(this.scrollToBottom); // Scroll to bottom after loading history
       } catch (error) {
         console.error("Error fetching answered questions:", error);
         this.loading = false;
@@ -104,7 +105,7 @@ export default {
     },
     addToChatHistory(type, text, questionId) {
       this.chatHistory.push({ type, text, questionId });
-      this.$nextTick(this.scrollToBottom);
+      this.$nextTick(this.scrollToBottom); // Ensure to scroll down when a new message is added
     },
     scrollToBottom() {
       const container = this.$refs.chatContainer;
@@ -118,11 +119,13 @@ export default {
     }
   },
   mounted() {
-    this.resetSurveyChat();
+    this.resetSurveyChat(); // Initial load
   },
 };
 </script>
 
 <style scoped>
-/* Add any additional styles here */
+.pb-16 {
+  padding-bottom: 3rem;
+}
 </style>

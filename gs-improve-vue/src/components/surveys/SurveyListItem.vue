@@ -1,7 +1,7 @@
 <template>
   <li @click="$emit('selectSurvey', survey.id)" :class="[
     'border border-gray-300 p-2 rounded-md transition-transform transform cursor-pointer',
-    { 'bg-gray-200': isSelected, 'hover:scale-105': !isSelected }
+    { 'bg-blue-100': isSelected, 'hover:scale-105': !isSelected }
   ]">
     <div class="flex flex-row justify-between items-center">
       <h3 class="text-lg font-bold text-gray-500">
@@ -36,5 +36,9 @@ export default {
 </script>
 
 <style scoped>
-/* Your existing styles or leave empty for Tailwind CSS */
+/* Style for the selected survey item */
+.bg-blue-100 {
+  background-color: #ebf8ff;
+  /* Light blue background for selected item */
+}
 </style>

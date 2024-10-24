@@ -1,13 +1,15 @@
 <template>
-  <div class="p-6 bg-white shadow-md h-full border-r-2 flex flex-col">
-    <h2 class="text-2xl font-semibold mb-4">{{ $t('surveys.list.title') }}</h2>
-    <button @click="showCreateSurveyPopup = true"
-      class="bg-blue-600 text-white px-4 py-2 mb-4 rounded-lg hover:bg-blue-700 transition">
-      {{ $t('surveys.list.createButton') }}
-    </button>
+  <div class="p-6 bg-white shadow-md h-full flex flex-col">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold">{{ $t('surveys.list.title') }}</h2>
+      <button @click="showCreateSurveyPopup = true"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        {{ $t('surveys.list.createButton') }}
+      </button>
+    </div>
 
     <!-- Make the survey list container scrollable and take available space -->
-    <div class="flex-1 overflow-y-auto">
+    <div class="flex-1 overflow-y-auto pb-16">
       <ul class="space-y-4">
         <SurveyListItem v-for="survey in surveys" :key="survey.id" :survey="survey"
           :isSelected="survey.id === selectedSurveyId" @selectSurvey="selectSurvey" />
@@ -45,7 +47,6 @@ export default {
     async fetchSurveys(patientId) {
       try {
         const surveys = await getSurveysByPatientId(patientId);
-        console.log(surveys);
         this.surveys = surveys;
       } catch (error) {
         console.error('Error fetching surveys:', error);
@@ -75,5 +76,15 @@ export default {
 </script>
 
 <style scoped>
-/* Your existing styles or leave empty for Tailwind CSS */
+.h-full {
+  height: 100%;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.pb-16 {
+  padding-bottom: 3rem;
+}
 </style>
