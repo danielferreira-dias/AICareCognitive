@@ -10,16 +10,17 @@
 
       <!-- Chat history container with scroll and max height -->
       <div v-else ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4 pb-16">
+        <!-- Render chat history -->
         <ChatMessage v-for="(message, index) in chatHistory" :key="index" :type="message.type"
           :text="$t(`surveys.chat.${message.type}s.${message.text}`)" />
-      </div>
 
-      <!-- Display possible answers as horizontally stacked buttons on the user's side -->
-      <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mb-4">
-        <div class="flex space-x-2">
-          <AnswerButton v-for="(answer, index) in currentResult.question.possibleAnswers" :key="index"
-            :text="$t(`surveys.chat.answers.${answer}`)" :questionId="currentResult.question.id"
-            :onAnswer="selectAnswer" />
+        <!-- Render possible answers aligned to the right -->
+        <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mb-4">
+          <div class="flex space-x-2">
+            <AnswerButton v-for="(answer, index) in currentResult.question.possibleAnswers" :key="index" :textKey="answer"
+              :text="$t(`surveys.chat.answers.${answer}`)" :questionId="currentResult.question.id"
+              :onAnswer="selectAnswer" />
+          </div>
         </div>
       </div>
     </div>
@@ -119,7 +120,7 @@ export default {
     }
   },
   mounted() {
-    this.resetSurveyChat(); // Initial load
+    this.resetSurveyChat();
   },
 };
 </script>
