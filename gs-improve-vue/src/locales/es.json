@@ -11,7 +11,9 @@
             "actions": "Acciones",
             "male": "Masculino",
             "female": "Femenino",
-            "other": "Otro"
+            "other": "Otro",
+            "modify": "Modificar",
+            "delete": "Eliminar"
         },
         "addPatient": {
             "addButton": "Agregar Paciente",

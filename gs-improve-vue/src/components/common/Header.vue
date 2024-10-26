@@ -3,13 +3,12 @@
         <!-- Logo and Navigation Section -->
         <div class="flex items-center space-x-6">
             <!-- Logo -->
-            <img class="w-auto h-8"
-                src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/logo.svg" alt="Logo" />
+            <img class="w-auto h-8" :src="logoAICARE" alt="aLogo AICARE" />
 
             <!-- Navigation Link -->
             <nav>
                 <a href="/" title=""
-                    class="text-sm font-medium transition-all duration-200 rounded-lg hover:bg-indigo-500 px-4 py-2">
+                    class="text-base font-medium transition-all duration-200 rounded-lg hover:bg-indigo-500 px-1 py-2">
                     {{ $t('navbar.patients') }}
                 </a>
             </nav>
@@ -37,10 +36,12 @@
 
 <script>
 import { getCurrentEngine, updateCurrentEngine } from '../../api/services/engineService';
+import logoAICARE from '../../assets/images/logoAICARE.png';
 
 export default {
     data() {
         return {
+            logoAICARE,
             selectedEngine: 'drools' // Default to 'drools'
         };
     },
