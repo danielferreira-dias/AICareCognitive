@@ -1,6 +1,6 @@
 <template>
-  <li @click="$emit('selectSurvey', survey.id)" :class="[
-    'border border-gray-300 p-2 rounded-md transition-transform transform cursor-pointer',
+  <li @click="$emit('selectSurvey', survey.id)" :class="[ 
+    'border border-gray-300 p-6 m-0.5 rounded-md transition-transform transform cursor-pointer', 
     { 'bg-blue-100': isSelected, 'hover:scale-105': !isSelected }
   ]">
     <div class="flex flex-row justify-between items-center">

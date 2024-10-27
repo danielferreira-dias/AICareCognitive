@@ -69,6 +69,9 @@
                 "speaks_normally": "Habla Normalmente",
                 "expresses_with_difficulty": "Se Expresa con Dificultad",
                 "cannot_be_understood": "No Puede Ser Entendido",
+                "smell_normally": "Olfato Normal",
+                "smell_with_difficulty": "Olfato con Problemas",
+                "no_sense_of_smell": "Sin Sentido del Olfato",
                 "functions_normally": "Funciona Normalmente",
                 "difficulties_identifying_odors": "Dificultades para Identificar Olores",
                 "complete_loss_of_smell": "Pérdida Completa del Olfato",
@@ -84,11 +87,9 @@
                 "cannot_write": "No Sabe Escribir",
                 "moves_without_difficulty": "Se Mueve con Facilidad",
                 "total_dependence": "Dependencia Total",
-                "no_sense_of_smell": "Sin sentido del olfato",
                 "unable_to_use_upper_limbs": "Incapaz de usar las extremidades superiores",
                 "unable_to_use_lower_limbs": "Incapaz de usar las extremidades inferiores",
                 "speaks_with_difficulty": "Habla con dificultad",
-                "smell_with_difficulty": "Olfato con dificultad",
                 "ums_functions_normally": "Las habilidades motoras superiores funcionan normalmente",
                 "ums_has_difficulty": "Dificultad en las habilidades motoras superiores",
                 "lms_functions_normally": "Las habilidades motoras inferiores funcionan normalmente",
@@ -129,9 +130,38 @@
                 "diagnosis_parkinson_stage": "Diagnóstico: Etapa de Parkinson",
                 "diagnosis_vascular_dementia": "Diagnóstico: Demencia Vascular",
                 "diagnosis_vascular_dementia_stage": "Diagnóstico: Etapa de Demencia Vascular",
-                "observation_alzheimer_stare": "Observación: Mirada Fija de Alzheimer",
-                "observation_parkinson_fine_motor_control": "Observación: Control Motor Fino de Parkinson",
-                "observation_vascular_dementia_memory_recall_difficulties": "Observación: Dificultades de Memoria en la Demencia Vascular"
+
+                "observation_alzheimer_spacial_disorientation": "Observación: Desorientación Espacial",
+                "observation_alzheimer_memory_loss_frustration": "Observación: Frustración por Perdida de Memoria",
+                "observation_alzheimer_slight_memory_loss": "Observación: Ligero Olvidos",
+                
+                "observation_alzheimer_stare": "Observación: Mirada Fija",
+                "observation_alzheimer_needs_constant_supervision": "Observación: Constante Supervisión",
+                "observation_alzheimer_unable_to_follow_stimuli": "Observación: Incapacidad de Percibir Estimulos",
+                "observation_alzheimer_history_of_falls": "Observación: Historial de Caidas",
+
+                "observation_parkinson_shaking": "Observación: Temblores Leves",
+                "observation_parkinson_locomotion_difficulties": "Observación: Dificultades de Locomoción",
+                "observation_parkinson_bent_spine": "Observación: Columna Curvada",
+                "observation_parkinson_balance_loss": "Observación: Problemas de Motricidad Fina",
+                "observation_hearing_loss_onset": "Observación: Principio de Sordera",
+                
+                "observation_parkinson_fine_motor_control": "Observación: Problemas de Motricidad Fina",
+                "observation_parkinson_intense_tremors": "Observación: Temblores Intensos",
+                "observation_parkinson_coordination_difficulties": "Observación: Dificultades de Coordinación",
+                
+                "observation_vascular_dementia_slight_memory_loss": "Observación: Ligeras Perdidas de Memoria",
+                "observation_vascular_dementia_depression_anxiety": "Observación: Depresión, Ansiedad",
+                "observation_vascular_dementia_thinking_problems": "Observación: Problemas de Raciocinio",
+
+                "observation_vascular_dementia_memory_recall_difficulties": "Observación: No recuerda Información Importante",
+                "observation_vascular_dementia_people_recognition": "Observación: Dificultad para Reconocer Personas",
+                "observation_vascular_dementia_aggressiveness_insomnia_agitation": "Observación: Agresividad, Insomnio o Agitación",
+                "observation_vascular_dementia_motor_problems": "Observación: Problemas con la Locomoción y las Manos"
+
+                
+
+
             }
         }
     }

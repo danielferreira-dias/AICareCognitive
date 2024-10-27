@@ -3,25 +3,27 @@
         <!-- Logo and Navigation Section -->
         <div class="flex items-center space-x-6">
             <!-- Logo -->
-            <img class="w-auto h-8" :src="logoAICARE" alt="aLogo AICARE" />
+            <img class="w-auto h-8 px-4" :src="logoAICARE" alt="aLogo AICARE" />
 
             <!-- Navigation Link -->
             <nav>
                 <a href="/" title=""
-                    class="text-base font-medium transition-all duration-200 rounded-lg hover:bg-indigo-500 px-1 py-2">
+                    class="text-lg font-medium transition-all duration-200 rounded-lg hover:bg-indigo-500 py-2 px-3">
                     {{ $t('navbar.patients') }}
                 </a>
             </nav>
         </div>
 
         <!-- Dropdown and Language Switcher Section -->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-5">
             <!-- Dropdown for Drools/Prolog -->
-            <select v-model="selectedEngine" @change="changeEngine"
-                class="bg-indigo-600 text-white border-none cursor-pointer">
-                <option value="prolog">Prolog</option>
-                <option value="drools">Drools</option>
-            </select>
+            <div class="relative">
+                <select v-model="selectedEngine" @change="changeEngine" class="bg-indigo-600 text-white pl-3 pr-8 transition-all duration-200 rounded-lg hover:bg-indigo-500 py-2 px-3">
+                    <option value="prolog">Prolog</option>
+                    <option value="drools">Drools</option>
+                </select>
+                <i class="fas fa-chevron-down absolute right-2 top-1/2 transform -translate-y-1/2 text-white"></i>
+            </div>
 
             <!-- Language Switcher -->
             <span :class="['flag-icon', 'flag-icon-gb', 'cursor-pointer', 'transition', getFlagClass('en')]"
@@ -107,7 +109,6 @@ select {
     background-color: inherit;
     border: none;
     color: inherit;
-    padding: 4px 8px;
     font-size: 1rem;
     cursor: pointer;
     outline: none;
