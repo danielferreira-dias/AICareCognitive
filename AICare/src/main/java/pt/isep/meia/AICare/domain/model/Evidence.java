@@ -12,4 +12,12 @@ import pt.isep.meia.AICare.domain.entities.Question;
 public class Evidence {
     private Question question;
     private Answer answer;
+
+    @Override
+    public String toString() {
+        return "Evidence{" +
+                "question=" + question +
+                ", answer=" + answer.toString() +
+                '}';
+    }
 }

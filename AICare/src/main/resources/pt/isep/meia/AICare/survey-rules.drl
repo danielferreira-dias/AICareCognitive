@@ -9,23 +9,22 @@ import pt.isep.meia.AICare.domain.model.Hypothesis;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Restrict
 import pt.isep.meia.AICare.domain.model.PreferredActivity;
+import pt.isep.meia.AICare.domain.model.SurveyCompleted;
 import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import function pt.isep.meia.AICare.application.utils.DroolsHelper.answer;
-import function pt.isep.meia.AICare.application.utils.DroolsHelper.getSymptomCount
-
 global List<Evidence> evidences;
 global List<Restrict> restrictions;
 
 rule "Alzheimer Initial Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.INITIAL))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.INITIAL))
     then
         Hypothesis h = new Hypothesis("disease", "alzheimer_initial");
         insert(h);
@@ -33,6 +32,7 @@ end
 
 // Alzheimer's Initial Stage Rule 2 - Symptom Count Matching
 rule "Alzheimer Initial Stage - Symptom Count"
+    agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
@@ -47,10 +47,11 @@ end
 
 // Alzheimer's Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Alzheimer Advanced Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.ADVANCED))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE, AnswerConstants.ADVANCED))
     then
         Hypothesis h = new Hypothesis("disease", "alzheimer_advanced");
         insert(h);
@@ -58,14 +59,15 @@ end
 
 // Alzheimer's Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Alzheimer Advanced Stage - Condition Symptom Count"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_initial")
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
                 EvidenceConstants.OBSERVATION_ALZHEIMER_STARE,
-                EvidenceConstants.OBSERVATION_ALZHEIMER_NEEDS_PERMANENT_WATCH,
-                EvidenceConstants.OBSERVATION_ALZHEIMER_CANT_EXECUTE_STIMULI,
-                EvidenceConstants.OBSERVATION_ALZHEIMER_FALL_HISTORY
+                EvidenceConstants.OBSERVATION_ALZHEIMER_NEEDS_CONSTANT_SUPERVISION,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_UNABLE_TO_FOLLOW_STIMULI,
+                EvidenceConstants.OBSERVATION_ALZHEIMER_HISTORY_OF_FALLS
             )) >= 1)
     then
         Hypothesis h = new Hypothesis("disease", "alzheimer_advanced");
@@ -74,10 +76,11 @@ end
 
 // Parkinson Initial Stage Rule 1 - Direct Evidence Matching
 rule "Parkinson Initial Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.INITIAL))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.INITIAL))
     then
         Hypothesis h = new Hypothesis("disease", "parkinson_initial");
         insert(h);
@@ -85,13 +88,14 @@ end
 
 // Parkinson Initial Stage Rule 2 - Symptom Count Matching
 rule "Parkinson Initial Stage - Symptom Count"
+    agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
                 EvidenceConstants.OBSERVATION_PARKINSON_SHAKING,
                 EvidenceConstants.OBSERVATION_PARKINSON_BENT_SPINE,
                 EvidenceConstants.OBSERVATION_PARKINSON_BALANCE_LOSS,
-                EvidenceConstants.OBSERVATION_PARKINSON_INITIAL_HEARING_LOSS
+                EvidenceConstants.OBSERVATION_HEARING_LOSS_ONSET
             )) >= 2)
     then
         Hypothesis h = new Hypothesis("disease", "parkinson_initial");
@@ -100,10 +104,11 @@ end
 
 // Parkinson Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Parkinson Advanced Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.ADVANCED))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE, AnswerConstants.ADVANCED))
     then
         Hypothesis h = new Hypothesis("disease", "parkinson_advanced");
         insert(h);
@@ -111,12 +116,13 @@ end
 
 // Parkinson Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Parkinson Advanced Stage - Condition Symptom Count"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_initial")
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
                 EvidenceConstants.OBSERVATION_PARKINSON_LOCOMOTION_DIFFICULTIES,
-                EvidenceConstants.OBSERVATION_PARKINSON_INTENSE_SHAKING,
+                EvidenceConstants.OBSERVATION_PARKINSON_INTENSE_TREMORS,
                 EvidenceConstants.OBSERVATION_PARKINSON_FINE_MOTOR_CONTROL
             )) >= 1)
     then
@@ -126,10 +132,11 @@ end
 
 // Vascular Dementia Initial Stage Rule 1 - Direct Evidence Matching
 rule "Vascular Dementia Initial Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.INITIAL))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.INITIAL))
     then
         Hypothesis h = new Hypothesis("disease", "vascular_dementia_initial");
         insert(h);
@@ -137,6 +144,7 @@ end
 
 // Vascular Dementia Initial Stage Rule 2 - Symptom Count Matching
 rule "Vascular Dementia Initial Stage - Symptom Count"
+    agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
@@ -151,10 +159,11 @@ end
 
 // Vascular Dementia Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Vascular Dementia Advanced Stage - Diagnosis Evidence"
+    agenda-group "survey-rules"
     when
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
-        eval(DroolsHelper.answer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.ADVANCED))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE, AnswerConstants.ADVANCED))
     then
         Hypothesis h = new Hypothesis("disease", "vascular_dementia_advanced");
         insert(h);
@@ -162,14 +171,15 @@ end
 
 // Vascular Dementia Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Vascular Dementia Advanced Stage - Condition Symptom Count"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_initial")
         eval(DroolsHelper.getSymptomCount(evidences,
             Arrays.asList(
-                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_HEAVY_MEMORY_LOSS,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MEMORY_RECALL_DIFFICULTIES,
                 EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_PEOPLE_RECOGNITION,
-                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_HISTORY_AGGRESSIVENESS_INSOMNIA_AGITATION,
-                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_BODY_CONTROL
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_AGGRESSIVENESS_INSOMNIA_AGITATION,
+                EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MOTOR_PROBLEMS
             )) >= 1)
     then
         Hypothesis h = new Hypothesis("disease", "vascular_dementia_advanced");
@@ -178,6 +188,7 @@ end
 
 // Vascular Dementia Initial - Restricted Activities
 rule "Restrict Activities for Vascular Dementia Initial"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_initial")
     then
@@ -187,6 +198,7 @@ end
 
 // Vascular Dementia Advanced - Restricted Activities
 rule "Restrict Activities for Vascular Dementia Advanced"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_advanced")
     then
@@ -207,6 +219,7 @@ end
 
 // Alzheimer Initial - Restricted Activities
 rule "Restrict Activities for Alzheimer Initial"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_initial")
     then
@@ -218,6 +231,7 @@ end
 
 // Alzheimer Advanced - Restricted Activities
 rule "Restrict Activities for Alzheimer Advanced"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_advanced")
     then
@@ -242,6 +256,7 @@ end
 
 // Parkinson Initial - Restricted Activities
 rule "Restrict Activities for Parkinson Initial"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_initial")
     then
@@ -253,6 +268,7 @@ end
 
 // Parkinson Advanced - Restricted Activities
 rule "Restrict Activities for Parkinson Advanced"
+    agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_advanced")
     then
@@ -274,8 +290,9 @@ rule "Restrict Activities for Parkinson Advanced"
 end
 // Social Integration - Severe Integration Issues
 rule "Restrict Activities for Severe Integration Issues"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.SEVERE_INTEGRATION_ISSUES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.SEVERE_INTEGRATION_ISSUES))
     then
         insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
         insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
@@ -289,8 +306,9 @@ end
 
 // Social Integration - Isolated Person
 rule "Restrict Activities for Isolated Person"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.ISOLATED_PERSON))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.ISOLATED_PERSON))
     then
         insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
         insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
@@ -313,8 +331,9 @@ end
 
 // Vision - Vision Difficulties
 rule "Restrict Activities for Vision Difficulties"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.VISION, AnswerConstants.VISION_WITH_DIFFICULTIES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.VISION_WITH_DIFFICULTIES))
     then
         insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
         insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
@@ -322,8 +341,9 @@ end
 
 // Vision - Blindness
 rule "Restrict Activities for Blindness"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.VISION, AnswerConstants.BLINDNESS))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.BLINDNESS))
     then
         insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
         insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
@@ -332,8 +352,9 @@ end
 
 // Hearing - Hearing Difficulties
 rule "Restrict Activities for Hearing Difficulties"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.HEARING, AnswerConstants.HEARING_WITH_DIFFICULTIES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.HEARING_WITH_DIFFICULTIES))
     then
         insert(new Restrict(ActivityConstants.KARAOKE));
         insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
@@ -341,8 +362,9 @@ end
 
 // Hearing - Deafness
 rule "Restrict Activities for Deafness"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.HEARING, AnswerConstants.DEAFNESS))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.DEAFNESS))
     then
         insert(new Restrict(ActivityConstants.KARAOKE));
         insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
@@ -351,16 +373,18 @@ end
 
 // Speech - Speech Difficulties
 rule "Restrict Activities for Speech Difficulties"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SPEECH, AnswerConstants.EXPRESSES_WITH_DIFFICULTY))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.EXPRESSES_WITH_DIFFICULTY))
     then
         insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
 end
 
 // Speech - Non-Verbal
 rule "Restrict Activities for Non-Verbal Individuals"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SPEECH, AnswerConstants.CANNOT_BE_UNDERSTOOD))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.CANNOT_BE_UNDERSTOOD))
     then
         insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
         insert(new Restrict(ActivityConstants.CHARACTER_INTERPRETATION));
@@ -368,8 +392,9 @@ end
 
 // Smell - Loss of Smell
 rule "Restrict Activities for Loss of Smell"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SMELL, AnswerConstants.COMPLETE_LOSS_OF_SMELL))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.COMPLETE_LOSS_OF_SMELL))
     then
         insert(new Restrict(ActivityConstants.ODOR_DIFFERENTIATION));
         insert(new Restrict(ActivityConstants.SENSES_RECOGNITION_EXERCISES));
@@ -377,8 +402,9 @@ end
 
 // Mobility - Total Dependence
 rule "Restrict Activities for Total Mobility Dependence"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))
     then
         insert(new Restrict(ActivityConstants.WALKING));
         insert(new Restrict(ActivityConstants.BOWLING_GAMES));
@@ -387,8 +413,9 @@ end
 
 // Upper Motor Skills - Cannot Move
 rule "Restrict Activities for Upper Motor Skills Impairment"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
     then
         insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
         insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
@@ -396,8 +423,9 @@ end
 
 // Lower Motor Skills - Cannot Move
 rule "Restrict Activities for Lower Motor Skills Impairment"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
     then
         insert(new Restrict(ActivityConstants.WALKING));
         insert(new Restrict(ActivityConstants.PHYSIOTHERAPY));
@@ -405,8 +433,9 @@ end
 
 // Object Handling - Cannot Handle
 rule "Restrict Activities for Object Handling Impairment"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.CANNOT_HANDLE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.CANNOT_HANDLE))
     then
         insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
         insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
@@ -414,8 +443,9 @@ end
 
 // Reading - Cannot Read
 rule "Restrict Activities for Reading Difficulties"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.CANNOT_READ))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.CANNOT_READ))
     then
         insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
         insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
@@ -423,16 +453,18 @@ end
 
 // Writing - Cannot Write
 rule "Restrict Activities for Writing Difficulties"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.WRITING, AnswerConstants.CANNOT_WRITE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.WRITING, AnswerConstants.CANNOT_WRITE))
     then
         insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
 end
 
 // Preference - Theatre
 rule "Prefer Activities for Theatre Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.THEATRE, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.THEATRE, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.DRAMATIC_TEXT_READING));
         insert(new PreferredActivity(ActivityConstants.CHARACTER_INTERPRETATION));
@@ -441,8 +473,9 @@ end
 
 // Preference - Museum
 rule "Prefer Activities for Museum Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.MUSEUM, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MUSEUM, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.PAINTINGS));
         insert(new PreferredActivity(ActivityConstants.SMALL_ARRANGEMENTS));
@@ -451,8 +484,9 @@ end
 
 // Preference - Music
 rule "Prefer Activities for Music Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.MUSIC, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MUSIC, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.KARAOKE));
         insert(new PreferredActivity(ActivityConstants.GUESS_THE_SONG));
@@ -461,8 +495,9 @@ end
 
 // Preference - Reading
 rule "Prefer Activities for Reading Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.READING_PREFERENCE, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_PREFERENCE, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.DRAMATIC_TEXT_READING));
         insert(new PreferredActivity(ActivityConstants.READING_WRITING_EXERCISES));
@@ -471,8 +506,9 @@ end
 
 // Preference - Recreational Group
 rule "Prefer Activities for Recreational Group Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.RECREATIONAL_GROUP, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.RECREATIONAL_GROUP, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.PETANQUE_GAMES));
         insert(new PreferredActivity(ActivityConstants.BOWLING_GAMES));
@@ -482,8 +518,9 @@ end
 
 // Preference - Art
 rule "Prefer Activities for Art Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.ART, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.ART, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.PAINTINGS));
         insert(new PreferredActivity(ActivityConstants.CENTRE_DECORATION_WORK));
@@ -492,8 +529,9 @@ end
 
 // Preference - Sports
 rule "Prefer Activities for Sports Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.SPORTS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPORTS, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.WALKING));
         insert(new PreferredActivity(ActivityConstants.PETANQUE_GAMES));
@@ -502,16 +540,18 @@ end
 
 // Preference - Cooking
 rule "Prefer Activities for Cooking Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.COOKING, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.COOKING, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.DESSERT_MAKING));
 end
 
 // Preference - Handicrafts
 rule "Prefer Activities for Handicrafts Enthusiasts"
+    agenda-group "survey-rules"
     when
-        eval(answer(evidences, EvidenceConstants.HANDICRAFTS, AnswerConstants.YES))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HANDICRAFTS, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.CONSTRUCTION_TECHNIQUE));
         insert(new PreferredActivity(ActivityConstants.RECYCLED_MATERIALS));

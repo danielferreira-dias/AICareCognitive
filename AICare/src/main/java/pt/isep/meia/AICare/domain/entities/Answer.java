@@ -36,4 +36,13 @@ public class Answer {
         this.questionId = questionId;
         this.response = response;
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", questionId=" + questionId +
+                ", response='" + response + '\'' +
+                '}';
+    }
 }

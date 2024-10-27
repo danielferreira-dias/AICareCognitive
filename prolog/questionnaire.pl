@@ -327,65 +327,65 @@ next_question(observation_vascular_dementia_motor_problems, [yes, no]) :-
 
 
 % CONDITIONS
-next_question(social_integration, [good_social_relations, severe_integration_issues, isolated_person]) :-
-    \+ evidence(social_integration, _).
+next_question(conditions_social_integration, [good_social_relations, severe_integration_issues, isolated_person]) :-
+    \+ evidence(conditions_social_integration, _).
 
-next_question(vision, [good_vision, vision_with_difficulties, blindness]) :-
-    \+ evidence(vision, _).
+next_question(conditions_vision, [good_vision, vision_with_difficulties, blindness]) :-
+    \+ evidence(conditions_vision, _).
 
-next_question(hearing, [good_hearing, hearing_with_difficulties, deafness]) :-
-    \+ evidence(hearing, _).
+next_question(conditions_hearing, [good_hearing, hearing_with_difficulties, deafness]) :-
+    \+ evidence(conditions_hearing, _).
 
-next_question(speech, [speaks_normally, speaks_with_difficulty, cannot_be_understood]) :-
-    \+ evidence(speech, _).
+next_question(conditions_speech, [speaks_normally, speaks_with_difficulty, cannot_be_understood]) :-
+    \+ evidence(conditions_speech, _).
 
-next_question(smell, [smell_normally, smell_with_difficulty, no_sense_of_smell]) :-
-    \+ evidence(smell, _).
+next_question(conditions_smell, [smell_normally, smell_with_difficulty, no_sense_of_smell]) :-
+    \+ evidence(conditions_smell, _).
 
-next_question(upper_motor_skills, [ums_functions_normally, ums_has_difficulty, unable_to_use_upper_limbs]) :-
-    \+ evidence(upper_motor_skills, _).
+next_question(conditions_upper_motor_skills, [ums_functions_normally, ums_has_difficulty, unable_to_use_upper_limbs]) :-
+    \+ evidence(conditions_upper_motor_skills, _).
 
-next_question(lower_motor_skills, [lms_functions_normally, lms_has_difficulty, unable_to_use_lower_limbs]) :-
-    \+ evidence(lower_motor_skills, _).
+next_question(conditions_lower_motor_skills, [lms_functions_normally, lms_has_difficulty, unable_to_use_lower_limbs]) :-
+    \+ evidence(conditions_lower_motor_skills, _).
 
-next_question(object_handling, [full_control, partial_control, cannot_handle]) :-
-    \+ evidence(object_handling, _).
+next_question(conditions_object_handling, [full_control, partial_control, cannot_handle]) :-
+    \+ evidence(conditions_object_handling, _).
 
-next_question(reading, [reading_normally, writes_with_difficulty, cannot_read]) :-
-    \+ evidence(reading, _).
+next_question(conditions_reading, [reading_normally, writes_with_difficulty, cannot_read]) :-
+    \+ evidence(conditions_reading, _).
 
-next_question(writing, [writes_normally, writes_some_difficulty, cannot_write]) :-
-    \+ evidence(writing, _).
+next_question(conditions_writing, [writes_normally, writes_some_difficulty, cannot_write]) :-
+    \+ evidence(conditions_writing, _).
 
-next_question(mobility, [moves_easily, needs_assistance, total_dependence]) :-
-    \+ evidence(mobility, _).
+next_question(conditions_mobility, [moves_easily, needs_assistance, total_dependence]) :-
+    \+ evidence(conditions_mobility, _).
 
 
 
 % Preferences
-next_question(theatre, [yes, no]):-
-    \+ evidence(theatre, _).
+next_question(preferences_theatre, [yes, no]):-
+    \+ evidence(preferences_theatre, _).
 
-next_question(museum, [yes, no]):-
-    \+ evidence(museum, _).
+next_question(preferences_museum, [yes, no]):-
+    \+ evidence(preferences_museum, _).
 
-next_question(music, [yes, no]):-
-    \+ evidence(music, _).
+next_question(preferences_music, [yes, no]):-
+    \+ evidence(preferences_music, _).
 
-next_question(reading, [yes, no]):-
-    \+ evidence(reading, _).
+next_question(preferences_reading, [yes, no]):-
+    \+ evidence(preferences_reading, _).
 
-next_question(recreational_group, [yes, no]):-
-    \+ evidence(recreational_group, _).
+next_question(preferences_recreational_group, [yes, no]):-
+    \+ evidence(preferences_recreational_group, _).
 
-next_question(art, [yes, no]):-
-    \+ evidence(art, _).
+next_question(preferences_art, [yes, no]):-
+    \+ evidence(preferences_art, _).
 
-next_question(sports, [yes, no]):-
-    \+ evidence(sports, _).
+next_question(preferences_sports, [yes, no]):-
+    \+ evidence(preferences_sports, _).
 
-next_question(cooking, [yes, no]):-
-    \+ evidence(cooking, _).
+next_question(preferences_cooking, [yes, no]):-
+    \+ evidence(preferences_cooking, _).
 
-next_question(handicrafts, [yes, no]):-
-    \+ evidence(handicrafts, _).
+next_question(preferences_handicrafts, [yes, no]):-
+    \+ evidence(preferences_handicrafts, _).

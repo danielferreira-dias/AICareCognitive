@@ -6,7 +6,7 @@ import pt.isep.meia.AICare.domain.model.Evidence;
 import java.util.List;
 
 public class DroolsHelper {
-    public static boolean answer(List<Evidence> evidences, String evidence, String expectedAnswer) {
+    public static boolean checkQuestionAnswer(List<Evidence> evidences, String evidence, String expectedAnswer) {
         for (Evidence qa : evidences) {
             if (qa.getQuestion().getText().equalsIgnoreCase(evidence) &&
                     qa.getAnswer().getResponse().equalsIgnoreCase(expectedAnswer)) {
@@ -16,7 +16,7 @@ public class DroolsHelper {
         return false;
     }
 
-    public static boolean answer(List<Evidence> evidences, String evidence) {
+    public static boolean checkQuestionPresent(List<Evidence> evidences, String evidence) {
         for (Evidence qa : evidences) {
             if (qa.getQuestion().getText().equalsIgnoreCase(evidence)) {
                 return true;

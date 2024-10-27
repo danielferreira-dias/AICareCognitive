@@ -232,92 +232,92 @@ cannot(parkinson_advanced, missako_games).
 
 % CONDITIONS (OTHER ASPECTS)
 %1 Social Integration
-condition(social_integration, good_social_relations) :-
-    evidence(social_integration, good_social_relations).
-condition(social_integration, severe_integration_issues) :-
-    evidence(social_integration, severe_integration_issues).
-condition(social_integration, isolated_person) :-
-    evidence(social_integration, isolated_person).
+condition(conditions_social_integration, good_social_relations) :-
+    evidence(conditions_social_integration, good_social_relations).
+condition(conditions_social_integration, severe_integration_issues) :-
+    evidence(conditions_social_integration, severe_integration_issues).
+condition(conditions_social_integration, isolated_person) :-
+    evidence(conditions_social_integration, isolated_person).
 
 %2 Vision
-condition(vision, good_vision) :-
-    evidence(vision, good_vision).
-condition(vision, vision_with_difficulties) :-
-    evidence(vision, vision_with_difficulties).
-condition(vision, blindness) :-
-    evidence(vision, blindness).
+condition(conditions_vision, good_vision) :-
+    evidence(conditions_vision, good_vision).
+condition(conditions_vision, vision_with_difficulties) :-
+    evidence(conditions_vision, vision_with_difficulties).
+condition(conditions_vision, blindness) :-
+    evidence(conditions_vision, blindness).
 
 %3 Hearing
-condition(hearing, good_hearing) :-
-    evidence(hearing, good_hearing).
-condition(hearing, hearing_with_difficulties) :-
-    evidence(hearing, hearing_with_difficulties).
-condition(hearing, deafness) :-
-    evidence(hearing, deafness).
+condition(conditions_hearing, good_hearing) :-
+    evidence(conditions_hearing, good_hearing).
+condition(conditions_hearing, hearing_with_difficulties) :-
+    evidence(conditions_hearing, hearing_with_difficulties).
+condition(conditions_hearing, deafness) :-
+    evidence(conditions_hearing, deafness).
     
 %4 Speech
-condition(speech, speaks_normally) :-
-    evidence(speech, speaks_normally).
-condition(speech, speaks_with_difficulty) :-
-    evidence(speech, speaks_with_difficulty).
-condition(speech, cannot_be_understood) :-
-    evidence(speech, cannot_be_understood).
+condition(conditions_speech, speaks_normally) :-
+    evidence(conditions_speech, speaks_normally).
+condition(conditions_speech, speaks_with_difficulty) :-
+    evidence(conditions_speech, speaks_with_difficulty).
+condition(conditions_speech, cannot_be_understood) :-
+    evidence(conditions_speech, cannot_be_understood).
 
 %5 Smell
-condition(smell, smell_normally) :-
-    evidence(smell, smell_normally).
-condition(smell, smell_with_difficulty) :-
-    evidence(smell, smell_with_difficulty).
-condition(smell, no_sense_of_smell) :-
-    evidence(smell, no_sense_of_smell).
+condition(conditions_smell, smell_normally) :-
+    evidence(conditions_smell, smell_normally).
+condition(conditions_smell, smell_with_difficulty) :-
+    evidence(conditions_smell, smell_with_difficulty).
+condition(conditions_smell, no_sense_of_smell) :-
+    evidence(conditions_smell, no_sense_of_smell).
 
 %6 Upper Motor Skills
-condition(upper_motor_skills, ums_functions_normally) :-
-    evidence(upper_motor_skills, ums_functions_normally).
-condition(upper_motor_skills, ums_has_difficulty) :-
-    evidence(upper_motor_skills, ums_has_difficulty).
-condition(upper_motor_skills, unable_to_use_upper_limbs) :-
-    evidence(upper_motor_skills, unable_to_use_upper_limbs).
+condition(conditions_upper_motor_skills, ums_functions_normally) :-
+    evidence(conditions_upper_motor_skills, ums_functions_normally).
+condition(conditions_upper_motor_skills, ums_has_difficulty) :-
+    evidence(conditions_upper_motor_skills, ums_has_difficulty).
+condition(conditions_upper_motor_skills, unable_to_use_upper_limbs) :-
+    evidence(conditions_upper_motor_skills, unable_to_use_upper_limbs).
 
 %7 Lower Motor Skills
-condition(lower_motor_skills, lms_functions_normally) :-
-    evidence(lower_motor_skills, lms_functions_normally).
-condition(lower_motor_skills, lms_has_difficulty) :-
-    evidence(lower_motor_skills, lms_has_difficulty).
-condition(lower_motor_skills, unable_to_use_lower_limbs) :-
-    evidence(lower_motor_skills, cannot_move).
+condition(conditions_lower_motor_skills, lms_functions_normally) :-
+    evidence(conditions_lower_motor_skills, lms_functions_normally).
+condition(conditions_lower_motor_skills, lms_has_difficulty) :-
+    evidence(conditions_lower_motor_skills, lms_has_difficulty).
+condition(conditions_lower_motor_skills, unable_to_use_lower_limbs) :-
+    evidence(conditions_lower_motor_skills, cannot_move).
 
 %8 Object Handling
-condition(object_handling, full_control) :-
-    evidence(object_handling, full_control).
-condition(object_handling, partial_control) :-
-    evidence(object_handling, partial_control).
-condition(object_handling, cannot_handle) :-
-    evidence(object_handling, cannot_handle).
+condition(conditions_object_handling, full_control) :-
+    evidence(conditions_object_handling, full_control).
+condition(conditions_object_handling, partial_control) :-
+    evidence(conditions_object_handling, partial_control).
+condition(conditions_object_handling, cannot_handle) :-
+    evidence(conditions_object_handling, cannot_handle).
 
 %9 Reading
-condition(reading, reading_normally) :-
-    evidence(reading, reading_normally).
-condition(reading, reading_with_difficulty) :-
-    evidence(reading, reading_with_difficulty).
-condition(reading, cannot_read) :-
-    evidence(reading, cannot_read).
+condition(conditions_reading, reading_normally) :-
+    evidence(conditions_reading, reading_normally).
+condition(conditions_reading, reading_with_difficulty) :-
+    evidence(conditions_reading, reading_with_difficulty).
+condition(conditions_reading, cannot_read) :-
+    evidence(conditions_reading, cannot_read).
 
 %10 Writing
-condition(writing, writes_normally) :-
-    evidence(writing, writes_normally).
-condition(writing, writes_with_difficulty) :-
-    evidence(writing, writes_with_difficulty).
-condition(writing, cannot_write) :-
-    evidence(writing, cannot_write).
+condition(conditions_writing, writes_normally) :-
+    evidence(conditions_writing, writes_normally).
+condition(conditions_writing, writes_with_difficulty) :-
+    evidence(conditions_writing, writes_with_difficulty).
+condition(conditions_writing, cannot_write) :-
+    evidence(conditions_writing, cannot_write).
 
 %11 Mobility
-condition(mobility, moves_easily) :-
-    evidence(mobility, moves_easily).
-condition(mobility, needs_assistance) :-
-    evidence(mobility, needs_assistance).
-condition(mobility, total_dependence) :-
-    evidence(mobility, total_dependence).
+condition(conditions_mobility, moves_easily) :-
+    evidence(conditions_mobility, moves_easily).
+condition(conditions_mobility, needs_assistance) :-
+    evidence(conditions_mobility, needs_assistance).
+condition(conditions_mobility, total_dependence) :-
+    evidence(conditions_mobility, total_dependence).
 
 
 get_conditions(Conditions):-
@@ -592,26 +592,26 @@ inadequate(total_dependence, mime_games).
 %------------------------------------------------------------------------
 
 % PREFERENCES:
-likes(theatre):-
-    evidence(theatre, yes).
-likes(museum):-
-    evidence(museum, yes).
-likes(music):-
-    evidence(music, yes).
-likes(reading):-
-    evidence(reading, yes).
-likes(recreational_group):-
-    evidence(recreational_group, yes).
-likes(art):-
-    evidence(art, yes).
-likes(sports):-
-    evidence(sports, yes).
-likes(cooking):-
-    evidence(cooking, yes).
-likes(cooking):-
-    evidence(cooking, yes).
-likes(handicrafts):-
-    evidence(handicrafts, yes).
+likes(preferences_theatre):-
+    evidence(preferences_theatre, yes).
+likes(preferences_museum):-
+    evidence(preferences_museum, yes).
+likes(preferences_music):-
+    evidence(preferences_music, yes).
+likes(preferences_reading):-
+    evidence(preferences_reading, yes).
+likes(preferences_recreational_group):-
+    evidence(preferences_recreational_group, yes).
+likes(preferences_art):-
+    evidence(preferences_art, yes).
+likes(preferences_sports):-
+    evidence(preferences_sports, yes).
+likes(preferences_cooking):-
+    evidence(preferences_cooking, yes).
+likes(preferences_cooking):-
+    evidence(preferences_cooking, yes).
+likes(preferences_handicrafts):-
+    evidence(preferences_handicrafts, yes).
 
 
 get_preferences(Preferences) :-
@@ -622,48 +622,48 @@ get_preferences(Preferences) :-
 
 % LIKES/ACTIVITY (PREFERENCES)
 %1-Theatre
-preference(theatre, dramatic_text_reading).
-preference(theatre, character_interpretation).
-preference(theatre, mime_games).
+preference(preferences_theatre, dramatic_text_reading).
+preference(preferences_theatre, character_interpretation).
+preference(preferences_theatre, mime_games).
 %2-Museum
-preference(museum, paintings).
-preference(museum, small_arrangements).
-preference(museum, walking).
+preference(preferences_museum, paintings).
+preference(preferences_museum, small_arrangements).
+preference(preferences_museum, walking).
 %3-Music
-preference(music, karaoke).
-preference(music, musicogram).
-preference(music, guess_the_song).
-preference(music, instruments_use).
+preference(preferences_music, karaoke).
+preference(preferences_music, musicogram).
+preference(preferences_music, guess_the_song).
+preference(preferences_music, instruments_use).
 %4-Reading
-preference(reading, dramatic_text_reading).
-preference(reading, reading_writing_exercises).
-preference(reading, verbal_task_exercises).
+preference(preferences_reading, dramatic_text_reading).
+preference(preferences_reading, reading_writing_exercises).
+preference(preferences_reading, verbal_task_exercises).
 %5-Recreational Group
-preference(recreational_group, petanque_games).
-preference(recreational_group, bowling_games).
-preference(recreational_group, mime_games).
-preference(recreational_group, bingo_games).
-preference(recreational_group, adapted_handkerchief_games).
-preference(recreational_group, execution_festival_work).
-preference(recreational_group, centre_decoration_work).
+preference(preferences_recreational_group, petanque_games).
+preference(preferences_recreational_group, bowling_games).
+preference(preferences_recreational_group, mime_games).
+preference(preferences_recreational_group, bingo_games).
+preference(preferences_recreational_group, adapted_handkerchief_games).
+preference(preferences_recreational_group, execution_festival_work).
+preference(preferences_recreational_group, centre_decoration_work).
 %6-Art
-preference(art, paintings).
-preference(art, centre_decoration_work).
-preference(art, felt_work).
-preference(art, small_arrangements).
+preference(preferences_art, paintings).
+preference(preferences_art, centre_decoration_work).
+preference(preferences_art, felt_work).
+preference(preferences_art, small_arrangements).
 %7-Sports
-preference(sports, walking).
-preference(sports, petanque_games).
-preference(sports, bowling_games).
+preference(preferences_sports, walking).
+preference(preferences_sports, petanque_games).
+preference(preferences_sports, bowling_games).
 %8-Cooking
-preference(cooking, dessert_making).
+preference(preferences_cooking, dessert_making).
 %9-Handicrafts
-preference(handicrafts, construction_technique).
-preference(handicrafts, recycled_materials).
-preference(handicrafts, felt_work).
-preference(handicrafts, small_arrangements).
-preference(handicrafts, paintings).
-preference(handicrafts, centre_decoration_work).
-preference(handicrafts, manicure).
-preference(handicrafts, makeup).
-preference(handicrafts, massages).
+preference(preferences_handicrafts, construction_technique).
+preference(preferences_handicrafts, recycled_materials).
+preference(preferences_handicrafts, felt_work).
+preference(preferences_handicrafts, small_arrangements).
+preference(preferences_handicrafts, paintings).
+preference(preferences_handicrafts, centre_decoration_work).
+preference(preferences_handicrafts, manicure).
+preference(preferences_handicrafts, makeup).
+preference(preferences_handicrafts, massages).
