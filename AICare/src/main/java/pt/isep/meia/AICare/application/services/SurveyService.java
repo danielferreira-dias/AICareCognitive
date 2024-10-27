@@ -3,21 +3,19 @@ package pt.isep.meia.AICare.application.services;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.isep.meia.AICare.domain.constants.ActivityConstants;
 import pt.isep.meia.AICare.domain.entities.Answer;
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.ResultTypeEnum;
-import pt.isep.meia.AICare.infrastructure.repositories.AnswersRepository;
-import pt.isep.meia.AICare.infrastructure.repositories.ConclusionsRepository;
-import pt.isep.meia.AICare.infrastructure.repositories.QuestionsRepository;
-import pt.isep.meia.AICare.infrastructure.repositories.SurveysRepository;
+import pt.isep.meia.AICare.infrastructure.repositories.*;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyService {
@@ -26,6 +24,7 @@ public class SurveyService {
     private final QuestionsRepository questionsRepository;
     private final AnswersRepository answersRepository;
     private final EngineService engineService;
+    private final ActivitiesRepository activitiesRepository;
 
     @Autowired
     public SurveyService(
@@ -33,12 +32,13 @@ public class SurveyService {
             ConclusionService conclusionService,
             SurveysRepository surveysRepository,
             QuestionsRepository questionsRepository,
-            AnswersRepository answersRepository) {
+            AnswersRepository answersRepository, ActivitiesRepository activitiesRepository) {
         this.engineService = engineService;
         this.conclusionService = conclusionService;
         this.surveysRepository = surveysRepository;
         this.questionsRepository = questionsRepository;
         this.answersRepository = answersRepository;
+        this.activitiesRepository = activitiesRepository;
     }
 
     public Survey getSurveyById(UUID surveyId) {
@@ -116,5 +116,12 @@ public class SurveyService {
 
     public void deleteSurvey(UUID surveyId) {
         surveysRepository.deleteById(surveyId);
+    }
+
+    public List<String> getRejectedActivities(UUID surveyId) {
+        var activities = activitiesRepository.findActivitiesDescriptionsBySurveyId(surveyId);
+        return ActivityConstants.getAllActivities().stream()
+                .filter(activity -> !activities.contains(activity))
+                .collect(Collectors.toList());
     }
 }

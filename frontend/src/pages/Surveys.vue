@@ -4,9 +4,28 @@
       <!-- Pass down a function to set selected survey -->
       <SurveyList :patientId="patientId" @selectSurvey="selectSurvey" />
     </div>
-    <div class="flex-1 h-full flex flex-col overflow-hidden">
-      <!-- Only show SurveyChat if a survey is selected -->
-      <SurveyChat v-if="selectedSurveyId" :surveyId="selectedSurveyId" />
+
+    <!-- Main content area for SurveyChat and Conclusions, with tabs -->
+    <div class="flex-1 h-full flex flex-col overflow-hidden bg-white rounded-lg text-center border shadow-md">
+      <!-- Render tab buttons if a survey is selected -->
+      <div v-if="selectedSurvey" class="flex justify-center border-b">
+        <button v-if="this.hasConclusion" @click="currentTab = 'conclusions'"
+          :class="{ 'border-b-2 font-bold': currentTab === 'conclusions' }" class="px-4 py-2 text-2xl">
+          {{ $t('surveys.tabs.conclusions') }}
+        </button>
+        <button @click="currentTab = 'survey'" :class="{ 'border-b-2 font-bold': currentTab === 'survey' }"
+          class="px-4 py-2 text-2xl">
+          {{ $t('surveys.tabs.survey') }}
+        </button>
+      </div>
+
+      <!-- Conditional rendering of SurveyChat and Conclusions based on selected tab -->
+      <div class="flex-1 overflow-hidden">
+        <SurveyChat v-if="currentTab === 'survey' && selectedSurvey" :survey="selectedSurvey"
+          @updateHasConclusion="updateHasConclusion" />
+        <Conclusions v-if="currentTab === 'conclusions' && selectedSurvey && hasConclusion"
+          :survey="selectedSurvey" />
+      </div>
     </div>
   </div>
 </template>
@@ -14,16 +33,20 @@
 <script>
 import SurveyChat from '../components/surveys/SurveyChat.vue';
 import SurveyList from '../components/surveys/SurveyList.vue';
+import Conclusions from '../components/surveys/Conclusions.vue';
 
 export default {
   name: 'Surveys',
   components: {
     SurveyChat,
-    SurveyList
+    SurveyList,
+    Conclusions
   },
   data() {
     return {
-      selectedSurveyId: null
+      selectedSurvey: null,
+      currentTab: 'survey', // Default tab set to 'survey'
+      hasConclusion: false // Track if selected survey has conclusions
     };
   },
   props: {
@@ -33,13 +56,23 @@ export default {
     }
   },
   methods: {
-    selectSurvey(surveyId) {
-      this.selectedSurveyId = surveyId;
+    selectSurvey(survey) {
+      this.selectedSurvey = survey;
+      this.hasConclusion = survey.hasConclusion || false;
+      // Set currentTab to 'conclusions' if the survey has conclusions, else default to 'survey'
+      this.currentTab = this.hasConclusion ? 'conclusions' : 'survey';
+    },
+    updateHasConclusion(hasConclusion) {
+      this.hasConclusion = hasConclusion;
+      // Optionally, set currentTab based on the updated hasConclusion
+      if (hasConclusion) {
+        this.currentTab = 'conclusions';
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-/* Add any additional styles here */
+/* Additional styles here if needed */
 </style>

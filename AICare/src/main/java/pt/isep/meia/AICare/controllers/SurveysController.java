@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.services.SurveyService;
 import pt.isep.meia.AICare.domain.dtos.CreateSurveyRequestDto;
+import pt.isep.meia.AICare.domain.dtos.RejectedActivityDto;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.Justification;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/surveys")
@@ -67,6 +69,16 @@ public class SurveysController {
     public ResponseEntity<List<Evidence>> getAllAnsweredQuestions(@PathVariable UUID surveyId) {
         var answeredQuestions = surveyService.getAllAnsweredQuestionsById(surveyId);
         return ResponseEntity.ok(answeredQuestions);
+    }
+
+    @GetMapping("{surveyId}/rejected-activities")
+    public ResponseEntity<List<RejectedActivityDto>> getRejectedActivities(@PathVariable UUID surveyId) throws IOException {
+        var rejectedActivities = surveyService.getRejectedActivities(surveyId);
+        return ResponseEntity.ok(
+                rejectedActivities.stream()
+                        .map(RejectedActivityDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     @GetMapping("{surveyId}/why")

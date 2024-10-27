@@ -11,7 +11,7 @@
     <div class="flex-1 overflow-y-auto pb-16 p-4">
       <ul class="space-y-4">
         <SurveyListItem v-for="survey in surveys" :key="survey.id" :survey="survey"
-          :isSelected="survey.id === selectedSurveyId" @selectSurvey="selectSurvey"
+          :isSelected="survey.id === selectedSurvey?.id" @selectSurvey="selectSurvey"
           @confirmDelete="showDeleteModal = true; surveyToDelete = survey" />
       </ul>
     </div>
@@ -43,7 +43,7 @@ export default {
       showCreateSurveyPopup: false,
       showDeleteModal: false, // Track if delete modal should be shown
       surveyToDelete: null, // Track the survey that is to be deleted
-      selectedSurveyId: null // Track the selected survey's ID
+      selectedSurvey: null // Track the selected survey's ID
     };
   },
   mounted() {
@@ -74,7 +74,7 @@ export default {
       }
     },
     selectSurvey(survey) {
-      this.selectedSurveyId = survey.id;
+      this.selectedSurvey = survey;
       this.$emit('selectSurvey', survey);
     },
     cancelDelete() {

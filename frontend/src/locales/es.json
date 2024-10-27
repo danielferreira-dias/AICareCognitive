@@ -131,39 +131,81 @@
                 "diagnosis_parkinson_stage": "Diagnóstico: Etapa de Parkinson",
                 "diagnosis_vascular_dementia": "Diagnóstico: Demencia Vascular",
                 "diagnosis_vascular_dementia_stage": "Diagnóstico: Etapa de Demencia Vascular",
-
                 "observation_alzheimer_spacial_disorientation": "Observación: Desorientación Espacial",
                 "observation_alzheimer_memory_loss_frustration": "Observación: Frustración por Perdida de Memoria",
                 "observation_alzheimer_slight_memory_loss": "Observación: Ligero Olvidos",
-                
                 "observation_alzheimer_stare": "Observación: Mirada Fija",
                 "observation_alzheimer_needs_constant_supervision": "Observación: Constante Supervisión",
                 "observation_alzheimer_unable_to_follow_stimuli": "Observación: Incapacidad de Percibir Estimulos",
                 "observation_alzheimer_history_of_falls": "Observación: Historial de Caidas",
-
                 "observation_parkinson_shaking": "Observación: Temblores Leves",
                 "observation_parkinson_locomotion_difficulties": "Observación: Dificultades de Locomoción",
                 "observation_parkinson_bent_spine": "Observación: Columna Curvada",
                 "observation_parkinson_balance_loss": "Observación: Problemas de Motricidad Fina",
                 "observation_hearing_loss_onset": "Observación: Principio de Sordera",
-                
                 "observation_parkinson_fine_motor_control": "Observación: Problemas de Motricidad Fina",
                 "observation_parkinson_intense_tremors": "Observación: Temblores Intensos",
                 "observation_parkinson_coordination_difficulties": "Observación: Dificultades de Coordinación",
-                
                 "observation_vascular_dementia_slight_memory_loss": "Observación: Ligeras Perdidas de Memoria",
                 "observation_vascular_dementia_depression_anxiety": "Observación: Depresión, Ansiedad",
                 "observation_vascular_dementia_thinking_problems": "Observación: Problemas de Raciocinio",
-
                 "observation_vascular_dementia_memory_recall_difficulties": "Observación: No recuerda Información Importante",
                 "observation_vascular_dementia_people_recognition": "Observación: Dificultad para Reconocer Personas",
                 "observation_vascular_dementia_aggressiveness_insomnia_agitation": "Observación: Agresividad, Insomnio o Agitación",
                 "observation_vascular_dementia_motor_problems": "Observación: Problemas con la Locomoción y las Manos"
-
-                
-
-
             }
+        },
+        "conclusions": {
+            "recommendedActivities": "Actividades Recomendadas",
+            "notRecommendedActivities": "Actividades No Recomendadas"
+        },
+        "tabs": {
+            "conclusions": "Conclusiones",
+            "survey": "Cuestionario"
+        },
+        "activities": {
+            "knowledge_exercises": "Ejercicios de Conocimiento",
+            "memory_exercises": "Ejercicios de Memoria",
+            "warmup_exercises": "Ejercicios de Calentamiento",
+            "temporal_orientation_exercise": "Ejercicio de Orientación Temporal",
+            "taste_reaction": "Reacción al Sabor",
+            "animal_voices_recognition": "Reconocimiento de Voces de Animales",
+            "instruments_use": "Uso de Instrumentos",
+            "numerical_comprehension_exercises": "Ejercicios de Comprensión Numérica",
+            "manicure": "Manicura",
+            "felt_work": "Trabajo con Fieltro",
+            "differences_games": "Juegos de Diferencias",
+            "recycled_materials": "Materiales Reciclados",
+            "paintings": "Pinturas",
+            "spatial_recognition_exercises": "Ejercicios de Reconocimiento Espacial",
+            "construction_technique": "Técnica de Construcción",
+            "execution_festival_work": "Trabajo de Festival",
+            "small_arrangements": "Pequeños Arreglos",
+            "centre_decoration_work": "Decoración del Centro",
+            "dessert_making": "Elaboración de Postres",
+            "verbal_task_exercises": "Ejercicios de Tareas Verbales",
+            "image_recognition_games": "Juegos de Reconocimiento de Imágenes",
+            "manual_dexterity_games": "Juegos de Destreza Manual",
+            "reading_writing_exercises": "Ejercicios de Lectura y Escritura",
+            "senses_recognition_exercises": "Ejercicios de Reconocimiento de los Sentidos",
+            "odor_differentiation": "Diferenciación de Olores",
+            "walking": "Caminata",
+            "physiotherapy": "Fisioterapia",
+            "karaoke": "Karaoke",
+            "musicogram": "Musicograma",
+            "guess_the_song": "Adivina la Canción",
+            "petanque_games": "Juegos de Petanca",
+            "bowling_games": "Juegos de Boliche",
+            "adapted_handkerchief_games": "Juegos de Pañuelo Adaptado",
+            "mime_games": "Juegos de Mímica",
+            "bingo_games": "Juegos de Bingo",
+            "missako_games": "Juegos de Missako",
+            "domino_games": "Juegos de Dominó",
+            "tic_tac_toe_games": "Juego de Tres en Raya",
+            "massages": "Masajes",
+            "makeup": "Maquillaje",
+            "dramatic_text_reading": "Lectura de Texto Dramático",
+            "character_interpretation": "Interpretación de Personajes"
         }
     }
 }

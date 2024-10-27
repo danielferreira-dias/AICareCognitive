@@ -15,6 +15,11 @@ export const getSurveyById =  async (surveyId) => {
     return response.data;
 };
 
+export const getRejectedActivities = async (surveyId) => {
+    const response = await axiosClient.get(`/surveys/${surveyId}/rejected-activities`);
+    return response.data;
+};
+
 export const createSurvey = async (createSurveyRequestDto) => {
     const response = await axiosClient.post('/surveys', createSurveyRequestDto);
     return response.data;

@@ -1,6 +1,5 @@
 <template>
   <div class="h-full bg-white rounded-lg flex flex-col text-center border shadow-md">
-    <div class="w-full h-fit text-2xl md:text-4xl font-bold my-5">{{ $t('surveys.chat.title') }}</div>
 
     <div class="flex-1 flex flex-col items-center p-5 bg-gray-100 rounded-b-lg overflow-hidden h-screen">
       <!-- Loading message centered -->
@@ -17,8 +16,8 @@
         <!-- Render possible answers aligned to the right -->
         <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mb-4">
           <div class="flex space-x-2">
-            <AnswerButton v-for="(answer, index) in currentResult.question.possibleAnswers" :key="index" :textKey="answer"
-              :text="$t(`surveys.chat.answers.${answer}`)" :questionId="currentResult.question.id"
+            <AnswerButton v-for="(answer, index) in currentResult.question.possibleAnswers" :key="index"
+              :textKey="answer" :text="$t(`surveys.chat.answers.${answer}`)" :questionId="currentResult.question.id"
               :onAnswer="selectAnswer" />
           </div>
         </div>
@@ -34,7 +33,7 @@ import AnswerButton from './AnswerButton.vue';
 
 export default {
   props: {
-    surveyId: {
+    survey: {
       type: Object,
       required: true
     }
@@ -55,8 +54,8 @@ export default {
     };
   },
   watch: {
-    surveyId(newSurveyId, oldSurveyId) {
-      if (newSurveyId !== oldSurveyId) {
+    survey(newSurvey, oldSurvey) {
+      if (newSurvey !== oldSurvey) {
         this.resetSurveyChat(); // Call method to reset and reload
       }
     }
@@ -64,7 +63,7 @@ export default {
   methods: {
     async fetchAnsweredQuestions() {
       try {
-        const answeredQuestions = await getSurveysAnsweredQuestions(this.surveyId);
+        const answeredQuestions = await getSurveysAnsweredQuestions(this.survey.id);
         answeredQuestions.forEach(answeredQuestion => {
           this.addToChatHistory("question", answeredQuestion.question.text, answeredQuestion.question.id);
           this.addToChatHistory("answer", answeredQuestion.answer.response, answeredQuestion.question.id);
@@ -78,7 +77,7 @@ export default {
     },
     async fetchNextQuestion() {
       try {
-        const nextQuestion = await getSurveysNextQuestion(this.surveyId);
+        const nextQuestion = await getSurveysNextQuestion(this.survey.id);
         this.handleResult(nextQuestion);
       } catch (error) {
         console.error("Error fetching answered questions:", error);
@@ -87,11 +86,12 @@ export default {
     },
     async selectAnswer(questionId, answer) {
       try {
+        this.currentResult = null;
         const questionAnswer = {
           questionId: questionId,
           response: answer
         };
-        const createdAnswer = await answerSurvey(this.surveyId, questionAnswer);
+        const createdAnswer = await answerSurvey(this.survey.id, questionAnswer);
         this.addToChatHistory("answer", createdAnswer.response, questionId);
         this.fetchNextQuestion();
       } catch (error) {
@@ -102,6 +102,10 @@ export default {
       if (result && result.type === "question") {
         this.addToChatHistory(result.type, result.question.text, result.question.id);
         this.currentResult = result;
+      } else {
+        if (!this.survey.hasConclusion) {
+          this.$emit('updateHasConclusion', true);
+        }
       }
     },
     addToChatHistory(type, text, questionId) {
@@ -115,6 +119,7 @@ export default {
     resetSurveyChat() {
       // Reset state and reload the survey
       Object.assign(this.$data, this.$options.data());
+      this.hasEmittedConclusion = false;
       this.fetchAnsweredQuestions();
       this.fetchNextQuestion();
     }

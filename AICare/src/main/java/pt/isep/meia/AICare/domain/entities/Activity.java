@@ -24,4 +24,7 @@ public class Activity {
     private UUID id;
 
     private String description;
+
+    @Column(name = "conclusion_id", insertable = false, updatable = false)
+    private UUID conclusionId;
 }
