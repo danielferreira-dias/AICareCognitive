@@ -100,6 +100,7 @@ export default {
         this.currentResult = result;
       } else {
         if (!this.survey.hasConclusion) {
+          this.survey.hasConclusion = true
           this.$emit('updateHasConclusion', true);
         }
       }

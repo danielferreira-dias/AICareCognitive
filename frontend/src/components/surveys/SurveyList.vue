@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-white shadow-md h-full flex flex-row md:flex-col">
+  <div class="p-6 bg-white shadow-md h-full flex flex-col">
     <div class="flex justify-between items-center mb-4 p-4 gap-4">
       <h2 class="text-2xl font-semibold">{{ $t('surveys.list.title') }}</h2>
       <button @click="showCreateSurveyPopup = true"
