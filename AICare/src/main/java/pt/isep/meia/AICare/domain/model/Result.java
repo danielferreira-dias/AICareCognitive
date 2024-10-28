@@ -10,6 +10,7 @@ import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologTypeEnum;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,8 +32,10 @@ public class Result {
                 .map(description -> {
                     Activity activity = new Activity();
                     activity.setDescription(description);
+                    activity.setSortingOrder(activities.indexOf(description));
                     return activity;
                 })
+                .sorted(Comparator.comparing(Activity::getSortingOrder))
                 .collect(Collectors.toList());
 
         var conclusion = new Conclusion(surveyId, activityEntities);

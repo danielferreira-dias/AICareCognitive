@@ -27,4 +27,6 @@ public class Activity {
 
     @Column(name = "conclusion_id", insertable = false, updatable = false)
     private UUID conclusionId;
+
+    private int sortingOrder;
 }

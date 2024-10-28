@@ -21,6 +21,7 @@ public class Conclusion {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "conclusion_id")
+    @OrderBy("sortingOrder ASC")
     private List<Activity> activities;
 
     @Column(columnDefinition = "BINARY(16)")
