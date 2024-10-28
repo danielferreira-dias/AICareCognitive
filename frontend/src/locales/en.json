@@ -141,7 +141,7 @@
                 "observation_parkinson_shaking": "Observation: Mild Tremors",
                 "observation_parkinson_locomotion_difficulties": "Observation: Locomotion Difficulties",
                 "observation_parkinson_bent_spine": "Observation: Curved Spine",
-                "observation_parkinson_balance_loss": "Observation: Fine Motor Problems",
+                "observation_parkinson_balance_loss": "Observation: Balance Losses",
                 "observation_hearing_loss_onset": "Observation: Onset of Deafness",
                 "observation_parkinson_fine_motor_control": "Observation: Fine Motor Problems",
                 "observation_parkinson_intense_tremors": "Observation: Intense Tremors",
@@ -152,7 +152,7 @@
                 "observation_vascular_dementia_memory_recall_difficulties": "Observation: Important Memory Recall Difficulties",
                 "observation_vascular_dementia_people_recognition": "Observation: Difficulty in Recognizing People",
                 "observation_vascular_dementia_aggressiveness_insomnia_agitation": "Observation: Aggressiveness, insomnia or agitation",
-                "observation_vascular_dementia_motor_problems": "Observation: Problems with locomotion and hands"
+                "observation_vascular_dementia_motor_problems": "Observation: Problems with Locomotion and Hands"
             }
         },
         "conclusions": {
