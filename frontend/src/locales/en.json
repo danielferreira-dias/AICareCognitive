@@ -207,9 +207,71 @@
             "dramatic_text_reading": "Dramatic Text Reading",
             "character_interpretation": "Character Interpretation"
         },
-        "justifications":{
-            "no_conditions_prevent_activity": "No conditions prevent activity.",
-            "no_diseases_prevent_activity": "No diseases prevent activity."
+        "justifications": {
+            "closeForm": "Close",
+            "why": {
+                "no_conditions_prevent_activity": "No conditions prevent activity.",
+                "no_diseases_prevent_activity": "No diseases prevent activity."
+            },
+            "whynot": {
+                "conditions": {
+                    "conditions_social_integration": {
+                        "good_social_relations": "The individual maintains positive social relationships, making this activity appropriate.",
+                        "severe_integration_issues": "Due to severe social integration issues, this activity may cause stress or discomfort.",
+                        "isolated_person": "The individual is socially isolated, which may hinder participation in group activities."
+                    },
+                    "conditions_vision": {
+                        "good_vision": "The individual has normal vision, making visual-based tasks suitable.",
+                        "vision_with_difficulties": "The individual's vision difficulties may impede their ability to engage in this activity safely.",
+                        "blindness": "Blindness may prevent the individual from effectively or safely participating in this activity."
+                    },
+                    "conditions_hearing": {
+                        "good_hearing": "The individual has normal hearing, so auditory-based tasks are suitable.",
+                        "hearing_with_difficulties": "Hearing difficulties may affect the individual's ability to follow instructions or participate fully.",
+                        "deafness": "Deafness could make it challenging to participate in activities relying on auditory cues."
+                    },
+                    "conditions_speech": {
+                        "speaks_normally": "The individual speaks normally, enabling participation in communication-based tasks.",
+                        "speaks_with_difficulty": "Difficulty in speaking may hinder the individual’s communication in this activity.",
+                        "cannot_be_understood": "The individual’s speech is not understood, making communication-based activities challenging."
+                    },
+                    "conditions_smell": {
+                        "smell_normally": "The individual has a normal sense of smell, allowing full sensory participation.",
+                        "smell_with_difficulty": "Limited sense of smell may affect participation in smell-oriented activities.",
+                        "no_sense_of_smell": "Lack of smell could impact sensory experiences essential to this activity."
+                    },
+                    "conditions_upper_motor_skills": {
+                        "ums_functions_normally": "Upper motor skills function normally, enabling participation in tasks requiring fine motor skills.",
+                        "ums_has_difficulty": "Difficulty with upper motor skills may restrict the individual’s ability to handle tools or materials.",
+                        "unable_to_use_upper_limbs": "Inability to use upper limbs makes activities requiring hands-on participation unsuitable."
+                    },
+                    "conditions_lower_motor_skills": {
+                        "lms_functions_normally": "Lower motor skills function normally, allowing ease in movement-based activities.",
+                        "lms_has_difficulty": "Difficulty with lower motor skills may hinder the individual's mobility in active tasks.",
+                        "unable_to_use_lower_limbs": "Inability to use lower limbs restricts activities that require significant movement or mobility."
+                    },
+                    "conditions_object_handling": {
+                        "full_control": "The individual can handle objects with ease, making this activity suitable.",
+                        "partial_control": "Partial control over object handling may limit the individual's participation in tasks requiring dexterity.",
+                        "cannot_handle": "Inability to handle objects restricts participation in tasks requiring fine motor skills or object manipulation."
+                    },
+                    "conditions_reading": {
+                        "reading_normally": "The individual can read normally, enabling engagement with text-based tasks.",
+                        "reading_with_difficulty": "Reading difficulties may hinder comprehension and interaction with text in this activity.",
+                        "cannot_read": "Inability to read limits participation in tasks that rely on reading or written instructions."
+                    },
+                    "conditions_writing": {
+                        "writes_normally": "The individual writes normally, allowing participation in writing-based tasks.",
+                        "writes_with_difficulty": "Writing difficulties may hinder participation in tasks requiring written communication.",
+                        "cannot_write": "Inability to write limits engagement in activities that require written responses or documentation."
+                    },
+                    "conditions_mobility": {
+                        "moves_easily": "The individual has no mobility issues, making them suitable for physically active tasks.",
+                        "needs_assistance": "Assistance needed for mobility may make certain independent physical activities challenging.",
+                        "total_dependence": "Total dependence on assistance restricts the individual from fully engaging in this activity."
+                    }
+                }
+            }
         }
     }
 }

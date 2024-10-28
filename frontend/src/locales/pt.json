@@ -206,6 +206,72 @@
             "makeup": "Maquilhagem",
             "dramatic_text_reading": "Leitura de Texto Dramático",
             "character_interpretation": "Interpretação de Personagens"
+        },
+        "justifications": {
+            "closeForm": "Fechar",
+            "why": {
+                "no_conditions_prevent_activity": "Nenhuma condição impede a realização desta atividade.",
+                "no_diseases_prevent_activity": "Nenhuma doença impede a realização desta atividade."
+            },
+            "whynot": {
+                "conditions": {
+                    "conditions_social_integration": {
+                        "good_social_relations": "O indivíduo mantém relações sociais positivas, tornando esta atividade apropriada.",
+                        "severe_integration_issues": "Devido a problemas graves de integração social, esta atividade pode causar stress ou desconforto.",
+                        "isolated_person": "O indivíduo está socialmente isolado, o que pode dificultar a participação em atividades em grupo."
+                    },
+                    "conditions_vision": {
+                        "good_vision": "O indivíduo tem visão normal, tornando tarefas visuais adequadas.",
+                        "vision_with_difficulties": "Dificuldades na visão do indivíduo podem impedir a sua capacidade de participar nesta atividade com segurança.",
+                        "blindness": "A cegueira pode impedir que o indivíduo participe de forma eficaz ou segura nesta atividade."
+                    },
+                    "conditions_hearing": {
+                        "good_hearing": "O indivíduo tem audição normal, por isso tarefas baseadas em sons são adequadas.",
+                        "hearing_with_difficulties": "Dificuldades auditivas podem afetar a capacidade do indivíduo de seguir instruções ou participar plenamente.",
+                        "deafness": "A surdez pode dificultar a participação em atividades que dependem de sinais auditivos."
+                    },
+                    "conditions_speech": {
+                        "speaks_normally": "O indivíduo fala normalmente, permitindo a participação em tarefas que exigem comunicação.",
+                        "speaks_with_difficulty": "Dificuldades na fala podem limitar a comunicação do indivíduo nesta atividade.",
+                        "cannot_be_understood": "A fala do indivíduo não é compreendida, tornando desafiantes as atividades que exigem comunicação."
+                    },
+                    "conditions_smell": {
+                        "smell_normally": "O indivíduo tem sentido de olfato normal, permitindo uma participação plena em experiências sensoriais.",
+                        "smell_with_difficulty": "Dificuldades no olfato podem afetar a participação em atividades que dependem do sentido de olfato.",
+                        "no_sense_of_smell": "A falta de olfato pode impactar experiências sensoriais essenciais para esta atividade."
+                    },
+                    "conditions_upper_motor_skills": {
+                        "ums_functions_normally": "As habilidades motoras superiores funcionam normalmente, permitindo participação em tarefas que exigem destreza.",
+                        "ums_has_difficulty": "Dificuldades nas habilidades motoras superiores podem restringir a capacidade do indivíduo de manusear ferramentas ou materiais.",
+                        "unable_to_use_upper_limbs": "A incapacidade de usar os membros superiores torna inadequadas as atividades que requerem participação manual."
+                    },
+                    "conditions_lower_motor_skills": {
+                        "lms_functions_normally": "As habilidades motoras inferiores funcionam normalmente, permitindo facilidade em atividades de movimento.",
+                        "lms_has_difficulty": "Dificuldades nas habilidades motoras inferiores podem limitar a mobilidade do indivíduo em tarefas ativas.",
+                        "unable_to_use_lower_limbs": "A incapacidade de usar os membros inferiores restringe atividades que exigem movimento significativo."
+                    },
+                    "conditions_object_handling": {
+                        "full_control": "O indivíduo pode manusear objetos facilmente, tornando esta atividade adequada.",
+                        "partial_control": "O controle parcial no manuseio de objetos pode limitar a participação em tarefas que requerem destreza.",
+                        "cannot_handle": "A incapacidade de manusear objetos impede a participação em tarefas que exigem habilidades motoras finas ou manipulação de objetos."
+                    },
+                    "conditions_reading": {
+                        "reading_normally": "O indivíduo lê normalmente, possibilitando a interação com tarefas baseadas em texto.",
+                        "reading_with_difficulty": "Dificuldades de leitura podem prejudicar a compreensão e a interação com o texto nesta atividade.",
+                        "cannot_read": "A incapacidade de ler limita a participação em tarefas que dependem de leitura ou instruções escritas."
+                    },
+                    "conditions_writing": {
+                        "writes_normally": "O indivíduo escreve normalmente, permitindo a participação em tarefas que exigem escrita.",
+                        "writes_with_difficulty": "Dificuldades na escrita podem prejudicar a participação em tarefas que exigem comunicação escrita.",
+                        "cannot_write": "A incapacidade de escrever limita a participação em atividades que requerem respostas escritas ou documentação."
+                    },
+                    "conditions_mobility": {
+                        "moves_easily": "O indivíduo não possui problemas de mobilidade, tornando-o adequado para tarefas fisicamente ativas.",
+                        "needs_assistance": "A necessidade de assistência para mobilidade pode dificultar a realização de atividades físicas independentes.",
+                        "total_dependence": "A dependência total de assistência restringe o indivíduo de participar plenamente nesta atividade."
+                    }
+                }
+            }
         }
     }
 }

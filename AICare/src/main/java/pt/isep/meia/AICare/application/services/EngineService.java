@@ -4,7 +4,6 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.application.configs.EngineProperties;
-import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
@@ -12,7 +11,6 @@ import pt.isep.meia.AICare.infrastructure.gateways.DroolsGateway;
 import pt.isep.meia.AICare.infrastructure.gateways.PrologGateway;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
