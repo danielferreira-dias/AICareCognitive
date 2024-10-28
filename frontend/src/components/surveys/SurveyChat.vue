@@ -11,7 +11,7 @@
       <div v-else ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4 pb-16 pr-4">
         <!-- Render chat history -->
         <ChatMessage v-for="(message, index) in chatHistory" :key="index" :type="message.type"
-          :text="$t(`surveys.chat.${message.type}s.${message.text}`)" />
+          :text="`${message.type}s.${message.text}`" />
 
         <!-- Render possible answers aligned to the right -->
         <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mt-10 mb-4">

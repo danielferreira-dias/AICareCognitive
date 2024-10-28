@@ -1,12 +1,17 @@
 <template>
     <div :class="messageContainerClass">
         <div :class="messageClass">
-            <span>{{ displayedText }}</span><span v-if="isTyping" class="cursor">/</span>
+            <!-- Display typing effect only if typing is still in progress; otherwise, show the full translated text -->
+            <span v-if="isTyping">{{ displayedText }}</span>
+            <span v-else>{{ translatedText }}</span>
+            <span v-if="isTyping" class="cursor">/</span>
         </div>
     </div>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 export default {
     props: {
         type: {
@@ -20,9 +25,10 @@ export default {
     },
     data() {
         return {
-            displayedText: '', // stores the text currently being displayed
-            currentCharIndex: 0, // keeps track of the typing progress
-            isTyping: true // controls the visibility of the cursor
+            translatedText: '', // Holds the full translated text
+            displayedText: '', // Holds the progressively displayed text for typing effect
+            currentCharIndex: 0, // Keeps track of the typing progress
+            isTyping: true // Controls the visibility of the cursor and typing effect
         };
     },
     computed: {
@@ -38,12 +44,25 @@ export default {
         }
     },
     mounted() {
-        this.typeText();
+        this.startTypingEffect();
+    },
+    watch: {
+        // Watch for changes in the current locale and reset typing effect if it changes
+        '$i18n.locale'() {
+            this.startTypingEffect();
+        }
     },
     methods: {
+        startTypingEffect() {
+            this.translatedText = this.$t(`surveys.chat.${this.text}`);
+            this.displayedText = ''; // Reset displayed text
+            this.currentCharIndex = 0; // Reset typing index
+            this.isTyping = true; // Reset typing status
+            this.typeText(); // Start typing effect
+        },
         typeText() {
-            if (this.currentCharIndex < this.text.length) {
-                this.displayedText += this.text[this.currentCharIndex];
+            if (this.currentCharIndex < this.translatedText.length) {
+                this.displayedText += this.translatedText[this.currentCharIndex];
                 this.currentCharIndex++;
                 setTimeout(this.typeText, 50); // Adjust the delay for typing speed
             } else {
@@ -64,9 +83,11 @@ export default {
 
 /* Blinking animation */
 @keyframes blink {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0;
     }
