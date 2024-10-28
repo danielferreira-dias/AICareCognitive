@@ -82,62 +82,56 @@ conclusions(List) :-
     allowed_activities_saved(List).
 
 %--------------------------------------------------------------------------------   
-%MODULO DE EXPLICACIONES - WHY NOT - ACTIVITY?
+% EXPLANATION MODULE - WHY NOT - ACTIVITY?
 
-% Verificar por qué una actividad no está permitida
-why_not(Actividad, Justificacion) :-
-    allowed_activities_saved(ActividadesPermitidas),
-    \+ member(Actividad, ActividadesPermitidas),
-    (
-        reason_not_allowed(Actividad, Justificacion)
-        ; Justificacion = ["La actividad ", Actividad, " no está permitida por razones desconocidas"]
-    ).
+% Check why an activity is not allowed
+why_not(Activity, Justification) :-
+    allowed_activities_saved(AllowedActivities),
+    \+ member(Activity, AllowedActivities),
+    findall(Reason, reason_not_allowed(Activity, Reason), PartialJustifications),
+    Justification = PartialJustifications,
+    !.
 
-% Definir razones específicas de exclusión
-reason_not_allowed(Actividad, Justificacion) :-
+% Define specific reasons for exclusion
+reason_not_allowed(Activity, Justification) :-
     get_diseases(Diseases),
     member(Disease, Diseases),
-    cannot(Disease, Actividad),
-    Justificacion = ["La actividad ", Actividad, " no está permitida para la enfermedad ", Disease].
+    cannot(Disease, Activity),
+    Justification = ["disease", Disease].
 
-reason_not_allowed(Actividad, Justificacion) :-
+reason_not_allowed(Activity, Justification) :-
     get_conditions(Conditions),
     member(Condition, Conditions),
-    inadequate(Condition, Actividad),
+    inadequate(Condition, Activity),
     condition(Match, Condition),
-    Justificacion = ["La actividad ", Actividad, " no es adecuada debido a la condición ", Match, ": ", Condition].
-
-reason_not_allowed(Actividad, Justificacion) :-
-    get_preferences(Preferences),
-    \+ member(Actividad, Preferences),
-    Justificacion = ["La actividad ", Actividad, " no coincide con las preferencias registradas"].
-
+    Justification = ["conditions", Match, Condition].
 
 %--------------------------------------------------------------------------------   
-%MODULO DE EXPLICACIONES - WHY - ACTIVITY?
-% Explicación de por qué una actividad fue seleccionada
-why(Actividad, Justificacion) :-
-    allowed_activities_saved(ActividadesPermitidas),
-    member(Actividad, ActividadesPermitidas),
-    % Generar la explicación paso a paso
-    findall(Razon, reason_allowed(Actividad, Razon), JustificacionesParciales),
-    Justificacion = ["La actividad ", Actividad, " fue seleccionada por las siguientes razones: " | JustificacionesParciales].
+% EXPLANATION MODULE - WHY - ACTIVITY?
+% Explanation of why an activity was selected
+why(Activity, Justification) :-
+    allowed_activities_saved(AllowedActivities),
+    member(Activity, AllowedActivities),
+    % Generate the step-by-step explanation
+    findall(Reason, reason_allowed(Activity, Reason), PartialJustifications),
+    Justification = PartialJustifications,
+    !.
 
-% Razones específicas de selección basadas en preferencias
-reason_allowed(Actividad, Razon) :-
+% Specific selection reasons based on preferences
+reason_allowed(Activity, Reason) :-
     get_preferences(Preferences),
     member(Pref, Preferences),
-    preference(Pref, Actividad),
-    Razon = ["el usuario prefiere actividades de este tipo: ", Pref].
+    preference(Pref, Activity),
+    Reason = ["preferences", Pref].
 
-% Razones específicas de selección basadas en condiciones
-reason_allowed(Actividad, Razon) :-
+% Specific selection reasons based on conditions
+reason_allowed(Activity, Reason) :-
     get_conditions(Conditions),
-    forall(member(Condition, Conditions), \+ inadequate(Condition, Actividad)),
-    Razon = ["las condiciones del usuario no impiden desarrollar esta actividad"].
+    forall(member(Condition, Conditions), \+ inadequate(Condition, Activity)),
+    Reason = ["no_conditions_prevent_activity"].
 
-% Razones específicas de selección basadas en enfermedades (utilizando cannot/2)
-reason_allowed(Actividad, Razon) :-
+% Specific selection reasons based on diseases (using cannot/2)
+reason_allowed(Activity, Reason) :-
     get_diseases(Diseases),
-    forall(member(Disease, Diseases), \+ cannot(Disease, Actividad)),
-    Razon = ["las enfermedades del usuario no impiden desarrollar esta actividad"].
+    forall(member(Disease, Diseases), \+ cannot(Disease, Activity)),
+    Reason = ["no_diseases_prevent_activity"].

@@ -4,6 +4,7 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.application.configs.EngineProperties;
+import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Result;
@@ -55,10 +56,25 @@ public class EngineService {
         return true;
     }
 
-    public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences) throws IOException {
+    public List<Justification> getWhy(String activity, List<Evidence> evidences) throws IOException {
 //        if(engineProperties.getType().equals("drools")){
-//            return droolsGateway.getWhy(surveyId, evidences);
+//            return droolsGateway.getWhy(activity, evidences);
 //        }
-        return new ArrayList<>();
+
+        var result = prologGateway.postBulkAnswers(evidences);
+        if (!result) {
+            return null;
+        }
+
+        return prologGateway.getWhy(activity);
+    }
+
+    public List<Justification> getWhyNot(String activity, List<Evidence> evidences) {
+        var result = prologGateway.postBulkAnswers(evidences);
+        if (!result) {
+            return null;
+        }
+
+        return prologGateway.getWhyNot(activity);
     }
 }

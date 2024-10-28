@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.services.SurveyService;
+import pt.isep.meia.AICare.domain.dtos.ActivityJustificationRequestDto;
 import pt.isep.meia.AICare.domain.dtos.CreateSurveyRequestDto;
 import pt.isep.meia.AICare.domain.dtos.RejectedActivityDto;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.Justification;
+import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.domain.model.Evidence;
 
@@ -81,9 +83,13 @@ public class SurveysController {
         );
     }
 
-    @GetMapping("{surveyId}/why")
-    public ResponseEntity<List<Justification>> getWhy(@PathVariable UUID surveyId) throws IOException {
-        var justifications = surveyService.getWhy(surveyId);
+    @PostMapping("{surveyId}/justifications/{type}")
+    public ResponseEntity<List<Justification>> getJustifications(@PathVariable UUID surveyId, @PathVariable JustificationTypeEnum type, @RequestBody ActivityJustificationRequestDto requestDto) throws IOException {
+        var justifications = surveyService.getActivityJustifications(surveyId, requestDto.activityName, type);
+        if(justifications == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(justifications);
     }
 

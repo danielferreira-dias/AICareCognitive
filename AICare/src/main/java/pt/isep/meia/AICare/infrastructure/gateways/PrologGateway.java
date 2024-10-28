@@ -9,13 +9,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pt.isep.meia.AICare.domain.dtos.PrologJustificationDto;
+import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.model.Evidence;
+import pt.isep.meia.AICare.domain.model.Justification;
+import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PrologGateway {
@@ -37,6 +43,22 @@ public class PrologGateway {
         var endpoint = serverUrl + "/next_question";
         var response = restTemplate.getForEntity(endpoint, PrologResultDto.class);
         return Result.fromPrologResult(surveyId, Objects.requireNonNull(response.getBody()), order);
+    }
+
+    public List<Justification> getWhy(String activity) {
+        var endpoint = serverUrl + "/get_why/" + activity;
+        var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
+        return response.getBody().getJustifications().stream()
+                .map(justificationList -> new Justification(JustificationTypeEnum.why, String.join("-", justificationList)))
+                .collect(Collectors.toList());
+    }
+
+    public List<Justification> getWhyNot(String activity) {
+        var endpoint = serverUrl + "/get_why_not/" + activity;
+        var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
+        return response.getBody().getJustifications().stream()
+                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, String.join("-", justificationList)))
+                .collect(Collectors.toList());
     }
 
     public boolean postAnswer(String evidence, String answer) {

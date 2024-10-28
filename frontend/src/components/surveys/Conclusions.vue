@@ -9,8 +9,8 @@
 
       <!-- Accepted activities pills (green) -->
       <div class="flex flex-wrap gap-2">
-        <div v-for="(activity, index) in activities" :key="index"
-          class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold shadow">
+        <div v-for="(activity, index) in activities" :key="index" @click="showJustification(activity, 'why')"
+          class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold shadow cursor-pointer">
           {{ $t(`surveys.activities.${activity.description}`) }}
         </div>
       </div>
@@ -22,30 +22,40 @@
 
       <!-- Rejected activities pills (red) -->
       <div class="flex flex-wrap gap-2">
-        <div v-for="(activity, index) in rejectedActivities" :key="index"
-          class="px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold shadow">
+        <div v-for="(activity, index) in rejectedActivities" :key="index" @click="showJustification(activity, 'whynot')"
+          class="px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold shadow cursor-pointer">
           {{ $t(`surveys.activities.${activity.description}`) }}
         </div>
       </div>
     </div>
+
+    <!-- Justification Modal -->
+    <JustificationModal :visible="showModal" :surveyId="survey.id" :type="justificationType" :activity="selectedActivity"
+      :justification="justificationText" @close="showModal = false" />
   </div>
 </template>
 
 <script>
 import { getSurveysNextQuestion, getRejectedActivities } from '../../api/services/surveyService';
+import JustificationModal from './JustificationModal.vue';
 
 export default {
+  components: { JustificationModal },
   props: {
     survey: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       activities: [], // Accepted activities
       rejectedActivities: [], // Rejected activities
-      loading: true
+      loading: true,
+      showModal: false,
+      selectedActivity: null,
+      justificationType: '',
+      justificationText: '', // Text to display in the modal
     };
   },
   async mounted() {
@@ -56,7 +66,7 @@ export default {
       if (newSurvey) {
         this.fetchActivities(newSurvey.id);
       }
-    }
+    },
   },
   methods: {
     async fetchActivities(surveyId) {
@@ -65,7 +75,6 @@ export default {
         const result = await getSurveysNextQuestion(surveyId);
         this.activities = result.conclusion.activities || [];
 
-        // Fetch rejected activities
         const rejectedActivities = await getRejectedActivities(surveyId);
         this.rejectedActivities = rejectedActivities || [];
       } catch (error) {
@@ -73,34 +82,12 @@ export default {
       } finally {
         this.loading = false;
       }
-    }
-  }
+    },
+    async showJustification(activity, justificationType) {
+      this.selectedActivity = activity;
+      this.justificationType = justificationType;
+      this.showModal = true;
+    },
+  },
 };
 </script>
-
-<style scoped>
-/* Styling for pill containers */
-.pill {
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.bg-green-100 {
-  background-color: #d4edda;
-}
-
-.text-green-800 {
-  color: #155724;
-}
-
-.bg-red-100 {
-  background-color: #f8d7da;
-}
-
-.text-red-800 {
-  color: #721c24;
-}
-</style>

@@ -1,16 +1,16 @@
 import axiosClient from '../clients/axiosClient';
 
-export const getSurveysAnsweredQuestions =  async (surveyId) => {
+export const getSurveysAnsweredQuestions = async (surveyId) => {
     const response = await axiosClient.get(`/surveys/${surveyId}/answered-questions`);
     return response.data;
 };
 
-export const getSurveysNextQuestion =  async (surveyId) => {
+export const getSurveysNextQuestion = async (surveyId) => {
     const response = await axiosClient.get(`/surveys/${surveyId}/next-question`);
     return response.data;
 };
 
-export const getSurveyById =  async (surveyId) => {
+export const getSurveyById = async (surveyId) => {
     const response = await axiosClient.get(`/surveys/${surveyId}`);
     return response.data;
 };
@@ -19,6 +19,12 @@ export const getRejectedActivities = async (surveyId) => {
     const response = await axiosClient.get(`/surveys/${surveyId}/rejected-activities`);
     return response.data;
 };
+
+export async function getJustifications(surveyId, type, activity) {
+    const endpoint = `/surveys/${surveyId}/justifications/${type}`;
+    const response = await axiosClient.post(endpoint, activity);
+    return response.data;
+}
 
 export const createSurvey = async (createSurveyRequestDto) => {
     const response = await axiosClient.post('/surveys', createSurveyRequestDto);

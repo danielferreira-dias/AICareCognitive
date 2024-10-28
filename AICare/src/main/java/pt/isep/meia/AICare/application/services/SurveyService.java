@@ -4,12 +4,10 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.domain.constants.ActivityConstants;
+import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
-import pt.isep.meia.AICare.domain.model.Justification;
-import pt.isep.meia.AICare.domain.model.Result;
-import pt.isep.meia.AICare.domain.model.Evidence;
-import pt.isep.meia.AICare.domain.model.ResultTypeEnum;
+import pt.isep.meia.AICare.domain.model.*;
 import pt.isep.meia.AICare.infrastructure.repositories.*;
 
 import java.io.IOException;
@@ -109,11 +107,6 @@ public class SurveyService {
         return answersRepository.findEvidencesBySurveyId(surveyId);
     }
 
-    public List<Justification> getWhy(UUID surveyId) throws IOException {
-        var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
-        return engineService.getWhy(surveyId, evidences);
-    }
-
     public void deleteSurvey(UUID surveyId) {
         surveysRepository.deleteById(surveyId);
     }
@@ -123,5 +116,29 @@ public class SurveyService {
         return ActivityConstants.getAllActivities().stream()
                 .filter(activity -> !activities.contains(activity))
                 .collect(Collectors.toList());
+    }
+
+    public List<Justification> getActivityJustifications(UUID surveyId, String activityName, JustificationTypeEnum type) throws IOException {
+        var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
+        if(evidences.isEmpty()){
+            return null;
+        }
+
+        switch (type) {
+            case why:
+                return getWhy(activityName, evidences);
+            case whynot:
+                return getWhyNot(activityName, evidences);
+            default:
+                return null;
+        }
+    }
+
+    private List<Justification> getWhy(String activity, List<Evidence> evidences) throws IOException {
+        return engineService.getWhy(activity, evidences);
+    }
+
+    private List<Justification> getWhyNot(String activity, List<Evidence> evidences) throws IOException {
+        return engineService.getWhyNot(activity, evidences);
     }
 }

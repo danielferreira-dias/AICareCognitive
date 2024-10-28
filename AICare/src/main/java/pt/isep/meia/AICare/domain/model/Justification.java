@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Justification {
-    private String evidence;
+    private JustificationTypeEnum type;
     private String response;
 }

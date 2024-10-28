@@ -4,12 +4,15 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/json)).
 :- use_module(library(http/http_server_files)).
+
 :- dynamic evidence/2.
 
 :- consult('questionnaire.pl'),
     write('Questionnaire loaded!'), nl.
 
 :- http_handler(root(next_question), get_next_question, []).
+:- http_handler(root(get_why/Activity), get_why(Activity), [method(get)]).
+:- http_handler(root(get_why_not/Activity), get_why_not(Activity), [method(get)]).
 :- http_handler(root(answer), post_answer, []).
 :- http_handler(root(bulk_answer), post_bulk_answer, []).
 
@@ -22,6 +25,22 @@ get_next_question(_) :-
     ;   conclusions(Activities)
     ->  reply_json_dict(_{type: "conclusion", conclusion: Activities})
     ;   reply_json_dict(_{error: "No further questions or conclusions could be determined."})
+    ),
+    retractall(evidence(_, _)).
+
+get_why(Activity, _) :-
+    conclusions(_),
+    (   why(Activity, Justifications)
+    ->  reply_json_dict(_{justifications: Justifications})
+    ;   reply_json_dict(_{error: "No reason why."})
+    ),
+    retractall(evidence(_, _)).
+
+get_why_not(Activity, _) :-
+    conclusions(_),
+    (   why_not(Activity, Justifications)
+    ->  reply_json_dict(_{justifications: Justifications})
+    ;   reply_json_dict(_{error: "No reason why not."})
     ),
     retractall(evidence(_, _)).
 

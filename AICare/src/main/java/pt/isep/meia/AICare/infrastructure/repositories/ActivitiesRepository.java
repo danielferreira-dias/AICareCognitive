@@ -13,4 +13,9 @@ public interface ActivitiesRepository extends JpaRepository<Activity, UUID> {
             "FROM Activity a JOIN Conclusion c ON a.conclusionId = c.id " +
             "WHERE c.surveyId = :surveyId ")
     List<String> findActivitiesDescriptionsBySurveyId(@Param("surveyId") UUID surveyId);
+
+    @Query("SELECT a " +
+            "FROM Activity a JOIN Conclusion c ON a.conclusionId = c.id " +
+            "WHERE c.surveyId = :surveyId AND a.id = :activityId")
+    Activity findActivitiesByIdAndSurveyId(@Param("activityId") UUID activityId, @Param("surveyId") UUID surveyId);
 }

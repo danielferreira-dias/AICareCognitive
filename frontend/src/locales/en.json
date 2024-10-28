@@ -206,6 +206,10 @@
             "makeup": "Makeup",
             "dramatic_text_reading": "Dramatic Text Reading",
             "character_interpretation": "Character Interpretation"
+        },
+        "justifications":{
+            "no_conditions_prevent_activity": "No conditions prevent activity.",
+            "no_diseases_prevent_activity": "No diseases prevent activity."
         }
     }
 }

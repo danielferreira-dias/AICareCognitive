@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             logoAICARE,
-            selectedEngine: 'drools' // Default to 'drools'
+            selectedEngine: 'prolog' // Default to 'prolog'
         };
     },
     async mounted() {
@@ -56,7 +56,7 @@ export default {
         // Fetch the current engine from the engine service on load
         try {
             const result = await getCurrentEngine();
-            this.selectedEngine = result.engine || 'drools'; // Default to 'drools' if not set
+            this.selectedEngine = result.engine || 'prolog'; // Default to 'prolog' if not set
         } catch (error) {
             console.error('Error fetching current engine:', error);
         }
