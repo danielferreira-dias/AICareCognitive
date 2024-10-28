@@ -9,7 +9,7 @@
     <div class="flex-1 h-full flex flex-col overflow-hidden bg-white rounded-lg text-center border shadow-md">
       <!-- Render tab buttons if a survey is selected -->
       <div v-if="selectedSurvey" class="flex justify-center border-b">
-        <button v-if="this.hasConclusion" @click="currentTab = 'conclusions'"
+        <button v-if="hasConclusion" @click="currentTab = 'conclusions'"
           :class="{ 'border-b-2 font-bold': currentTab === 'conclusions' }" class="px-4 py-2 text-2xl">
           {{ $t('surveys.tabs.conclusions') }}
         </button>
@@ -58,13 +58,16 @@ export default {
   methods: {
     selectSurvey(survey) {
       this.selectedSurvey = survey;
-      this.hasConclusion = survey.hasConclusion || false;
-      // Set currentTab to 'conclusions' if the survey has conclusions, else default to 'survey'
-      this.currentTab = this.hasConclusion ? 'conclusions' : 'survey';
+      if (survey) {
+        this.hasConclusion = survey.hasConclusion || false;
+        this.currentTab = this.hasConclusion ? 'conclusions' : 'survey';
+      } else {
+        this.hasConclusion = false;
+        this.currentTab = 'survey'; // Reset to default tab
+      }
     },
     updateHasConclusion(hasConclusion) {
       this.hasConclusion = hasConclusion;
-      // Optionally, set currentTab based on the updated hasConclusion
       if (hasConclusion) {
         this.currentTab = 'conclusions';
       }

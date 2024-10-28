@@ -86,6 +86,7 @@ export default {
         await deleteSurvey(survey.id);
         this.surveys = this.surveys.filter(s => s.id !== survey.id); // Remove survey from the list
         this.cancelDelete();
+        this.$emit('selectSurvey', null); // Emit null or any other value to indicate no survey is selected
       } catch (error) {
         console.error('Error deleting survey:', error);
       }

@@ -74,7 +74,6 @@ export default {
     async fetchNextQuestion() {
       try {
         const nextQuestion = await getSurveysNextQuestion(this.survey.id);
-        console.log(nextQuestion)
         this.handleResult(nextQuestion);
       } catch (error) {
         console.error("Error fetching next question:", error);
@@ -97,10 +96,6 @@ export default {
     },
     handleResult(result) {
       if (result && result.type === "question") {
-        console.log("ENTROU AQUI")
-        console.log(result.type)
-        console.log(result.question.text)
-        console.log(result.question.id)
         this.addToChatHistory(result.type, result.question.text, result.question.id);
         this.currentResult = result;
       } else {
@@ -110,7 +105,6 @@ export default {
       }
     },
     addToChatHistory(type, text, questionId) {
-      console.log('Adding to chat history:', { type, text, questionId });
       this.chatHistory.push({ type, text, questionId });
       this.$nextTick(this.scrollToBottom); // Ensure scroll after adding
     },
