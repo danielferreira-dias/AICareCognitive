@@ -18,17 +18,12 @@ server(Port) :-
 
 get_next_question(_) :-
     (   next_question(Question, PossibleAnswers)
-    ->  (   is_conclusion(Question)
-        ->  reply_json_dict(_{type: "conclusion", conclusion: Question})
-        ;   reply_json_dict(_{type: "question", question: Question, possibleAnswers: PossibleAnswers})
-        ),
-        retractall(evidence(_, _))
+    ->  reply_json_dict(_{type: "question", question: Question, possibleAnswers: PossibleAnswers})
+    ;   conclusions(Activities)
+    ->  reply_json_dict(_{type: "conclusion", conclusion: Activities})
     ;   reply_json_dict(_{error: "No further questions or conclusions could be determined."})
-    ).
-
-is_conclusion(Question) :-
-    is_list(Question),
-    forall(member(Q, Question), activity(Q)).
+    ),
+    retractall(evidence(_, _)).
 
 post_answer(Request) :-
     catch(
