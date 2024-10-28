@@ -36,15 +36,15 @@ next_question(diagnosis_vascular_dementia_stage, [initial, advanced]) :-
 % STEP 2: Alzheimers-related questions 
 % INITIAL QUESTIONS 
 next_question(observation_alzheimer_spacial_disorientation, [yes, no]) :-
-    evidence(diagnosis_alzheimer, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_alzheimer, no)),
     \+ evidence(observation_alzheimer_spacial_disorientation, _).
 
 next_question(observation_alzheimer_memory_loss_frustration, [yes, no]) :-
-    evidence(diagnosis_alzheimer, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_alzheimer, no)),
     \+ evidence(observation_alzheimer_memory_loss_frustration, _).
 
 next_question(observation_alzheimer_slight_memory_loss, [yes, no]) :-
-    evidence(diagnosis_alzheimer, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_alzheimer, no)),
     \+ evidence(observation_alzheimer_slight_memory_loss, _).
 
 % ADVANCED QUESTIONS 
@@ -137,23 +137,23 @@ next_question(observation_alzheimer_history_of_falls, [yes, no]) :-
 % STEP 3: Parkinsons-related questions
 % INITIAL QUESTIONS 
 next_question(observation_parkinson_shaking, [yes, no]) :-
-    evidence(diagnosis_parkinson, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_parkinson, no)),
     \+ evidence(observation_parkinson_shaking, _).
 
 next_question(observation_parkinson_locomotion_difficulties, [yes, no]) :-
-    evidence(diagnosis_parkinson, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_parkinson, no)),
     \+ evidence(observation_parkinson_locomotion_difficulties, _).
 
 next_question(observation_parkinson_bent_spine, [yes, no]) :-
-    evidence(diagnosis_parkinson, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_parkinson, no)),
     \+ evidence(observation_parkinson_bent_spine, _).
 
 next_question(observation_parkinson_balance_loss, [yes, no]) :-
-    evidence(diagnosis_parkinson, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_parkinson, no)),
     \+ evidence(observation_parkinson_balance_loss, _).
 
 next_question(observation_hearing_loss_onset, [yes, no]) :-
-    evidence(diagnosis_parkinson, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_parkinson, no)),
     \+ evidence(observation_hearing_loss_onset, _).
 
 % ADVANCED QUESTIONS 
@@ -228,15 +228,15 @@ next_question(observation_parkinson_coordination_difficulties, [yes, no]) :-
 % STEP 4: Vascular dementia-related questions
 % INITIAL QUESTIONS 
 next_question(observation_vascular_dementia_slight_memory_loss, [yes, no]) :-
-    evidence(diagnosis_vascular_dementia, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_vascular_dementia, no)),
     \+ evidence(observation_vascular_dementia_slight_memory_loss, _).
 
 next_question(observation_vascular_dementia_depression_anxiety, [yes, no]) :-
-    evidence(diagnosis_vascular_dementia, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_vascular_dementia, no)),
     \+ evidence(observation_vascular_dementia_depression_anxiety, _).
 
 next_question(observation_vascular_dementia_thinking_problems, [yes, no]) :-
-    evidence(diagnosis_vascular_dementia, no),
+    (evidence(diagnosis, no) ; evidence(diagnosis_vascular_dementia, no)),
     \+ evidence(observation_vascular_dementia_thinking_problems, _).
 
 % ADVANCED QUESTIONS 

@@ -71,11 +71,73 @@ show_allowed_activities_saved :-
     maplist(writeln, Activities).
 
 %--------------------------------------------------------------------------------   
+
 conclusions(List) :-
     get_diseases(Diseases),
-    get_preferences(Preferences),
     get_conditions(Conditions),
+    get_preferences(Preferences),
     initialize(Diseases),
     initialize2(Conditions),
     initialize3(Preferences),
     allowed_activities_saved(List).
+
+%--------------------------------------------------------------------------------   
+%MODULO DE EXPLICACIONES - WHY NOT - ACTIVITY?
+
+% Verificar por qué una actividad no está permitida
+why_not(Actividad, Justificacion) :-
+    allowed_activities_saved(ActividadesPermitidas),
+    \+ member(Actividad, ActividadesPermitidas),
+    (
+        reason_not_allowed(Actividad, Justificacion)
+        ; Justificacion = ["La actividad ", Actividad, " no está permitida por razones desconocidas"]
+    ).
+
+% Definir razones específicas de exclusión
+reason_not_allowed(Actividad, Justificacion) :-
+    get_diseases(Diseases),
+    member(Disease, Diseases),
+    cannot(Disease, Actividad),
+    Justificacion = ["La actividad ", Actividad, " no está permitida para la enfermedad ", Disease].
+
+reason_not_allowed(Actividad, Justificacion) :-
+    get_conditions(Conditions),
+    member(Condition, Conditions),
+    inadequate(Condition, Actividad),
+    condition(Match, Condition),
+    Justificacion = ["La actividad ", Actividad, " no es adecuada debido a la condición ", Match, ": ", Condition].
+
+reason_not_allowed(Actividad, Justificacion) :-
+    get_preferences(Preferences),
+    \+ member(Actividad, Preferences),
+    Justificacion = ["La actividad ", Actividad, " no coincide con las preferencias registradas"].
+
+
+%--------------------------------------------------------------------------------   
+%MODULO DE EXPLICACIONES - WHY - ACTIVITY?
+% Explicación de por qué una actividad fue seleccionada
+why(Actividad, Justificacion) :-
+    allowed_activities_saved(ActividadesPermitidas),
+    member(Actividad, ActividadesPermitidas),
+    % Generar la explicación paso a paso
+    findall(Razon, reason_allowed(Actividad, Razon), JustificacionesParciales),
+    Justificacion = ["La actividad ", Actividad, " fue seleccionada por las siguientes razones: " | JustificacionesParciales].
+
+% Razones específicas de selección basadas en preferencias
+reason_allowed(Actividad, Razon) :-
+    get_preferences(Preferences),
+    member(Pref, Preferences),
+    preference(Pref, Actividad),
+    Razon = ["el usuario prefiere actividades de este tipo: ", Pref].
+
+% Razones específicas de selección basadas en condiciones
+reason_allowed(Actividad, Razon) :-
+    get_conditions(Conditions),
+    forall(member(Condition, Conditions), \+ inadequate(Condition, Actividad)),
+    Razon = ["las condiciones del usuario no impiden desarrollar esta actividad"].
+
+% Razones específicas de selección basadas en enfermedades (utilizando cannot/2)
+reason_allowed(Actividad, Razon) :-
+    get_diseases(Diseases),
+    forall(member(Disease, Diseases), \+ cannot(Disease, Actividad)),
+    Razon = ["las enfermedades del usuario no impiden desarrollar esta actividad"].

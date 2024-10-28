@@ -203,7 +203,7 @@ cannot(alzheimer_advanced, missako_games).
 cannot(alzheimer_advanced, domino_games).
 cannot(alzheimer_advanced, tic_tac_toe_games).
 cannot(alzheimer_advanced, dramatic_text_reading).
-cannot(parkinson_advanced, memory_exercises).
+cannot(alzheimer_advanced, memory_exercises).
 
 %Parkinson - Initial
 cannot(parkinson_initial, small_arrangements).
@@ -321,7 +321,7 @@ condition(conditions_mobility, total_dependence) :-
 
 
 get_conditions(Conditions):-
-    findall(X, condition(X, _), ConditionsList),
+    findall(X, condition(_, X), ConditionsList),
     sort(ConditionsList, Conditions).
 
 %------------------------------------------------------------------------
@@ -435,7 +435,6 @@ inadequate(speaks_with_difficulty, musicogram).
 inadequate(cannot_be_understood, verbal_task_exercises).
 inadequate(cannot_be_understood, karaoke).
 inadequate(cannot_be_understood, character_interpretation).
-inadequate(cannot_be_understood, verbal_task_exercises).
 inadequate(cannot_be_understood, dramatic_text_reading).
 inadequate(cannot_be_understood, guess_the_song).
 inadequate(cannot_be_understood, musicogram).
@@ -493,7 +492,7 @@ inadequate(unable_to_use_upper_limbs, tic_tac_toe_games).
 inadequate(unable_to_use_upper_limbs, domino_games).
 inadequate(unable_to_use_upper_limbs, character_interpretation).
 
-%7 Upper Mobility
+%7 Lower Mobility
 % Lower Mobility Difficulty (Moderate Severity)
 inadequate(lms_has_difficulty, petanque_games).
 inadequate(lms_has_difficulty, bowling_games).
@@ -625,6 +624,7 @@ get_preferences(Preferences) :-
 preference(preferences_theatre, dramatic_text_reading).
 preference(preferences_theatre, character_interpretation).
 preference(preferences_theatre, mime_games).
+preference(preferences_theatre, makeup).
 %2-Museum
 preference(preferences_museum, paintings).
 preference(preferences_museum, small_arrangements).
