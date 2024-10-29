@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-white shadow-md rounded-lg h-full">
+  <div class="p-6 bg-white shadow-md rounded-lg h-full flex flex-col overflow-y-auto">
     <!-- Loading state -->
     <div v-if="loading" class="text-center text-lg">Loading conclusions...</div>
 
