@@ -1,6 +1,7 @@
 package pt.isep.meia.AICare.domain.entities;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 public class Conclusion {
     @Id

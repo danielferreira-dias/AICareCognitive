@@ -7,6 +7,7 @@ import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.infrastructure.repositories.ConclusionsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,7 +30,8 @@ public class ConclusionService {
         return conclusionsRepository.findConclusionsBySurveyIdIn(surveyIds);
     }
 
-    public Conclusion save(Conclusion conclusion) {
+    public Conclusion saveDroppingActivities(Conclusion conclusion) {
+        conclusion.setActivities(new ArrayList<>());
         return conclusionsRepository.save(conclusion);
     }
 }

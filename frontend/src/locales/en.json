@@ -214,6 +214,14 @@
                 "no_diseases_prevent_activity": "No diseases prevent activity."
             },
             "whynot": {
+                "disease": {
+                    "alzheimer_advanced": "Advanced Alzheimer's disease significantly impairs cognitive functions, making this activity inappropriate.",
+                    "alzheimer_initial": "Early-stage Alzheimer's disease may impact memory and focus, potentially limiting engagement in this activity.",
+                    "parkinson_advanced": "Advanced Parkinson's disease affects motor skills and coordination, making physical activities challenging or unsafe.",
+                    "parkinson_initial": "Early-stage Parkinson's disease may cause mild motor impairments, which could limit participation in certain physical tasks.",
+                    "vascular_dementia_advanced": "Advanced vascular dementia greatly reduces cognitive ability, making it difficult to engage safely and effectively in this activity.",
+                    "vascular_dementia_initial": "Early-stage vascular dementia may cause cognitive and memory challenges, potentially impacting participation in this activity."
+                },
                 "conditions": {
                     "conditions_social_integration": {
                         "good_social_relations": "The individual maintains positive social relationships, making this activity appropriate.",

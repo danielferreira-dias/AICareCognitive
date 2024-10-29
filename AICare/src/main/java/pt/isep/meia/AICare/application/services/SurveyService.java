@@ -18,25 +18,26 @@ import java.util.stream.Collectors;
 @Service
 public class SurveyService {
     private final ConclusionService conclusionService;
+    private final ActivitiesService activitiesService;
     private final SurveysRepository surveysRepository;
     private final QuestionsRepository questionsRepository;
     private final AnswersRepository answersRepository;
     private final EngineService engineService;
-    private final ActivitiesRepository activitiesRepository;
 
     @Autowired
     public SurveyService(
             EngineService engineService,
             ConclusionService conclusionService,
+            ActivitiesService activitiesService,
             SurveysRepository surveysRepository,
             QuestionsRepository questionsRepository,
-            AnswersRepository answersRepository, ActivitiesRepository activitiesRepository) {
+            AnswersRepository answersRepository) {
         this.engineService = engineService;
         this.conclusionService = conclusionService;
+        this.activitiesService = activitiesService;
         this.surveysRepository = surveysRepository;
         this.questionsRepository = questionsRepository;
         this.answersRepository = answersRepository;
-        this.activitiesRepository = activitiesRepository;
     }
 
     public Survey getSurveyById(UUID surveyId) {
@@ -79,7 +80,8 @@ public class SurveyService {
         }
 
         if(result.getType().equals(ResultTypeEnum.conclusion)){
-            var createdConclusion = conclusionService.save(result.getConclusion());
+            var createdConclusion = conclusionService.saveDroppingActivities(result.getConclusion());
+            activitiesService.saveAllForConclusion(createdConclusion, result.getConclusion().getActivities());
             return Result.fromConclusion(createdConclusion);
         }
 
@@ -112,7 +114,7 @@ public class SurveyService {
     }
 
     public List<String> getRejectedActivities(UUID surveyId) {
-        var activities = activitiesRepository.findActivitiesDescriptionsBySurveyId(surveyId);
+        var activities = activitiesService.findActivitiesDescriptionsBySurveyId(surveyId);
         return ActivityConstants.getAllActivities().stream()
                 .filter(activity -> !activities.contains(activity))
                 .collect(Collectors.toList());

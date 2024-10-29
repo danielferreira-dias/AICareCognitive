@@ -214,6 +214,14 @@
                 "no_diseases_prevent_activity": "Ninguna enfermedad impide la realización de esta actividad."
             },
             "whynot": {
+                "disease": {
+                    "alzheimer_advanced": "El Alzheimer avanzado afecta significativamente las funciones cognitivas, haciendo esta actividad inapropiada.",
+                    "alzheimer_initial": "El Alzheimer en etapa inicial puede afectar la memoria y la concentración, limitando potencialmente el desempeño en esta actividad.",
+                    "parkinson_advanced": "El Parkinson avanzado afecta las habilidades motoras y la coordinación, haciendo las actividades físicas desafiantes o inseguras.",
+                    "parkinson_initial": "El Parkinson en etapa inicial puede causar leves dificultades motoras, lo que podría limitar la participación en ciertas tareas físicas.",
+                    "vascular_dementia_advanced": "La demencia vascular avanzada reduce en gran medida la capacidad cognitiva, dificultando la participación segura y efectiva en esta actividad.",
+                    "vascular_dementia_initial": "La demencia vascular en etapa inicial puede causar dificultades cognitivas y de memoria, afectando potencialmente la participación en esta actividad."
+                },
                 "conditions": {
                     "conditions_social_integration": {
                         "good_social_relations": "El individuo mantiene relaciones sociales positivas, haciendo esta actividad apropiada.",

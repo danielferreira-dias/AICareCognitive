@@ -3,11 +3,9 @@ package pt.isep.meia.AICare.domain.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ManyToAny;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +23,9 @@ public class Activity {
 
     private String description;
 
-    @Column(name = "conclusion_id", insertable = false, updatable = false)
-    private UUID conclusionId;
+    @ManyToOne
+    @JoinColumn(name = "conclusion_id")
+    private Conclusion conclusion;
 
     private int sortingOrder;
 }
