@@ -9,7 +9,7 @@
       </h3>
       <div class="flex items-center space-x-2">
         <!-- Trash Icon for Deletion -->
-        <font-awesome-icon icon="trash-alt" class="text-red-600 cursor-pointer hover:text-red-800 transition"
+        <font-awesome-icon icon="trash-alt" alt="Delete" class="text-red-600 cursor-pointer hover:text-red-800 transition" :title="$t('patients.table.delete')"
           @click.stop="confirmDelete" />
         <div :class="['h-2 w-2 rounded-full', survey.hasConclusion ? 'bg-green-500' : 'bg-red-500']"></div>
       </div>
