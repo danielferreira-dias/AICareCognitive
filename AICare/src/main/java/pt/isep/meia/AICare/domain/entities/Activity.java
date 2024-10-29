@@ -23,9 +23,8 @@ public class Activity {
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "conclusion_id")
-    private Conclusion conclusion;
+    @Column(name = "conclusion_id", insertable = false, updatable = false)
+    private UUID conclusionId;
 
     private int sortingOrder;
 }

@@ -20,11 +20,11 @@ public class ActivitiesService {
         this.activitiesRepository = activitiesRepository;
     }
 
-    public void saveAllForConclusion(Conclusion createdConclusion, List<Activity> activities) {
+    public List<Activity> saveAllForConclusion(Conclusion createdConclusion, List<Activity> activities) {
         var activitiesToSave = activities.stream()
-                .peek(activity -> activity.setConclusion(createdConclusion))
+                .peek(activity -> activity.setConclusionId(createdConclusion.getId()))
                 .collect(Collectors.toList());
-        activitiesRepository.saveAll(activitiesToSave);
+        return activitiesRepository.saveAll(activitiesToSave);
     }
 
     public List<String> findActivitiesDescriptionsBySurveyId(UUID surveyId) {

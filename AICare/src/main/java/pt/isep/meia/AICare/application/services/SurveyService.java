@@ -80,8 +80,11 @@ public class SurveyService {
         }
 
         if(result.getType().equals(ResultTypeEnum.conclusion)){
+            var activities = result.getConclusion().getActivities();
             var createdConclusion = conclusionService.saveDroppingActivities(result.getConclusion());
-            activitiesService.saveAllForConclusion(createdConclusion, result.getConclusion().getActivities());
+            var createdActivities = activitiesService.saveAllForConclusion(createdConclusion, activities);
+            createdConclusion.setActivities(createdActivities);
+
             return Result.fromConclusion(createdConclusion);
         }
 
