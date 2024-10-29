@@ -19,6 +19,10 @@ export default {
         text: {
             type: String,
             required: true
+        },
+        animateTyping: {
+            type: Boolean,
+            default: false // Typing effect only occurs if explicitly requested
         }
     },
     data() {
@@ -26,7 +30,7 @@ export default {
             translatedText: '', // Holds the full translated text
             displayedText: '', // Holds the progressively displayed text for typing effect
             currentCharIndex: 0, // Keeps track of the typing progress
-            isTyping: true // Controls the visibility of the cursor and typing effect
+            isTyping: false // Controls the visibility of the cursor and typing effect
         };
     },
     computed: {
@@ -42,27 +46,40 @@ export default {
         }
     },
     mounted() {
-        this.startTypingEffect();
+        this.renderText();
     },
     watch: {
-        // Watch for changes in the current locale and reset typing effect if it changes
+        // Watch for changes in the current locale and update text without typing animation
         '$i18n.locale'() {
-            this.startTypingEffect();
+            this.updateTextWithoutTyping();
         }
     },
     methods: {
-        startTypingEffect() {
+        renderText() {
             this.translatedText = this.$t(`surveys.chat.${this.text}`);
-            this.displayedText = ''; // Reset displayed text
-            this.currentCharIndex = 0; // Reset typing index
-            this.isTyping = true; // Reset typing status
-            this.typeText(); // Start typing effect
+            if (this.animateTyping) {
+                // Reset for typing animation if animateTyping is true
+                this.displayedText = '';
+                this.currentCharIndex = 0;
+                this.isTyping = true;
+                this.typeText();
+            } else {
+                // Display full text instantly if animateTyping is false
+                this.displayedText = this.translatedText;
+                this.isTyping = false;
+            }
+        },
+        updateTextWithoutTyping() {
+            // Update the full translated text without triggering typing animation
+            this.translatedText = this.$t(`surveys.chat.${this.text}`);
+            this.displayedText = this.translatedText;
+            this.isTyping = false; // Ensure typing is disabled for this update
         },
         typeText() {
             if (this.currentCharIndex < this.translatedText.length) {
                 this.displayedText += this.translatedText[this.currentCharIndex];
                 this.currentCharIndex++;
-                setTimeout(this.typeText, 50); // Adjust the delay for typing speed
+                setTimeout(this.typeText, 17); // Increased speed by setting delay to 17 ms
             } else {
                 this.isTyping = false; // Stop showing the cursor when typing is complete
             }
@@ -81,6 +98,7 @@ export default {
 
 /* Blinking animation */
 @keyframes blink {
+
     0%,
     100% {
         opacity: 1;

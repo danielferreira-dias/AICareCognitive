@@ -11,7 +11,7 @@
       <div v-else ref="chatContainer" class="flex-1 w-full overflow-y-auto mb-4 pb-16 pr-4">
         <!-- Render chat history -->
         <ChatMessage v-for="(message, index) in chatHistory" :key="index" :type="message.type"
-          :text="`${message.type}s.${message.text}`" />
+          :text="`${message.type}s.${message.text}`" :animateTyping="message.animateTyping" />
 
         <!-- Render possible answers aligned to the right -->
         <div v-if="currentResult && currentResult.question.possibleAnswers" class="flex justify-end w-full mt-10 mb-4">
@@ -61,8 +61,8 @@ export default {
       try {
         const answeredQuestions = await getSurveysAnsweredQuestions(this.survey.id);
         answeredQuestions.forEach(answeredQuestion => {
-          this.addToChatHistory("question", answeredQuestion.question.text, answeredQuestion.question.id);
-          this.addToChatHistory("answer", answeredQuestion.answer.response, answeredQuestion.question.id);
+          this.addToChatHistory("question", answeredQuestion.question.text, answeredQuestion.question.id, false);
+          this.addToChatHistory("answer", answeredQuestion.answer.response, answeredQuestion.question.id, false);
         });
       } catch (error) {
         console.error("Error fetching answered questions:", error);
@@ -88,7 +88,7 @@ export default {
           response: answer
         };
         const createdAnswer = await answerSurvey(this.survey.id, questionAnswer);
-        this.addToChatHistory("answer", createdAnswer.response, questionId);
+        this.addToChatHistory("answer", createdAnswer.response, questionId, false);
         this.fetchNextQuestion(); // Fetch next question after answer
       } catch (error) {
         console.error('Error answering survey:', error);
@@ -96,7 +96,7 @@ export default {
     },
     handleResult(result) {
       if (result && result.type === "question") {
-        this.addToChatHistory(result.type, result.question.text, result.question.id);
+        this.addToChatHistory(result.type, result.question.text, result.question.id, true);
         this.currentResult = result;
       } else {
         if (!this.survey.hasConclusion) {
@@ -105,8 +105,8 @@ export default {
         }
       }
     },
-    addToChatHistory(type, text, questionId) {
-      this.chatHistory.push({ type, text, questionId });
+    addToChatHistory(type, text, questionId, animateTyping) {
+      this.chatHistory.push({ type, text, questionId, animateTyping });
       this.$nextTick(this.scrollToBottom); // Ensure scroll after adding
     },
     scrollToBottom() {
