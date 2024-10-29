@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Getter
 @Configuration
-@ConfigurationProperties(prefix = "engine")
-public class EngineProperties {
+@ConfigurationProperties(prefix = "prolog.server")
+public class PrologServerProperties {
 
-    private String type;
+    private String url;
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pt.isep.meia.AICare.application.configs.PrologServerProperties;
 import pt.isep.meia.AICare.domain.dtos.PrologJustificationDto;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
@@ -31,9 +32,10 @@ public class PrologGateway {
     @Autowired
     public PrologGateway(
             RestTemplate restTemplate,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            PrologServerProperties prologServerProperties) {
         this.objectMapper = objectMapper;
-        this.serverUrl = "http://localhost:8081";
+        this.serverUrl = prologServerProperties.getUrl();
         this.restTemplate = restTemplate;
     }
 

@@ -14,6 +14,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/aicare
       - SPRING_DATASOURCE_USERNAME=aicareuser
       - SPRING_DATASOURCE_PASSWORD=userpassword
+      - PROLOG_SERVER_URL=http://prolog:8081
   
   frontend:
     image: node:20.18.0-alpine
