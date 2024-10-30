@@ -472,7 +472,7 @@ rule "ask_condition_speech"
         Question q = new Question(surveyId, EvidenceConstants.SPEECH);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.SPEAKS_NORMALLY,
-            AnswerConstants.EXPRESSES_WITH_DIFFICULTY,
+            AnswerConstants.SPEAKS_WITH_DIFFICULTY,
             AnswerConstants.CANNOT_BE_UNDERSTOOD
         ));
         insert(q);
@@ -487,9 +487,9 @@ rule "ask_condition_smell"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.SMELL);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.FUNCTIONS_NORMALLY,
-            AnswerConstants.DIFFICULTIES_IDENTIFYING_ODORS,
-            AnswerConstants.COMPLETE_LOSS_OF_SMELL
+            AnswerConstants.SMELL_NORMALLY,
+            AnswerConstants.SMELL_WITH_DIFFICULTY,
+            AnswerConstants.NO_SENSE_OF_SMELL
         ));
         insert(q);
         drools.halt();
@@ -503,9 +503,9 @@ rule "ask_condition_upper_motor_skills"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.UPPER_MOTOR_SKILLS);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.FUNCTIONS_NORMALLY,
-            AnswerConstants.HAS_DIFFICULTY,
-            AnswerConstants.CANNOT_MOVE
+            AnswerConstants.UMS_FUNCTIONS_NORMALLY,
+            AnswerConstants.UMS_HAS_DIFFICULTY,
+            AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS
         ));
         insert(q);
         drools.halt();
@@ -519,9 +519,9 @@ rule "ask_condition_lower_motor_skills"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.LOWER_MOTOR_SKILLS);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.FUNCTIONS_NORMALLY,
-            AnswerConstants.HAS_DIFFICULTY,
-            AnswerConstants.CANNOT_MOVE
+            AnswerConstants.LMS_FUNCTIONS_NORMALLY,
+            AnswerConstants.LMS_HAS_DIFFICULTY,
+            AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS
         ));
         insert(q);
         drools.halt();
@@ -535,8 +535,8 @@ rule "ask_condition_object_handling"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBJECT_HANDLING);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.CORRECT_MANIPULATION,
-            AnswerConstants.ONLY_SOME_CORRECTLY,
+            AnswerConstants.FULL_CONTROL,
+            AnswerConstants.PARTIAL_CONTROL,
             AnswerConstants.CANNOT_HANDLE
         ));
         insert(q);
@@ -551,8 +551,8 @@ rule "ask_condition_reading_condition"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.READING_CONDITION);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.READS_WITHOUT_DIFFICULTY,
-            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.READING_NORMALLY,
+            AnswerConstants.READING_WITH_DIFFICULTY,
             AnswerConstants.CANNOT_READ
         ));
         insert(q);
@@ -567,8 +567,8 @@ rule "ask_condition_writing"
         System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.WRITING);
         q.setPossibleAnswers(Arrays.asList(
-            AnswerConstants.WRITES_WITHOUT_DIFFICULTY,
-            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.WRITES_NORMALLY,
+            AnswerConstants.WRITES_WITH_DIFFICULTY,
             AnswerConstants.CANNOT_WRITE
         ));
         insert(q);
@@ -584,7 +584,7 @@ rule "ask_condition_mobility"
         Question q = new Question(surveyId, EvidenceConstants.MOBILITY);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.MOVES_EASILY,
-            AnswerConstants.HAS_SOME_DIFFICULTY,
+            AnswerConstants.NEEDS_ASSISTANCE,
             AnswerConstants.TOTAL_DEPENDENCE
         ));
         insert(q);

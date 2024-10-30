@@ -1,6 +1,7 @@
 <template>
-  <div v-if="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+  <div v-if="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    @click.self="closeModal">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative max-h-screen overflow-y-auto">
       <h2 class="text-lg font-semibold mb-4">{{ $t(`surveys.activities.${activity.description}`) }}</h2>
 
       <!-- Loading message when data is still being fetched -->
@@ -9,16 +10,34 @@
       <!-- Justifications list when data is loaded -->
       <ul v-else class="space-y-4">
         <li v-for="(justification, index) in justifications" :key="index" class="bg-gray-100 p-3 rounded-lg shadow-sm">
-          <span class="text-gray-700 flex items-start">
+          <!-- Justification Response -->
+          <div class="flex items-start text-gray-700">
             <span class="mr-2 text-blue-500">&#8226;</span>
             {{ $t(`surveys.justifications.${type}.${justification.response}`) }}
-          </span>
+          </div>
+
+          <!-- Nested list for each rule triggered, shown only when showAllRules is true -->
+          <ul v-if="showAllRules && justification.rulesTriggered && justification.rulesTriggered.length"
+            class="pl-6 mt-2 space-y-2">
+            <li v-for="(rule, ruleIndex) in justification.rulesTriggered" :key="ruleIndex"
+              class="text-gray-600 flex items-start">
+              <span class="mr-2 text-green-500">&#8226;</span>
+              {{ rule }}
+            </li>
+          </ul>
         </li>
       </ul>
 
-      <button @click="closeModal" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-        {{ $t("surveys.justifications.closeForm") }}
-      </button>
+      <!-- Toggle Rules and Close buttons -->
+      <div class="flex justify-end mt-4 space-x-2">
+        <button @click="toggleAllRules" class="bg-gray-200 text-blue-500 px-4 py-2 rounded">
+          {{ showAllRules ? $t("surveys.justifications.hideTriggeredRules") :
+            $t("surveys.justifications.showTriggeredRules") }}
+        </button>
+        <button @click="closeModal" class="bg-blue-500 text-white px-4 py-2 rounded">
+          {{ $t("surveys.justifications.closeForm") }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -48,26 +67,42 @@ export default {
   data() {
     return {
       justifications: [],
-      loading: false, // Add loading state
+      loading: false,
+      showAllRules: false, // Global toggle for showing all rules
     };
   },
   methods: {
     closeModal() {
       this.$emit('close');
+      this.resetDialog(); // Reset dialog properties
+    },
+    toggleAllRules() {
+      this.showAllRules = !this.showAllRules; // Toggle the display of all rules
     },
     async fetchJustification(surveyId, activity, type) {
-      this.loading = true; // Set loading to true when fetching begins
+      this.loading = true;
       try {
         const activityToCheck = {
           activityName: activity.description,
         };
-        this.justifications = await getJustifications(surveyId, type, activityToCheck);
+        // Add showRules property to each justification
+        this.justifications = (await getJustifications(surveyId, type, activityToCheck)).map(justification => ({
+          ...justification,
+          showRules: false,
+        }));
+        console.log(this.justifications);
       } catch (error) {
         console.error('Error fetching justification:', error);
-        this.justifications = ['Error loading justification.']; // Display error message in justifications
+        this.justifications = [{ response: 'Error loading justification.', showRules: false }];
       } finally {
-        this.loading = false; // Set loading to false when fetching completes
+        this.loading = false;
       }
+    },
+    resetDialog() {
+      // Reset all properties related to the dialog
+      this.justifications = [];
+      this.loading = false;
+      this.showAllRules = false; // Reset showAllRules on close
     },
   },
   watch: {
@@ -79,55 +114,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Style for the cursor blinking animation */
-.cursor {
-  display: inline-block;
-  width: 8px;
-  background-color: currentColor;
-  animation: blink 0.7s steps(2, start) infinite;
-}
-
-/* Blinking animation */
-@keyframes blink {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Style for justification items */
-.space-y-4 {
-  margin-top: 1rem;
-}
-
-.bg-gray-100 {
-  background-color: #f7fafc;
-}
-
-.text-gray-700 {
-  color: #4a5568;
-}
-
-.text-blue-500 {
-  color: #4299e1;
-}
-
-.p-3 {
-  padding: 0.75rem;
-}
-
-.shadow-sm {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.rounded-lg {
-  border-radius: 0.5rem;
-}
-</style>

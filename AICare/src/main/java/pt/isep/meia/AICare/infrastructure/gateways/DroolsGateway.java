@@ -10,9 +10,7 @@ import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.domain.model.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,19 +33,13 @@ public class DroolsGateway {
             session.setGlobal("surveyId", surveyId);
             session.setGlobal("evidences", evidences);
 
-            System.out.println("Globals set:");
-            for (var evidence : (List<Evidence>) session.getGlobal("evidences")){
-                System.out.println("evidence: " + evidence.toString());
-            }
-            System.out.println("surveyId: " + session.getGlobal("surveyId"));
-
             session.getAgenda().getAgendaGroup("survey-rules").setFocus();
             session.fireAllRules();
 
             session.getAgenda().getAgendaGroup("question-group").setFocus();
             session.fireAllRules();
 
-            boolean surveyCompleted = checkSurveyCompletion(session);
+            var surveyCompleted = checkSurveyCompletion(session);
 
             if (!surveyCompleted) {
                 var nextQuestion = getLastQuestionFromSession(session);
@@ -81,6 +73,48 @@ public class DroolsGateway {
             return Result.fromActivities(surveyId, orderedActivities);
         }
         finally {
+            clearSession(session);
+        }
+    }
+
+    public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences, String activityToCheck) throws IOException {
+        var session = droolsConfig.getKieSession();
+        if (session == null) {
+            return null;
+        }
+
+        try {
+            session.setGlobal("surveyId", surveyId);
+            session.setGlobal("evidences", evidences);
+            session.getAgenda().getAgendaGroup("survey-rules").setFocus();
+            session.fireAllRules();
+
+            // Step 1: Get all restrictions from the session
+            var allRestrictions = getRestrictionsFromSession(session);
+
+            // Step 2: Filter restrictions by the specified activityToCheck
+            var filteredRestrictions = allRestrictions.stream()
+                    .filter(restriction -> restriction.getActivity().equals(activityToCheck))
+                    .collect(Collectors.toList());
+
+            // Step 3: Group filtered restrictions by activity and collect unique rules for each activity
+            Map<String, Set<String>> groupedRestrictions = filteredRestrictions.stream()
+                    .collect(Collectors.groupingBy(
+                            Restrict::getReason,
+                            Collectors.mapping(Restrict::getRestrictingRule, Collectors.toSet())
+                    ));
+
+            // Step 4: Convert each entry in the map to a Justification object
+            var justifications = groupedRestrictions.entrySet().stream()
+                    .map(entry -> {
+                        String activity = entry.getKey();
+                        List<String> uniqueRules = entry.getValue().stream().collect(Collectors.toList());
+                        return new Justification(JustificationTypeEnum.why, activity, uniqueRules);
+                    })
+                    .collect(Collectors.toList());
+
+            return justifications;
+        } finally {
             clearSession(session);
         }
     }

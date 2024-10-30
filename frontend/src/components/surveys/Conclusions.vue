@@ -9,7 +9,7 @@
 
       <!-- Accepted activities pills (green) -->
       <div class="flex flex-wrap gap-2">
-        <div v-for="(activity, index) in activities" :key="index" @click="showJustification(activity, 'why')"
+        <div v-for="(activity, index) in activities" :key="index" @click="showJustification(activity, 'whynot')"
           class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold shadow cursor-pointer">
           {{ $t(`surveys.activities.${activity.description}`) }}
         </div>
@@ -22,7 +22,7 @@
 
       <!-- Rejected activities pills (red) -->
       <div class="flex flex-wrap gap-2">
-        <div v-for="(activity, index) in rejectedActivities" :key="index" @click="showJustification(activity, 'whynot')"
+        <div v-for="(activity, index) in rejectedActivities" :key="index" @click="showJustification(activity, 'why')"
           class="px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold shadow cursor-pointer">
           {{ $t(`surveys.activities.${activity.description}`) }}
         </div>

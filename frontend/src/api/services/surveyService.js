@@ -20,7 +20,7 @@ export const getRejectedActivities = async (surveyId) => {
     return response.data;
 };
 
-export async function getJustifications(surveyId, type, activity) {
+export const getJustifications = async (surveyId, type, activity) => {
     const endpoint = `/surveys/${surveyId}/justifications/${type}`;
     const response = await axiosClient.post(endpoint, activity);
     return response.data;

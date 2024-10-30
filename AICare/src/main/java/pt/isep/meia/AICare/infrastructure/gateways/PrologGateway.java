@@ -17,6 +17,7 @@ import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class PrologGateway {
         var endpoint = serverUrl + "/get_why/" + activity;
         var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
         return response.getBody().getJustifications().stream()
-                .map(justificationList -> new Justification(JustificationTypeEnum.why, String.join(".", justificationList)))
+                .map(justificationList -> new Justification(JustificationTypeEnum.why, String.join(".", justificationList), new ArrayList<>()))
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +58,7 @@ public class PrologGateway {
         var endpoint = serverUrl + "/get_why_not/" + activity;
         var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
         return response.getBody().getJustifications().stream()
-                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, String.join(".", justificationList)))
+                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, String.join(".", justificationList), new ArrayList<>()))
                 .collect(Collectors.toList());
     }
 

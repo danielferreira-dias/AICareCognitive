@@ -209,11 +209,13 @@
         },
         "justifications": {
             "closeForm": "Close",
-            "why": {
+            "showTriggeredRules": "Show triggered rules",
+            "hideTriggeredRules": "Hide triggered rules",
+            "whynot": {
                 "no_conditions_prevent_activity": "No conditions prevent activity.",
                 "no_diseases_prevent_activity": "No diseases prevent activity."
             },
-            "whynot": {
+            "why": {
                 "disease": {
                     "alzheimer_advanced": "Advanced Alzheimer's disease significantly impairs cognitive functions, making this activity inappropriate.",
                     "alzheimer_initial": "Early-stage Alzheimer's disease may impact memory and focus, potentially limiting engagement in this activity.",

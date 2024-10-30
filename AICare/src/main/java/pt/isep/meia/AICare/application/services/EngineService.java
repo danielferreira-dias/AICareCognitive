@@ -54,10 +54,10 @@ public class EngineService {
         return true;
     }
 
-    public List<Justification> getWhy(String activity, List<Evidence> evidences) throws IOException {
-//        if(engineProperties.getType().equals("drools")){
-//            return droolsGateway.getWhy(activity, evidences);
-//        }
+    public List<Justification> getWhy(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
+        if(engineProperties.getType().equals("drools")){
+            return droolsGateway.getWhy(surveyId, evidences, activity);
+        }
 
         var result = prologGateway.postBulkAnswers(evidences);
         if (!result) {
@@ -67,7 +67,7 @@ public class EngineService {
         return prologGateway.getWhy(activity);
     }
 
-    public List<Justification> getWhyNot(String activity, List<Evidence> evidences) {
+    public List<Justification> getWhyNot(UUID surveyId, String activity, List<Evidence> evidences) {
         var result = prologGateway.postBulkAnswers(evidences);
         if (!result) {
             return null;

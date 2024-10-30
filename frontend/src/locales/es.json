@@ -209,11 +209,13 @@
         },
         "justifications": {
             "closeForm": "Cerrar",
-            "why": {
+            "showTriggeredRules": "Mostrar reglas activadas",
+            "hideTriggeredRules": "Ocultar reglas activadas",
+            "whynot": {
                 "no_conditions_prevent_activity": "Ninguna condición impide la realización de esta actividad.",
                 "no_diseases_prevent_activity": "Ninguna enfermedad impide la realización de esta actividad."
             },
-            "whynot": {
+            "why": {
                 "disease": {
                     "alzheimer_advanced": "El Alzheimer avanzado afecta significativamente las funciones cognitivas, haciendo esta actividad inapropiada.",
                     "alzheimer_initial": "El Alzheimer en etapa inicial puede afectar la memoria y la concentración, limitando potencialmente el desempeño en esta actividad.",

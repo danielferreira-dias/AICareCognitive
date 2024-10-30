@@ -192,8 +192,9 @@ rule "Restrict Activities for Vascular Dementia Initial"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_initial")
     then
-        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
-        insert(new Restrict(ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.vascular_dementia_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "disease.vascular_dementia_initial"));
 end
 
 // Vascular Dementia Advanced - Restricted Activities
@@ -202,19 +203,20 @@ rule "Restrict Activities for Vascular Dementia Advanced"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_advanced")
     then
-        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
-        insert(new Restrict(ActivityConstants.FELT_WORK));
-        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
-        insert(new Restrict(ActivityConstants.DESSERT_MAKING));
-        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
-        insert(new Restrict(ActivityConstants.PAINTINGS));
-        insert(new Restrict(ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE));
-        insert(new Restrict(ActivityConstants.SPATIAL_RECOGNITION_EXERCISES));
-        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
-        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
-        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SPATIAL_RECOGNITION_EXERCISES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "disease.vascular_dementia_advanced"));
 end
 
 // Alzheimer Initial - Restricted Activities
@@ -223,10 +225,11 @@ rule "Restrict Activities for Alzheimer Initial"
     when
         Hypothesis(description == "disease", value == "alzheimer_initial")
     then
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
-        insert(new Restrict(ActivityConstants.BINGO_GAMES));
-        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
-        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "disease.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "disease.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "disease.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.alzheimer_initial"));
 end
 
 // Alzheimer Advanced - Restricted Activities
@@ -235,23 +238,25 @@ rule "Restrict Activities for Alzheimer Advanced"
     when
         Hypothesis(description == "disease", value == "alzheimer_advanced")
     then
-        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
-        insert(new Restrict(ActivityConstants.RECYCLED_MATERIALS));
-        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
-        insert(new Restrict(ActivityConstants.FELT_WORK));
-        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
-        insert(new Restrict(ActivityConstants.PAINTINGS));
-        insert(new Restrict(ActivityConstants.VERBAL_TASK_EXERCISES));
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.DIFFERENCES_GAMES));
-        insert(new Restrict(ActivityConstants.ODOR_DIFFERENTIATION));
-        insert(new Restrict(ActivityConstants.INSTRUMENTS_USE));
-        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
-        insert(new Restrict(ActivityConstants.BINGO_GAMES));
-        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
-        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
-        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.ODOR_DIFFERENTIATION, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.alzheimer_advanced"));
 end
 
 // Parkinson Initial - Restricted Activities
@@ -260,10 +265,11 @@ rule "Restrict Activities for Parkinson Initial"
     when
         Hypothesis(description == "disease", value == "parkinson_initial")
     then
-        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
-        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
-        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
-        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.parkinson_initial"));
 end
 
 // Parkinson Advanced - Restricted Activities
@@ -272,36 +278,39 @@ rule "Restrict Activities for Parkinson Advanced"
     when
         Hypothesis(description == "disease", value == "parkinson_advanced")
     then
-        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
-        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
-        insert(new Restrict(ActivityConstants.FELT_WORK));
-        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
-        insert(new Restrict(ActivityConstants.PAINTINGS));
-        insert(new Restrict(ActivityConstants.MEMORY_EXERCISES));
-        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.WALKING));
-        insert(new Restrict(ActivityConstants.INSTRUMENTS_USE));
-        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
-        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
-        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
-        insert(new Restrict(ActivityConstants.MIME_GAMES));
-        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.WALKING, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.parkinson_advanced"));
 end
+
 // Social Integration - Severe Integration Issues
 rule "Restrict Activities for Severe Integration Issues"
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.SEVERE_INTEGRATION_ISSUES))
     then
-        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
-        insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
-        insert(new Restrict(ActivityConstants.IMAGE_RECOGNITION_GAMES));
-        insert(new Restrict(ActivityConstants.KARAOKE));
-        insert(new Restrict(ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES));
-        insert(new Restrict(ActivityConstants.MIME_GAMES));
-        insert(new Restrict(ActivityConstants.BINGO_GAMES));
-        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.IMAGE_RECOGNITION_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.SEVERE_INTEGRATION_ISSUES));
 end
 
 // Social Integration - Isolated Person
@@ -310,23 +319,24 @@ rule "Restrict Activities for Isolated Person"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.ISOLATED_PERSON))
     then
-        insert(new Restrict(ActivityConstants.EXECUTION_FESTIVAL_WORK));
-        insert(new Restrict(ActivityConstants.CENTRE_DECORATION_WORK));
-        insert(new Restrict(ActivityConstants.DESSERT_MAKING));
-        insert(new Restrict(ActivityConstants.IMAGE_RECOGNITION_GAMES));
-        insert(new Restrict(ActivityConstants.KARAOKE));
-        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
-        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
-        insert(new Restrict(ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES));
-        insert(new Restrict(ActivityConstants.MIME_GAMES));
-        insert(new Restrict(ActivityConstants.BINGO_GAMES));
-        insert(new Restrict(ActivityConstants.MISSAKO_GAMES));
-        insert(new Restrict(ActivityConstants.DOMINO_GAMES));
-        insert(new Restrict(ActivityConstants.TIC_TAC_TOE_GAMES));
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
-        insert(new Restrict(ActivityConstants.MASSAGES));
-        insert(new Restrict(ActivityConstants.MAKEUP));
-        insert(new Restrict(ActivityConstants.CHARACTER_INTERPRETATION));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.IMAGE_RECOGNITION_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.MASSAGES, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.MAKEUP, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.SOCIAL_INTEGRATION + "." + AnswerConstants.ISOLATED_PERSON));
 end
 
 // Vision - Vision Difficulties
@@ -335,8 +345,20 @@ rule "Restrict Activities for Vision Difficulties"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.VISION_WITH_DIFFICULTIES))
     then
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.IMAGE_RECOGNITION_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.VISION_WITH_DIFFICULTIES));
 end
 
 // Vision - Blindness
@@ -345,9 +367,28 @@ rule "Restrict Activities for Blindness"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.BLINDNESS))
     then
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
-        insert(new Restrict(ActivityConstants.VERBAL_TASK_EXERCISES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.IMAGE_RECOGNITION_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.WALKING, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.VISION + "." + AnswerConstants.BLINDNESS));
 end
 
 // Hearing - Hearing Difficulties
@@ -356,8 +397,14 @@ rule "Restrict Activities for Hearing Difficulties"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.HEARING_WITH_DIFFICULTIES))
     then
-        insert(new Restrict(ActivityConstants.KARAOKE));
-        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.ANIMAL_VOICES_RECOGNITION, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.HEARING_WITH_DIFFICULTIES));
 end
 
 // Hearing - Deafness
@@ -366,69 +413,174 @@ rule "Restrict Activities for Deafness"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.DEAFNESS))
     then
-        insert(new Restrict(ActivityConstants.KARAOKE));
-        insert(new Restrict(ActivityConstants.GUESS_THE_SONG));
-        insert(new Restrict(ActivityConstants.MUSICOGRAM));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.ANIMAL_VOICES_RECOGNITION, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.HEARING + "." + AnswerConstants.DEAFNESS));
 end
 
-// Speech - Speech Difficulties
+// Speech - Expresses with Difficulty
 rule "Restrict Activities for Speech Difficulties"
     agenda-group "survey-rules"
     when
-        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.EXPRESSES_WITH_DIFFICULTY))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.SPEAKS_WITH_DIFFICULTY))
     then
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.SPEAKS_WITH_DIFFICULTY));
 end
 
-// Speech - Non-Verbal
-rule "Restrict Activities for Non-Verbal Individuals"
+// Speech - Cannot be Understood
+rule "Restrict Activities for Speech Cannot be Understood"
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.CANNOT_BE_UNDERSTOOD))
     then
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
-        insert(new Restrict(ActivityConstants.CHARACTER_INTERPRETATION));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
+        insert(new Restrict(ruleName, ActivityConstants.KARAOKE, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.SPEECH + "." + AnswerConstants.CANNOT_BE_UNDERSTOOD));
 end
 
 // Smell - Loss of Smell
-rule "Restrict Activities for Loss of Smell"
+rule "Restrict Activities for Difficulties Smelling"
     agenda-group "survey-rules"
     when
-        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.COMPLETE_LOSS_OF_SMELL))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.SMELL_WITH_DIFFICULTY))
     then
-        insert(new Restrict(ActivityConstants.ODOR_DIFFERENTIATION));
-        insert(new Restrict(ActivityConstants.SENSES_RECOGNITION_EXERCISES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.ODOR_DIFFERENTIATION, "conditions." + EvidenceConstants.SMELL + "." + AnswerConstants.SMELL_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.TASTE_REACTION, "conditions." + EvidenceConstants.SMELL + "." + AnswerConstants.SMELL_WITH_DIFFICULTY));
 end
 
-// Mobility - Total Dependence
-rule "Restrict Activities for Total Mobility Dependence"
+// Smell - Complete Loss of Smell
+rule "Restrict Activities for Smell Complete Loss"
     agenda-group "survey-rules"
     when
-        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.NO_SENSE_OF_SMELL))
     then
-        insert(new Restrict(ActivityConstants.WALKING));
-        insert(new Restrict(ActivityConstants.BOWLING_GAMES));
-        insert(new Restrict(ActivityConstants.PETANQUE_GAMES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.ODOR_DIFFERENTIATION, "conditions." + EvidenceConstants.SMELL + "." + AnswerConstants.NO_SENSE_OF_SMELL));
+        insert(new Restrict(ruleName, ActivityConstants.TASTE_REACTION, "conditions." + EvidenceConstants.SMELL + "." + AnswerConstants.NO_SENSE_OF_SMELL));
 end
 
-// Upper Motor Skills - Cannot Move
-rule "Restrict Activities for Upper Motor Skills Impairment"
+// Upper Motor Skills - UMS Has Difficulty
+rule "Restrict Activities for Upper Motor Skills Difficulties"
     agenda-group "survey-rules"
     when
-        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.UMS_HAS_DIFFICULTY))
     then
-        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
-        insert(new Restrict(ActivityConstants.SMALL_ARRANGEMENTS));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MANICURE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MAKEUP, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UMS_HAS_DIFFICULTY));
 end
 
-// Lower Motor Skills - Cannot Move
-rule "Restrict Activities for Lower Motor Skills Impairment"
+// Upper Motor Skills - Unable to use Upper Limbs
+rule "Restrict Activities for Upper Motor Skills impossibility of movement"
     agenda-group "survey-rules"
     when
-        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.CANNOT_MOVE))
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS))
     then
-        insert(new Restrict(ActivityConstants.WALKING));
-        insert(new Restrict(ActivityConstants.PHYSIOTHERAPY));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MANICURE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MAKEUP, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.WARMUP_EXERCISES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+end
+
+// Lower Motor Skills - LMS Has Difficulty
+rule "Restrict Activities for Lower Motor Skills Difficulties"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.LMS_HAS_DIFFICULTY))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+end
+
+// Lower Motor Skills - LMS Has Difficulty
+rule "Restrict Activities for Lower Motor Skills impossibility of movement"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.WALKING, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.WARMUP_EXERCISES, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.LOWER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS));
+end
+
+// Object Handling - Partial Control
+rule "Restrict Activities for Object Partial Control"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.PARTIAL_CONTROL))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.MANICURE, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.MAKEUP, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.PARTIAL_CONTROL));
 end
 
 // Object Handling - Cannot Handle
@@ -437,27 +589,114 @@ rule "Restrict Activities for Object Handling Impairment"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.CANNOT_HANDLE))
     then
-        insert(new Restrict(ActivityConstants.MANUAL_DEXTERITY_GAMES));
-        insert(new Restrict(ActivityConstants.CONSTRUCTION_TECHNIQUE));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.CENTRE_DECORATION_WORK, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.KNOWLEDGE_EXERCISES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.MANICURE, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.MAKEUP, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.OBJECT_HANDLING + "." + AnswerConstants.CANNOT_HANDLE));
+end
+
+// Reading - Reading Difficulty
+rule "Restrict Activities for Reading Difficulties"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.READING_WITH_DIFFICULTY))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.READING_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.READING_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.READING_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.READING_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.NUMERICAL_COMPREHENSION_EXERCISES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.READING_WITH_DIFFICULTY));
 end
 
 // Reading - Cannot Read
-rule "Restrict Activities for Reading Difficulties"
+rule "Restrict Activities for Reading Incapacity"
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.CANNOT_READ))
     then
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
-        insert(new Restrict(ActivityConstants.DRAMATIC_TEXT_READING));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.NUMERICAL_COMPREHENSION_EXERCISES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.KNOWLEDGE_EXERCISES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.READING_CONDITION + "." + AnswerConstants.CANNOT_READ));
+end
+
+// Writing - Writing Difficulty
+rule "Restrict Activities for Writing Difficulties"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.WRITING, AnswerConstants.WRITES_WITH_DIFFICULTY))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.WRITES_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.WRITES_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.WRITES_WITH_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.WRITES_WITH_DIFFICULTY));
 end
 
 // Writing - Cannot Write
-rule "Restrict Activities for Writing Difficulties"
+rule "Restrict Activities for Writing Incapacity"
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.WRITING, AnswerConstants.CANNOT_WRITE))
     then
-        insert(new Restrict(ActivityConstants.READING_WRITING_EXERCISES));
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.CHARACTER_INTERPRETATION, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.MUSICOGRAM, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.KNOWLEDGE_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+        insert(new Restrict(ruleName, ActivityConstants.NUMERICAL_COMPREHENSION_EXERCISES, "conditions." + EvidenceConstants.WRITING + "." + AnswerConstants.CANNOT_WRITE));
+end
+
+// Mobility - Needs Assistance
+rule "Restrict Activities for Mobility Needs Assistance"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.NEEDS_ASSISTANCE))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.NEEDS_ASSISTANCE));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.NEEDS_ASSISTANCE));
+        insert(new Restrict(ruleName, ActivityConstants.WARMUP_EXERCISES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.NEEDS_ASSISTANCE));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.NEEDS_ASSISTANCE));
+end
+
+// Mobility - Total Dependence
+rule "Restrict Activities for Mobility Total Dependence"
+    agenda-group "survey-rules"
+    when
+        eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))
+    then
+        String ruleName = drools.getRule().getName();
+        insert(new Restrict(ruleName, ActivityConstants.WALKING, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.WARMUP_EXERCISES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "conditions." + EvidenceConstants.MOBILITY + "." + AnswerConstants.TOTAL_DEPENDENCE));
 end
 
 // Preference - Theatre
@@ -469,6 +708,7 @@ rule "Prefer Activities for Theatre Enthusiasts"
         insert(new PreferredActivity(ActivityConstants.DRAMATIC_TEXT_READING));
         insert(new PreferredActivity(ActivityConstants.CHARACTER_INTERPRETATION));
         insert(new PreferredActivity(ActivityConstants.MIME_GAMES));
+        insert(new PreferredActivity(ActivityConstants.MAKEUP));
 end
 
 // Preference - Museum
@@ -489,6 +729,7 @@ rule "Prefer Activities for Music Enthusiasts"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MUSIC, AnswerConstants.YES))
     then
         insert(new PreferredActivity(ActivityConstants.KARAOKE));
+        insert(new PreferredActivity(ActivityConstants.MUSICOGRAM));
         insert(new PreferredActivity(ActivityConstants.GUESS_THE_SONG));
         insert(new PreferredActivity(ActivityConstants.INSTRUMENTS_USE));
 end
@@ -514,6 +755,9 @@ rule "Prefer Activities for Recreational Group Enthusiasts"
         insert(new PreferredActivity(ActivityConstants.BOWLING_GAMES));
         insert(new PreferredActivity(ActivityConstants.MIME_GAMES));
         insert(new PreferredActivity(ActivityConstants.BINGO_GAMES));
+        insert(new PreferredActivity(ActivityConstants.ADAPTED_HANDKERCHIEF_GAMES));
+        insert(new PreferredActivity(ActivityConstants.EXECUTION_FESTIVAL_WORK));
+        insert(new PreferredActivity(ActivityConstants.CENTRE_DECORATION_WORK));
 end
 
 // Preference - Art
@@ -525,6 +769,7 @@ rule "Prefer Activities for Art Enthusiasts"
         insert(new PreferredActivity(ActivityConstants.PAINTINGS));
         insert(new PreferredActivity(ActivityConstants.CENTRE_DECORATION_WORK));
         insert(new PreferredActivity(ActivityConstants.FELT_WORK));
+        insert(new PreferredActivity(ActivityConstants.SMALL_ARRANGEMENTS));
 end
 
 // Preference - Sports
@@ -556,4 +801,10 @@ rule "Prefer Activities for Handicrafts Enthusiasts"
         insert(new PreferredActivity(ActivityConstants.CONSTRUCTION_TECHNIQUE));
         insert(new PreferredActivity(ActivityConstants.RECYCLED_MATERIALS));
         insert(new PreferredActivity(ActivityConstants.FELT_WORK));
+        insert(new PreferredActivity(ActivityConstants.SMALL_ARRANGEMENTS));
+        insert(new PreferredActivity(ActivityConstants.PAINTINGS));
+        insert(new PreferredActivity(ActivityConstants.CENTRE_DECORATION_WORK));
+        insert(new PreferredActivity(ActivityConstants.MANICURE));
+        insert(new PreferredActivity(ActivityConstants.MAKEUP));
+        insert(new PreferredActivity(ActivityConstants.MASSAGES));
 end

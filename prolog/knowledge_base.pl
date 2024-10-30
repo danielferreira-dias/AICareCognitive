@@ -355,7 +355,6 @@ inadequate(isolated_person, tic_tac_toe_games).
 inadequate(isolated_person, dramatic_text_reading).
 inadequate(isolated_person, massages).
 inadequate(isolated_person, makeup).
-inadequate(isolated_person, dramatic_text_reading).
 inadequate(isolated_person, character_interpretation).
 
 %2 Vision

@@ -131,19 +131,19 @@ public class SurveyService {
 
         switch (type) {
             case why:
-                return getWhy(activityName, evidences);
+                return getWhy(surveyId, activityName, evidences);
             case whynot:
-                return getWhyNot(activityName, evidences);
+                return getWhyNot(surveyId, activityName, evidences);
             default:
                 return null;
         }
     }
 
-    private List<Justification> getWhy(String activity, List<Evidence> evidences) throws IOException {
-        return engineService.getWhy(activity, evidences);
+    private List<Justification> getWhy(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
+        return engineService.getWhy(surveyId, activity, evidences);
     }
 
-    private List<Justification> getWhyNot(String activity, List<Evidence> evidences) throws IOException {
-        return engineService.getWhyNot(activity, evidences);
+    private List<Justification> getWhyNot(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
+        return engineService.getWhyNot(surveyId, activity, evidences);
     }
 }
