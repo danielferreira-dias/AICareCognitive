@@ -781,6 +781,8 @@ end
 
 // Preference - Theatre
 rule "Prefer Activities for Theatre Enthusiasts"
+    @restrictionType("preferences.preferences_theatre")
+    @activities("dramatic_text_reading,character_interpretation,mime_games,makeup")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.THEATRE, AnswerConstants.YES))
@@ -793,6 +795,8 @@ end
 
 // Preference - Museum
 rule "Prefer Activities for Museum Enthusiasts"
+    @restrictionType("preferences.preferences_museum")
+    @activities("paintings,small_arrangements,walking")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MUSEUM, AnswerConstants.YES))
@@ -804,6 +808,8 @@ end
 
 // Preference - Music
 rule "Prefer Activities for Music Enthusiasts"
+    @restrictionType("preferences.preferences_music")
+    @activities("karaoke,musicogram,guess_the_song,instruments_use")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MUSIC, AnswerConstants.YES))
@@ -816,6 +822,8 @@ end
 
 // Preference - Reading
 rule "Prefer Activities for Reading Enthusiasts"
+    @restrictionType("preferences.preferences_reading")
+    @activities("dramatic_text_reading,reading_writing_exercises,verbal_task_exercises")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_PREFERENCE, AnswerConstants.YES))
@@ -827,6 +835,8 @@ end
 
 // Preference - Recreational Group
 rule "Prefer Activities for Recreational Group Enthusiasts"
+    @restrictionType("preferences.preferences_recreational_group")
+    @activities("petanque_games,bowling_games,mime_games,bingo_games,adapted_handkerchief_games,execution_festival_work,centre_decoration_work")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.RECREATIONAL_GROUP, AnswerConstants.YES))
@@ -842,6 +852,8 @@ end
 
 // Preference - Art
 rule "Prefer Activities for Art Enthusiasts"
+    @restrictionType("preferences.preferences_art")
+    @activities("paintings,centre_decoration_work,felt_work,small_arrangements")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.ART, AnswerConstants.YES))
@@ -854,6 +866,8 @@ end
 
 // Preference - Sports
 rule "Prefer Activities for Sports Enthusiasts"
+    @restrictionType("preferences.preferences_sports")
+    @activities("walking,petanque_games,bowling_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPORTS, AnswerConstants.YES))
@@ -865,6 +879,8 @@ end
 
 // Preference - Cooking
 rule "Prefer Activities for Cooking Enthusiasts"
+    @restrictionType("preferences.preferences_cooking")
+    @activities("dessert_making")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.COOKING, AnswerConstants.YES))
@@ -874,6 +890,8 @@ end
 
 // Preference - Handicrafts
 rule "Prefer Activities for Handicrafts Enthusiasts"
+    @restrictionType("preferences.preferences_handicrafts")
+    @activities("construction_technique,recycled_materials,felt_work,small_arrangements,paintings,centre_decoration_work,manicure,makeup,massages")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HANDICRAFTS, AnswerConstants.YES))

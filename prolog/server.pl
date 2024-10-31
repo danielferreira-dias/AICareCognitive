@@ -56,7 +56,8 @@ get_why(Activity, _) :-
         append(NestedFormattedJustifications, FormattedJustifications)
     ->  reply_json_dict(_{justifications: FormattedJustifications})
     ;   reply_json_dict(_{error: "No reason why."})
-    ).
+    ),
+    retractall(evidence(_, _)).
 
 format_why_not([JustificationList, Rule], _{justification: JustificationString, ruleTriggered: RuleString}) :-
     atomic_list_concat(JustificationList, '.', JustificationString),
