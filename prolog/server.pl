@@ -36,13 +36,17 @@ get_why(Activity, _) :-
     ),
     retractall(evidence(_, _)).
 
+format_justification([JustificationList, Rule], _{justification: JustificationString, ruleTriggered: RuleString}) :-
+    atomic_list_concat(JustificationList, '.', JustificationString),
+    term_string(Rule, RuleString).
+
 get_why_not(Activity, _) :-
     conclusions(_),
-    (   why_not(Activity, Justifications)
-    ->  reply_json_dict(_{justifications: Justifications})
+    (   why_not(Activity, Justifications),
+        maplist(format_justification, Justifications, FormattedJustifications)
+    ->  reply_json_dict(_{justifications: FormattedJustifications})
     ;   reply_json_dict(_{error: "No reason why not."})
-    ),
-    retractall(evidence(_, _)).
+    ).
 
 post_answer(Request) :-
     catch(

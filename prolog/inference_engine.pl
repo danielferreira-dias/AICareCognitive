@@ -88,23 +88,23 @@ conclusions(List) :-
 why_not(Activity, Justification) :-
     allowed_activities_saved(AllowedActivities),
     \+ member(Activity, AllowedActivities),
-    findall(Reason, reason_not_allowed(Activity, Reason), PartialJustifications),
+    findall([Reason, Rule], reason_not_allowed(Activity, [Reason, Rule]), PartialJustifications),
     Justification = PartialJustifications,
     !.
 
 % Define specific reasons for exclusion
-reason_not_allowed(Activity, Justification) :-
+reason_not_allowed(Activity, [Justification, Rule]) :-
     get_diseases(Diseases),
     member(Disease, Diseases),
     cannot(Disease, Activity, Rule),
-    Justification = ["disease", Disease, Rule].
+    Justification = ["diseases", Disease].
 
-reason_not_allowed(Activity, Justification) :-
+reason_not_allowed(Activity, [Justification, Rule]) :-
     get_conditions(Conditions),
     member(Condition, Conditions),
     inadequate(Condition, Activity, Rule),
     condition(Match, Condition),
-    Justification = ["conditions", Match, Condition, Rule].
+    Justification = ["conditions", Match, Condition].
 
 %--------------------------------------------------------------------------------   
 % EXPLANATION MODULE - WHY - ACTIVITY?

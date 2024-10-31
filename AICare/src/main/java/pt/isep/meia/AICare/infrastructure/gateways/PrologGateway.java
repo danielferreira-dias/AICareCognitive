@@ -11,16 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pt.isep.meia.AICare.application.configs.PrologServerProperties;
 import pt.isep.meia.AICare.domain.dtos.PrologJustificationDto;
+import pt.isep.meia.AICare.domain.dtos.PrologWhyNotDto;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,17 +46,17 @@ public class PrologGateway {
 
     public List<Justification> getWhy(String activity) {
         var endpoint = serverUrl + "/get_why/" + activity;
-        var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
+        var response = restTemplate.getForEntity(endpoint, PrologWhyNotDto.class);
         return response.getBody().getJustifications().stream()
-                .map(justificationList -> new Justification(JustificationTypeEnum.why, String.join(".", justificationList), new ArrayList<>()))
+                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, justificationList.getJustification(), Collections.singletonList(justificationList.getRuleTriggered())))
                 .collect(Collectors.toList());
     }
 
     public List<Justification> getWhyNot(String activity) {
         var endpoint = serverUrl + "/get_why_not/" + activity;
-        var response = restTemplate.getForEntity(endpoint, PrologJustificationDto.class);
+        var response = restTemplate.getForEntity(endpoint, PrologWhyNotDto.class);
         return response.getBody().getJustifications().stream()
-                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, String.join(".", justificationList), new ArrayList<>()))
+                .map(justificationList -> new Justification(JustificationTypeEnum.whynot, justificationList.getJustification(), Collections.singletonList(justificationList.getRuleTriggered())))
                 .collect(Collectors.toList());
     }
 
