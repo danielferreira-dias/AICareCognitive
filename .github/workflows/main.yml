@@ -1,0 +1,61 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup SSH
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "Setting up SSH directory..."
+        mkdir -p ~/.ssh
+
+        echo "Adding private key..."
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+        echo "Bypassing host key checking by adding host to known_hosts..."
+        ssh-keyscan -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
+
+    - name: Transfer Project Code to VM
+      env:
+        VM_USER: ${{ secrets.VM_USER }}
+        VM_IP: ${{ secrets.VM_IP }}
+      run: |
+        echo "Transferring project code to VM..."
+        scp -r ./* $VM_USER@$VM_IP:~/code
+
+    - name: Run Environment Preparation Script on VM
+      env:
+        VM_USER: ${{ secrets.VM_USER }}
+        VM_IP: ${{ secrets.VM_IP }}
+      run: |
+        echo "Running environment preparation script on VM..."
+        ssh $VM_USER@$VM_IP "bash ~/code/deployment/prepare_environment.sh"
+
+    - name: Run Project Deployment Scripts on VM
+      env:
+        VM_USER: ${{ secrets.VM_USER }}
+        VM_IP: ${{ secrets.VM_IP }}
+      run: |
+        echo "Stopping runnong projects on VM..."
+        ssh $VM_USER@$VM_IP "bash ~/code/deployment/stop_all_projects.sh"
+
+        echo "Running Java project deployment script on VM..."
+        ssh $VM_USER@$VM_IP "bash ~/code/deployment/run_java_project.sh"
+
+        echo "Running Node.js project deployment script on VM..."
+        ssh $VM_USER@$VM_IP "bash ~/code/deployment/run_node_project.sh"
+
+        echo "Running Prolog project deployment script on VM..."
+        ssh $VM_USER@$VM_IP "bash ~/code/deployment/run_prolog_project.sh"
