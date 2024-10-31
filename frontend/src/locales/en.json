@@ -80,8 +80,8 @@
                 "correct_manipulation": "Correct Manipulation",
                 "only_some_correctly": "Only Some Correctly",
                 "cannot_handle": "Cannot Handle",
-                "reads_without_difficulty": "Reads without Difficulty",
-                "has_some_difficulty": "Has Some Difficulty",
+                "reads_without_difficulty": "Reads with Difficulty",
+                "reading_with_difficulty": "Reading Some Difficulty",
                 "cannot_read": "Cannot Read",
                 "writes_without_difficulty": "Writes without Difficulty",
                 "cannot_write": "Cannot Write",
@@ -209,14 +209,80 @@
         },
         "justifications": {
             "closeForm": "Close",
-            "showTriggeredRules": "Show triggered rules",
-            "hideTriggeredRules": "Hide triggered rules",
-            "whynot": {
-                "no_conditions_prevent_activity": "No conditions prevent activity.",
-                "no_diseases_prevent_activity": "No diseases prevent activity."
-            },
             "why": {
-                "disease": {
+                "showRules": "Show not triggered rules",
+                "hideRules": "Hide not triggered rules",
+                "generic_activity": "This activity is sufficiently general and adaptable, with no specific restrictions defined for it.",
+                "diseases": {
+                    "alzheimer_advanced": "This activity is recommended as the patient does not exhibit advanced Alzheimer's symptoms, allowing safe participation.",
+                    "alzheimer_initial": "The patient shows no early-stage Alzheimer's symptoms, supporting engagement in this activity.",
+                    "parkinson_advanced": "The absence of advanced Parkinson's symptoms enables the patient to safely participate in this activity.",
+                    "parkinson_initial": "The patient does not exhibit initial Parkinson's symptoms, making this activity appropriate.",
+                    "vascular_dementia_advanced": "This activity is suitable as the patient shows no signs of advanced vascular dementia, allowing for safe engagement.",
+                    "vascular_dementia_initial": "The patient does not experience early-stage vascular dementia symptoms, making this activity an appropriate choice."
+                },
+                "conditions": {
+                    "conditions_social_integration": {
+                        "good_social_relations": "This activity is recommended as the patient has positive social relations, promoting social engagement.",
+                        "severe_integration_issues": "The absence of severe social integration issues makes this activity suitable, as it poses no risk of social discomfort.",
+                        "isolated_person": "The patient is not socially isolated, making this activity appropriate for fostering social interaction."
+                    },
+                    "conditions_vision": {
+                        "good_vision": "Normal vision allows the patient to fully engage in this visually-oriented activity.",
+                        "vision_with_difficulties": "The patient has no visual difficulties, making them well-suited for this activity.",
+                        "blindness": "This activity is suitable as the patient is not affected by blindness, enabling full participation."
+                    },
+                    "conditions_hearing": {
+                        "good_hearing": "Normal hearing makes this activity appropriate, as auditory abilities support participation.",
+                        "hearing_with_difficulties": "The patient has no hearing issues, making this activity engaging and safe.",
+                        "deafness": "Since the patient is not deaf, they can fully participate in this activity involving auditory elements."
+                    },
+                    "conditions_speech": {
+                        "speaks_normally": "Normal speech enables the patient to communicate effectively in this activity.",
+                        "speaks_with_difficulty": "The patient experiences no speech difficulties, making this activity accessible and interactive.",
+                        "cannot_be_understood": "Clear speech allows the patient to engage in communication-based tasks without hindrance."
+                    },
+                    "conditions_smell": {
+                        "smell_normally": "A normal sense of smell supports sensory participation in this activity.",
+                        "smell_with_difficulty": "The patient has no smell-related challenges, enhancing the sensory experience in this activity.",
+                        "no_sense_of_smell": "Full olfactory ability allows the patient to experience the sensory aspects of this activity."
+                    },
+                    "conditions_upper_motor_skills": {
+                        "ums_functions_normally": "Normal upper motor skills enable effective participation in this fine-motor task.",
+                        "ums_has_difficulty": "No upper motor skill difficulties make this activity suitable for the patient.",
+                        "unable_to_use_upper_limbs": "The patient has full use of their upper limbs, allowing them to participate in hands-on activities."
+                    },
+                    "conditions_lower_motor_skills": {
+                        "lms_functions_normally": "Normal lower motor skills make movement-based activities appropriate for the patient.",
+                        "lms_has_difficulty": "The patient has no lower motor skill difficulties, supporting full engagement in this activity.",
+                        "unable_to_use_lower_limbs": "The patient’s ability to use their lower limbs allows them to participate in this activity safely."
+                    },
+                    "conditions_object_handling": {
+                        "full_control": "Full control over object handling makes this activity appropriate for the patient.",
+                        "partial_control": "No issues with handling objects make this task safe and engaging for the patient.",
+                        "cannot_handle": "The patient can handle objects easily, allowing full participation in this activity."
+                    },
+                    "conditions_reading": {
+                        "reading_normally": "Normal reading skills allow the patient to engage in text-based tasks effectively.",
+                        "reading_with_difficulty": "The patient experiences no reading challenges, enabling full interaction with text.",
+                        "cannot_read": "Since the patient can read, they can fully engage in activities that require literacy skills."
+                    },
+                    "conditions_writing": {
+                        "writes_normally": "Normal writing ability allows the patient to participate in this writing-based activity.",
+                        "writes_with_difficulty": "The patient has no difficulty with writing, supporting full engagement in this activity.",
+                        "cannot_write": "The patient’s ability to write enables participation in tasks that involve written responses."
+                    },
+                    "conditions_mobility": {
+                        "moves_easily": "Good mobility makes the patient suitable for this physically engaging activity.",
+                        "needs_assistance": "No assistance required for mobility makes this activity safe and engaging for the patient.",
+                        "total_dependence": "The patient can move independently, making this activity appropriate for their abilities."
+                    }
+                }
+            },
+            "whynot": {
+                "showRules": "Show triggered rules",
+                "hideRules": "Hide triggered rules",
+                "diseases": {
                     "alzheimer_advanced": "Advanced Alzheimer's disease significantly impairs cognitive functions, making this activity inappropriate.",
                     "alzheimer_initial": "Early-stage Alzheimer's disease may impact memory and focus, potentially limiting engagement in this activity.",
                     "parkinson_advanced": "Advanced Parkinson's disease affects motor skills and coordination, making physical activities challenging or unsafe.",

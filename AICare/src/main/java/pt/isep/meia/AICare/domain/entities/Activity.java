@@ -3,7 +3,6 @@ package pt.isep.meia.AICare.domain.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,7 +22,7 @@ public class Activity {
 
     private String description;
 
-    @Column(name = "conclusion_id", insertable = false, updatable = false)
+    @Column(name = "conclusion_id", updatable = false)
     private UUID conclusionId;
 
     private int sortingOrder;

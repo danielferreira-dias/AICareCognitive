@@ -20,6 +20,8 @@ global List<Evidence> evidences;
 global List<Restrict> restrictions;
 
 rule "Alzheimer Initial Stage - Diagnosis Evidence"
+    @restrictionType("diseases.alzheimer_initial")
+    @activities("dramatic_text_reading,bingo_games,domino_games,differences_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -32,6 +34,8 @@ end
 
 // Alzheimer's Initial Stage Rule 2 - Symptom Count Matching
 rule "Alzheimer Initial Stage - Symptom Count"
+    @restrictionType("diseases.alzheimer_initial")
+    @activities("dramatic_text_reading,bingo_games,domino_games,differences_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
@@ -47,6 +51,8 @@ end
 
 // Alzheimer's Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Alzheimer Advanced Stage - Diagnosis Evidence"
+    @restrictionType("diseases.alzheimer_advanced")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,verbal_task_exercises,reading_writing_exercises,differences_games,odor_differentiation,instruments_use,guess_the_song,bingo_games,missako_games,domino_games,tic_tac_toe_games,dramatic_text_reading,memory_exercises")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -59,6 +65,8 @@ end
 
 // Alzheimer's Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Alzheimer Advanced Stage - Condition Symptom Count"
+    @restrictionType("diseases.alzheimer_advanced")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,verbal_task_exercises,reading_writing_exercises,differences_games,odor_differentiation,instruments_use,guess_the_song,bingo_games,missako_games,domino_games,tic_tac_toe_games,dramatic_text_reading,memory_exercises")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_initial")
@@ -76,6 +84,8 @@ end
 
 // Parkinson Initial Stage Rule 1 - Direct Evidence Matching
 rule "Parkinson Initial Stage - Diagnosis Evidence"
+    @restrictionType("diseases.parkinson_initial")
+    @activities("construction_technique,execution_festival_work,felt_work,small_arrangements,paintings,memory_exercises,manual_dexterity_games,reading_writing_exercises,walking,instruments_use,guess_the_song,petanque_games,bowling_games,mime_games,missako_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -88,6 +98,8 @@ end
 
 // Parkinson Initial Stage Rule 2 - Symptom Count Matching
 rule "Parkinson Initial Stage - Symptom Count"
+    @restrictionType("diseases.parkinson_initial")
+    @activities("construction_technique,execution_festival_work,felt_work,small_arrangements,paintings,memory_exercises,manual_dexterity_games,reading_writing_exercises,walking,instruments_use,guess_the_song,petanque_games,bowling_games,mime_games,missako_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
@@ -104,6 +116,8 @@ end
 
 // Parkinson Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Parkinson Advanced Stage - Diagnosis Evidence"
+    @restrictionType("diseases.parkinson_advanced")
+    @activities("construction_technique,execution_festival_work,felt_work,small_arrangements,paintings,memory_exercises,manual_dexterity_games,reading_writing_exercises,walking,instruments_use,guess_the_song,petanque_games,bowling_games,mime_games,missako_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -116,6 +130,8 @@ end
 
 // Parkinson Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Parkinson Advanced Stage - Condition Symptom Count"
+    @restrictionType("diseases.parkinson_advanced")
+    @activities("construction_technique,execution_festival_work,felt_work,small_arrangements,paintings,memory_exercises,manual_dexterity_games,reading_writing_exercises,walking,instruments_use,guess_the_song,petanque_games,bowling_games,mime_games,missako_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_initial")
@@ -132,6 +148,8 @@ end
 
 // Vascular Dementia Initial Stage Rule 1 - Direct Evidence Matching
 rule "Vascular Dementia Initial Stage - Diagnosis Evidence"
+    @restrictionType("diseases.vascular_dementia_initial")
+    @activities("memory_exercises,temporal_orientation_exercise")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -144,6 +162,8 @@ end
 
 // Vascular Dementia Initial Stage Rule 2 - Symptom Count Matching
 rule "Vascular Dementia Initial Stage - Symptom Count"
+    @restrictionType("diseases.vascular_dementia_initial")
+    @activities("memory_exercises,temporal_orientation_exercise")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.getSymptomCount(evidences,
@@ -159,6 +179,8 @@ end
 
 // Vascular Dementia Advanced Stage Rule 1 - Direct Evidence Matching
 rule "Vascular Dementia Advanced Stage - Diagnosis Evidence"
+    @restrictionType("diseases.vascular_dementia_advanced")
+    @activities("memory_exercises,felt_work,small_arrangements,dessert_making,execution_festival_work,paintings,temporal_orientation_exercise,spatial_recognition_exercises,manual_dexterity_games,reading_writing_exercises,differences_games,petanque_games,bowling_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
@@ -171,6 +193,8 @@ end
 
 // Vascular Dementia Advanced Stage Rule 2 - Condition + Symptom Count Matching
 rule "Vascular Dementia Advanced Stage - Condition Symptom Count"
+    @restrictionType("diseases.vascular_dementia_advanced")
+    @activities("memory_exercises,felt_work,small_arrangements,dessert_making,execution_festival_work,paintings,temporal_orientation_exercise,spatial_recognition_exercises,manual_dexterity_games,reading_writing_exercises,differences_games,petanque_games,bowling_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_initial")
@@ -188,116 +212,130 @@ end
 
 // Vascular Dementia Initial - Restricted Activities
 rule "Restrict Activities for Vascular Dementia Initial"
+    @restrictionType("diseases.vascular_dementia_initial")
+    @activities("memory_exercises,temporal_orientation_exercise")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_initial")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.vascular_dementia_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "disease.vascular_dementia_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "diseases.vascular_dementia_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "diseases.vascular_dementia_initial"));
 end
 
 // Vascular Dementia Advanced - Restricted Activities
 rule "Restrict Activities for Vascular Dementia Advanced"
+    @restrictionType("diseases.vascular_dementia_advanced")
+    @activities("memory_exercises,felt_work,small_arrangements,dessert_making,execution_festival_work,paintings,temporal_orientation_exercise,spatial_recognition_exercises,manual_dexterity_games,reading_writing_exercises,differences_games,petanque_games,bowling_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "vascular_dementia_advanced")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.SPATIAL_RECOGNITION_EXERCISES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "disease.vascular_dementia_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "disease.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DESSERT_MAKING, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.TEMPORAL_ORIENTATION_EXERCISE, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SPATIAL_RECOGNITION_EXERCISES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "diseases.vascular_dementia_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "diseases.vascular_dementia_advanced"));
 end
 
 // Alzheimer Initial - Restricted Activities
 rule "Restrict Activities for Alzheimer Initial"
+    @restrictionType("diseases.alzheimer_initial")
+    @activities("dramatic_text_reading,bingo_games,domino_games,differences_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_initial")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "disease.alzheimer_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "disease.alzheimer_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "disease.alzheimer_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "diseases.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "diseases.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "diseases.alzheimer_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "diseases.alzheimer_initial"));
 end
 
 // Alzheimer Advanced - Restricted Activities
 rule "Restrict Activities for Alzheimer Advanced"
+    @restrictionType("diseases.alzheimer_advanced")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,verbal_task_exercises,reading_writing_exercises,differences_games,odor_differentiation,instruments_use,guess_the_song,bingo_games,missako_games,domino_games,tic_tac_toe_games,dramatic_text_reading,memory_exercises")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "alzheimer_advanced")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.ODOR_DIFFERENTIATION, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "disease.alzheimer_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.RECYCLED_MATERIALS, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.VERBAL_TASK_EXERCISES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DIFFERENCES_GAMES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.ODOR_DIFFERENTIATION, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BINGO_GAMES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DOMINO_GAMES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.TIC_TAC_TOE_GAMES, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.DRAMATIC_TEXT_READING, "diseases.alzheimer_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "diseases.alzheimer_advanced"));
 end
 
 // Parkinson Initial - Restricted Activities
 rule "Restrict Activities for Parkinson Initial"
+    @restrictionType("diseases.parkinson_initial")
+    @activities("small_arrangements,manual_dexterity_games,guess_the_song,missako_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_initial")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.parkinson_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.parkinson_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.parkinson_initial"));
-        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "diseases.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "diseases.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "diseases.parkinson_initial"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "diseases.parkinson_initial"));
 end
 
 // Parkinson Advanced - Restricted Activities
 rule "Restrict Activities for Parkinson Advanced"
+    @restrictionType("diseases.parkinson_advanced")
+    @activities("construction_technique,execution_festival_work,felt_work,small_arrangements,paintings,memory_exercises,manual_dexterity_games,reading_writing_exercises,walking,instruments_use,guess_the_song,petanque_games,bowling_games,mime_games,missako_games")
     agenda-group "survey-rules"
     when
         Hypothesis(description == "disease", value == "parkinson_advanced")
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.WALKING, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "disease.parkinson_advanced"));
-        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "disease.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.CONSTRUCTION_TECHNIQUE, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.EXECUTION_FESTIVAL_WORK, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.FELT_WORK, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.SMALL_ARRANGEMENTS, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PAINTINGS, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MEMORY_EXERCISES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MANUAL_DEXTERITY_GAMES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.READING_WRITING_EXERCISES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.WALKING, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.INSTRUMENTS_USE, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.GUESS_THE_SONG, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MIME_GAMES, "diseases.parkinson_advanced"));
+        insert(new Restrict(ruleName, ActivityConstants.MISSAKO_GAMES, "diseases.parkinson_advanced"));
 end
 
 // Social Integration - Severe Integration Issues
 rule "Restrict Activities for Severe Integration Issues"
+    @restrictionType("conditions.conditions_social_integration.severe_integration_issues")
+    @activities("execution_festival_work,centre_decoration_work,image_recognition_games,karaoke,adapted_handkerchief_games,mime_games,bingo_games,tic_tac_toe_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.SEVERE_INTEGRATION_ISSUES))
@@ -315,6 +353,8 @@ end
 
 // Social Integration - Isolated Person
 rule "Restrict Activities for Isolated Person"
+    @restrictionType("conditions.conditions_social_integration.isolated_person")
+    @activities("execution_festival_work,centre_decoration_work,dessert_making,image_recognition_games,karaoke,petanque_games,bowling_games,adapted_handkerchief_games,mime_games,bingo_games,missako_games,domino_games,tic_tac_toe_games,dramatic_text_reading,massages,makeup,character_interpretation")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SOCIAL_INTEGRATION, AnswerConstants.ISOLATED_PERSON))
@@ -341,6 +381,8 @@ end
 
 // Vision - Vision Difficulties
 rule "Restrict Activities for Vision Difficulties"
+    @restrictionType("conditions.conditions_vision.vision_with_difficulties")
+    @activities("construction_technique,felt_work,small_arrangements,centre_decoration_work,dessert_making,image_recognition_games,reading_writing_exercises,differences_games,musicogram,petanque_games,bowling_games,bingo_games,dramatic_text_reading")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.VISION_WITH_DIFFICULTIES))
@@ -363,6 +405,8 @@ end
 
 // Vision - Blindness
 rule "Restrict Activities for Blindness"
+    @restrictionType("conditions.conditions_vision.blindness")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,centre_decoration_work,dessert_making,image_recognition_games,reading_writing_exercises,differences_games,walking,instruments_use,musicogram,petanque_games,bowling_games,adapted_handkerchief_games,mime_games,bingo_games,dramatic_text_reading,character_interpretation")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.VISION, AnswerConstants.BLINDNESS))
@@ -393,6 +437,8 @@ end
 
 // Hearing - Hearing Difficulties
 rule "Restrict Activities for Hearing Difficulties"
+    @restrictionType("conditions.conditions_hearing.hearing_with_difficulties")
+    @activities("karaoke,musicogram,instruments_use,guess_the_song,animal_voices_recognition,bingo_games,dramatic_text_reading")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.HEARING_WITH_DIFFICULTIES))
@@ -409,6 +455,8 @@ end
 
 // Hearing - Deafness
 rule "Restrict Activities for Deafness"
+    @restrictionType("conditions.conditions_hearing.deafness")
+    @activities("dessert_making,karaoke,musicogram,instruments_use,guess_the_song,animal_voices_recognition,verbal_task_exercises,reading_writing_exercises,missako_games,bingo_games,mime_games,dramatic_text_reading,character_interpretation")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.HEARING, AnswerConstants.DEAFNESS))
@@ -431,6 +479,8 @@ end
 
 // Speech - Expresses with Difficulty
 rule "Restrict Activities for Speech Difficulties"
+    @restrictionType("conditions.conditions_speech.speaks_with_difficulty")
+    @activities("karaoke,character_interpretation,verbal_task_exercises,dramatic_text_reading,guess_the_song,musicogram")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.SPEAKS_WITH_DIFFICULTY))
@@ -446,6 +496,8 @@ end
 
 // Speech - Cannot be Understood
 rule "Restrict Activities for Speech Cannot be Understood"
+    @restrictionType("conditions.conditions_speech.cannot_be_understood")
+    @activities("verbal_task_exercises,karaoke,character_interpretation,dramatic_text_reading,guess_the_song,musicogram")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SPEECH, AnswerConstants.CANNOT_BE_UNDERSTOOD))
@@ -461,6 +513,8 @@ end
 
 // Smell - Loss of Smell
 rule "Restrict Activities for Difficulties Smelling"
+    @restrictionType("conditions.conditions_smell.smell_with_difficulty")
+    @activities("odor_differentiation,taste_reaction")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.SMELL_WITH_DIFFICULTY))
@@ -472,6 +526,8 @@ end
 
 // Smell - Complete Loss of Smell
 rule "Restrict Activities for Smell Complete Loss"
+    @restrictionType("conditions.conditions_smell.no_sense_of_smell")
+    @activities("odor_differentiation,taste_reaction")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.SMELL, AnswerConstants.NO_SENSE_OF_SMELL))
@@ -483,6 +539,8 @@ end
 
 // Upper Motor Skills - UMS Has Difficulty
 rule "Restrict Activities for Upper Motor Skills Difficulties"
+    @restrictionType("conditions.conditions_upper_motor_skills.ums_has_difficulty")
+    @activities("construction_technique,recycled_materials,felt_work,small_arrangements,paintings,centre_decoration_work,manual_dexterity_games,manicure,makeup,instruments_use,petanque_games,bowling_games,tic_tac_toe_games,domino_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.UMS_HAS_DIFFICULTY))
@@ -506,6 +564,8 @@ end
 
 // Upper Motor Skills - Unable to use Upper Limbs
 rule "Restrict Activities for Upper Motor Skills impossibility of movement"
+    @restrictionType("conditions.conditions_upper_motor_skills.unable_to_use_upper_limbs")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,centre_decoration_work,dessert_making,differences_games,manual_dexterity_games,physiotherapy,manicure,makeup,musicogram,instruments_use,warmup_exercises,petanque_games,bowling_games,adapted_handkerchief_games,mime_games,bingo_games,missako_games,tic_tac_toe_games,domino_games,character_interpretation")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS, AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS))
@@ -540,18 +600,22 @@ end
 
 // Lower Motor Skills - LMS Has Difficulty
 rule "Restrict Activities for Lower Motor Skills Difficulties"
+    @restrictionType("conditions.conditions_upper_motor_skills.lms_has_difficulty")
+    @activities("petanque_games,bowling_games,physiotherapy")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.LMS_HAS_DIFFICULTY))
     then
         String ruleName = drools.getRule().getName();
-        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
-        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
-        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.UNABLE_TO_USE_UPPER_LIMBS));
+        insert(new Restrict(ruleName, ActivityConstants.PETANQUE_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.LMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.BOWLING_GAMES, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.LMS_HAS_DIFFICULTY));
+        insert(new Restrict(ruleName, ActivityConstants.PHYSIOTHERAPY, "conditions." + EvidenceConstants.UPPER_MOTOR_SKILLS + "." + AnswerConstants.LMS_HAS_DIFFICULTY));
 end
 
 // Lower Motor Skills - LMS Has Difficulty
 rule "Restrict Activities for Lower Motor Skills impossibility of movement"
+    @restrictionType("conditions.conditions_lower_motor_skills.unable_to_use_lower_limbs")
+    @activities("walking,warmup_exercises,physiotherapy,petanque_games,bowling_games,adapted_handkerchief_games,mime_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS, AnswerConstants.UNABLE_TO_USE_LOWER_LIMBS))
@@ -568,6 +632,8 @@ end
 
 // Object Handling - Partial Control
 rule "Restrict Activities for Object Partial Control"
+    @restrictionType("conditions.conditions_object_handling.partial_control")
+    @activities("felt_work,small_arrangements,dessert_making,manual_dexterity_games,manicure,makeup,instruments_use,musicogram")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.PARTIAL_CONTROL))
@@ -585,6 +651,8 @@ end
 
 // Object Handling - Cannot Handle
 rule "Restrict Activities for Object Handling Impairment"
+    @restrictionType("conditions.conditions_object_handling.cannot_handle")
+    @activities("construction_technique,recycled_materials,execution_festival_work,felt_work,small_arrangements,paintings,centre_decoration_work,dessert_making,knowledge_exercises,manual_dexterity_games,manicure,makeup,instruments_use,musicogram,domino_games,missako_games,tic_tac_toe_games,petanque_games,bowling_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.OBJECT_HANDLING, AnswerConstants.CANNOT_HANDLE))
@@ -613,6 +681,8 @@ end
 
 // Reading - Reading Difficulty
 rule "Restrict Activities for Reading Difficulties"
+    @restrictionType("conditions.conditions_reading.reading_with_difficulty")
+    @activities("reading_writing_exercises,dramatic_text_reading,character_interpretation,musicogram,numerical_comprehension_exercises")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.READING_WITH_DIFFICULTY))
@@ -627,6 +697,8 @@ end
 
 // Reading - Cannot Read
 rule "Restrict Activities for Reading Incapacity"
+    @restrictionType("conditions.conditions_reading.cannot_read")
+    @activities("reading_writing_exercises,numerical_comprehension_exercises,musicogram,dramatic_text_reading,character_interpretation,knowledge_exercises,bingo_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.READING_CONDITION, AnswerConstants.CANNOT_READ))
@@ -643,6 +715,8 @@ end
 
 // Writing - Writing Difficulty
 rule "Restrict Activities for Writing Difficulties"
+    @restrictionType("conditions.conditions_writing.writes_with_difficulty")
+    @activities("reading_writing_exercises,verbal_task_exercises,character_interpretation,musicogram")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.WRITING, AnswerConstants.WRITES_WITH_DIFFICULTY))
@@ -656,6 +730,8 @@ end
 
 // Writing - Cannot Write
 rule "Restrict Activities for Writing Incapacity"
+    @restrictionType("conditions.conditions_writing.cannot_write")
+    @activities("reading_writing_exercises,verbal_task_exercises,character_interpretation,musicogram,bingo_games,knowledge_exercises,numerical_comprehension_exercises")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.WRITING, AnswerConstants.CANNOT_WRITE))
@@ -672,6 +748,8 @@ end
 
 // Mobility - Needs Assistance
 rule "Restrict Activities for Mobility Needs Assistance"
+    @restrictionType("conditions.conditions_mobility.needs_assistance")
+    @activities("petanque_games,bowling_games,warmup_exercises,physiotherapy")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.NEEDS_ASSISTANCE))
@@ -685,6 +763,8 @@ end
 
 // Mobility - Total Dependence
 rule "Restrict Activities for Mobility Total Dependence"
+    @restrictionType("conditions.conditions_mobility.total_dependence")
+    @activities("walking,warmup_exercises,physiotherapy,petanque_games,bowling_games,adapted_handkerchief_games,mime_games")
     agenda-group "survey-rules"
     when
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.MOBILITY, AnswerConstants.TOTAL_DEPENDENCE))

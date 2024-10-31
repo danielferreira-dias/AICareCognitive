@@ -67,7 +67,11 @@ public class EngineService {
         return prologGateway.getWhy(activity);
     }
 
-    public List<Justification> getWhyNot(UUID surveyId, String activity, List<Evidence> evidences) {
+    public List<Justification> getWhyNot(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
+        if(engineProperties.getType().equals("drools")){
+            return droolsGateway.getWhyNot(surveyId, evidences, activity);
+        }
+
         var result = prologGateway.postBulkAnswers(evidences);
         if (!result) {
             return null;

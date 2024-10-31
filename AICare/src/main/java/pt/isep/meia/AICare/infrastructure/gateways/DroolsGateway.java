@@ -1,6 +1,11 @@
 package pt.isep.meia.AICare.infrastructure.gateways;
 
 import lombok.var;
+import org.kie.api.KieBase;
+import org.kie.api.definition.KiePackage;
+import org.kie.api.definition.rule.Rule;
+import org.kie.api.event.rule.AfterMatchFiredEvent;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +63,7 @@ public class DroolsGateway {
 
             var permittedActivities = ActivityConstants.getAllActivities().stream()
                     .filter(activity -> !restrictedActivityNames.contains(activity))
+                    .distinct()
                     .collect(Collectors.toList());
 
             var prioritizedActivities = conclusions.stream()
@@ -65,19 +71,19 @@ public class DroolsGateway {
                     .distinct()
                     .collect(Collectors.toList());
 
-            var orderedActivities = new ArrayList<>(prioritizedActivities);
-            permittedActivities.stream()
-                    .filter(activity -> !prioritizedActivities.contains(activity))
-                    .forEach(orderedActivities::add);
+            permittedActivities.sort(Comparator.comparingInt(activity -> {
+                int index = prioritizedActivities.indexOf(activity);
+                return index >= 0 ? index : Integer.MAX_VALUE;
+            }));
 
-            return Result.fromActivities(surveyId, orderedActivities);
+            return Result.fromActivities(surveyId, permittedActivities);
         }
         finally {
             clearSession(session);
         }
     }
 
-    public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences, String activityToCheck) throws IOException {
+    public List<Justification> getWhyNot(UUID surveyId, List<Evidence> evidences, String activityToCheck) throws IOException {
         var session = droolsConfig.getKieSession();
         if (session == null) {
             return null;
@@ -114,6 +120,78 @@ public class DroolsGateway {
                     .collect(Collectors.toList());
 
             return justifications;
+        } finally {
+            clearSession(session);
+        }
+    }
+
+    public List<Justification> getWhy(UUID surveyId, List<Evidence> evidences, String activityToCheck) throws IOException {
+        var session = droolsConfig.getKieSession();
+        if (session == null) {
+            return null;
+        }
+
+        List<String> firedRules = new ArrayList<>();
+        List<Justification> unmetConditions = new ArrayList<>();
+
+        session.addEventListener(new DefaultAgendaEventListener() {
+            @Override
+            public void afterMatchFired(AfterMatchFiredEvent event) {
+                firedRules.add(event.getMatch().getRule().getName());
+            }
+        });
+
+        try {
+            session.setGlobal("surveyId", surveyId);
+            session.setGlobal("evidences", evidences);
+            session.getAgenda().getAgendaGroup("survey-rules").setFocus();
+            session.fireAllRules();
+
+            // Step 1: Retrieve all rules from the KieBase to check which didn't fire
+            KieBase kbase = session.getKieBase();
+            Collection<KiePackage> packages = kbase.getKiePackages();
+
+            // Step 2: Iterate over each rule to check if it applies to the given activity and restriction type
+            Map<String, Map<String, List<String>>> groupedUnmetConditions = new HashMap<>();
+
+            for (KiePackage kp : packages) {
+                for (Rule rule : kp.getRules()) {
+                    if (!firedRules.contains(rule.getName())) {
+                        // Get restrictionType and activities metadata
+                        String restrictionType = (String) rule.getMetaData().get("restrictionType");
+                        String activitiesMeta = (String) rule.getMetaData().get("activities");
+
+                        if (activitiesMeta != null && Arrays.asList(activitiesMeta.split(",")).contains(activityToCheck)) {
+                            // Add this rule to the unmet conditions grouped by restrictionType
+                            groupedUnmetConditions
+                                    .computeIfAbsent(restrictionType, k -> new HashMap<>())
+                                    .computeIfAbsent(activityToCheck, k -> new ArrayList<>())
+                                    .add(rule.getName());
+                        }
+                    }
+                }
+            }
+
+            // Step 3: Convert grouped unmet conditions into Justification objects
+            for (Map.Entry<String, Map<String, List<String>>> restrictionTypeEntry : groupedUnmetConditions.entrySet()) {
+                String restrictionType = restrictionTypeEntry.getKey();
+
+                for (Map.Entry<String, List<String>> activityEntry : restrictionTypeEntry.getValue().entrySet()) {
+                    List<String> rules = activityEntry.getValue();
+
+                    unmetConditions.add(new Justification(
+                            JustificationTypeEnum.whynot,
+                            restrictionType,
+                            rules
+                    ));
+                }
+            }
+
+            return unmetConditions.isEmpty() ? Collections.singletonList(new Justification(
+                    JustificationTypeEnum.whynot, "generic_activity",
+                    new ArrayList<>()
+            )) : unmetConditions;
+
         } finally {
             clearSession(session);
         }

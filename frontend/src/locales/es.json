@@ -81,7 +81,7 @@
                 "only_some_correctly": "Solo Algunos Correctamente",
                 "cannot_handle": "No Puede Manipular",
                 "reads_without_difficulty": "Lee sin Dificultad",
-                "has_some_difficulty": "Tiene Algo de Dificultad",
+                "reading_with_difficulty": "Lee con cierta dificultad",
                 "cannot_read": "No Sabe Leer",
                 "writes_without_difficulty": "Escribe sin Dificultad",
                 "cannot_write": "No Sabe Escribir",
@@ -209,13 +209,79 @@
         },
         "justifications": {
             "closeForm": "Cerrar",
-            "showTriggeredRules": "Mostrar reglas activadas",
-            "hideTriggeredRules": "Ocultar reglas activadas",
-            "whynot": {
-                "no_conditions_prevent_activity": "Ninguna condición impide la realización de esta actividad.",
-                "no_diseases_prevent_activity": "Ninguna enfermedad impide la realización de esta actividad."
-            },
             "why": {
+                "showRules": "Mostrar reglas no activadas",
+                "hideRules": "Ocultar reglas no activadas",
+                "generic_activity": "Esta actividad es suficientemente general y adaptable, sin restricciones específicas definidas para ella.",
+                "diseases": {
+                    "alzheimer_advanced": "Esta actividad se recomienda, ya que el paciente no presenta síntomas avanzados de Alzheimer, permitiendo una participación segura.",
+                    "alzheimer_initial": "El paciente no presenta síntomas de Alzheimer en etapa inicial, lo cual apoya la participación en esta actividad.",
+                    "parkinson_advanced": "La ausencia de síntomas avanzados de Parkinson permite que el paciente participe de forma segura en esta actividad.",
+                    "parkinson_initial": "El paciente no presenta síntomas iniciales de Parkinson, lo cual hace esta actividad apropiada.",
+                    "vascular_dementia_advanced": "Esta actividad es adecuada, ya que el paciente no presenta signos de demencia vascular avanzada, permitiendo un compromiso seguro.",
+                    "vascular_dementia_initial": "El paciente no experimenta síntomas de demencia vascular en etapa inicial, lo cual hace que esta actividad sea una elección apropiada."
+                },
+                "conditions": {
+                    "conditions_social_integration": {
+                        "good_social_relations": "Esta actividad es recomendada, ya que el paciente tiene buenas relaciones sociales, promoviendo la integración social.",
+                        "severe_integration_issues": "La ausencia de problemas graves de integración social hace esta actividad adecuada, ya que no presenta riesgo de incomodidad social.",
+                        "isolated_person": "El paciente no está socialmente aislado, lo cual hace esta actividad apropiada para fomentar la interacción social."
+                    },
+                    "conditions_vision": {
+                        "good_vision": "La visión normal permite que el paciente participe plenamente en esta actividad visual.",
+                        "vision_with_difficulties": "El paciente no presenta dificultades visuales, lo cual lo hace apto para esta actividad.",
+                        "blindness": "Esta actividad es adecuada, ya que el paciente no tiene ceguera, permitiendo una participación completa."
+                    },
+                    "conditions_hearing": {
+                        "good_hearing": "La audición normal hace que esta actividad sea apropiada, ya que la capacidad auditiva apoya la participación.",
+                        "hearing_with_difficulties": "El paciente no presenta problemas de audición, haciendo esta actividad segura y atractiva.",
+                        "deafness": "Dado que el paciente no es sordo, puede participar plenamente en esta actividad que incluye elementos auditivos."
+                    },
+                    "conditions_speech": {
+                        "speaks_normally": "La capacidad de hablar normalmente permite que el paciente se comunique efectivamente en esta actividad.",
+                        "speaks_with_difficulty": "El paciente no presenta dificultades en el habla, haciendo esta actividad accesible e interactiva.",
+                        "cannot_be_understood": "La claridad del habla permite que el paciente participe en tareas de comunicación sin problemas."
+                    },
+                    "conditions_smell": {
+                        "smell_normally": "El sentido del olfato normal apoya la participación sensorial en esta actividad.",
+                        "smell_with_difficulty": "El paciente no presenta dificultades con el olfato, mejorando la experiencia sensorial en esta actividad.",
+                        "no_sense_of_smell": "La capacidad olfativa total permite que el paciente experimente los aspectos sensoriales de esta actividad."
+                    },
+                    "conditions_upper_motor_skills": {
+                        "ums_functions_normally": "Las habilidades motoras superiores normales permiten la participación efectiva en esta tarea de motricidad fina.",
+                        "ums_has_difficulty": "No presentar dificultades motoras superiores hace que esta actividad sea adecuada para el paciente.",
+                        "unable_to_use_upper_limbs": "El paciente tiene pleno uso de sus extremidades superiores, permitiéndole participar en actividades manuales."
+                    },
+                    "conditions_lower_motor_skills": {
+                        "lms_functions_normally": "Las habilidades motoras inferiores normales hacen que las actividades basadas en movimiento sean apropiadas para el paciente.",
+                        "lms_has_difficulty": "El paciente no presenta dificultades motoras inferiores, permitiendo una participación plena en esta actividad.",
+                        "unable_to_use_lower_limbs": "La capacidad del paciente para usar sus extremidades inferiores le permite participar en esta actividad de forma segura."
+                    },
+                    "conditions_object_handling": {
+                        "full_control": "El control total sobre el manejo de objetos hace esta actividad adecuada para el paciente.",
+                        "partial_control": "No tener dificultades en el manejo de objetos hace esta tarea segura y atractiva para el paciente.",
+                        "cannot_handle": "El paciente puede manejar objetos con facilidad, permitiendo una participación total en esta actividad."
+                    },
+                    "conditions_reading": {
+                        "reading_normally": "Las habilidades de lectura normales permiten que el paciente participe efectivamente en tareas textuales.",
+                        "reading_with_difficulty": "El paciente no presenta dificultades para leer, permitiendo una interacción plena con el texto.",
+                        "cannot_read": "Dado que el paciente puede leer, puede participar completamente en actividades que requieren habilidades de lectura."
+                    },
+                    "conditions_writing": {
+                        "writes_normally": "La capacidad de escribir normalmente permite que el paciente participe en esta actividad de escritura.",
+                        "writes_with_difficulty": "El paciente no presenta dificultades para escribir, permitiendo una participación total en esta actividad.",
+                        "cannot_write": "La capacidad del paciente para escribir permite que participe en tareas que requieren respuestas escritas."
+                    },
+                    "conditions_mobility": {
+                        "moves_easily": "La buena movilidad hace que el paciente sea adecuado para esta actividad físicamente activa.",
+                        "needs_assistance": "No requerir asistencia para la movilidad hace que esta actividad sea segura y atractiva para el paciente.",
+                        "total_dependence": "El paciente puede moverse de manera independiente, haciendo esta actividad adecuada para sus habilidades."
+                    }
+                }
+            },
+            "whynot": {
+                "showRules": "Mostrar reglas activadas",
+                "hideRules": "Ocultar reglas activadas",
                 "disease": {
                     "alzheimer_advanced": "El Alzheimer avanzado afecta significativamente las funciones cognitivas, haciendo esta actividad inapropiada.",
                     "alzheimer_initial": "El Alzheimer en etapa inicial puede afectar la memoria y la concentración, limitando potencialmente el desempeño en esta actividad.",

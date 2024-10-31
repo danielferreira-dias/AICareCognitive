@@ -31,8 +31,8 @@
       <!-- Toggle Rules and Close buttons -->
       <div class="flex justify-end mt-4 space-x-2">
         <button @click="toggleAllRules" class="bg-gray-200 text-blue-500 px-4 py-2 rounded">
-          {{ showAllRules ? $t("surveys.justifications.hideTriggeredRules") :
-            $t("surveys.justifications.showTriggeredRules") }}
+          {{ showAllRules ? $t(`surveys.justifications.${type}.hideRules`) :
+            $t(`surveys.justifications.${type}.showRules`) }}
         </button>
         <button @click="closeModal" class="bg-blue-500 text-white px-4 py-2 rounded">
           {{ $t("surveys.justifications.closeForm") }}
@@ -90,7 +90,6 @@ export default {
           ...justification,
           showRules: false,
         }));
-        console.log(this.justifications);
       } catch (error) {
         console.error('Error fetching justification:', error);
         this.justifications = [{ response: 'Error loading justification.', showRules: false }];
@@ -106,9 +105,9 @@ export default {
     },
   },
   watch: {
-    activity(newActivity) {
-      if (this.visible) {
-        this.fetchJustification(this.surveyId, newActivity, this.type);
+    visible(newVisibility) {
+      if (newVisibility) {
+        this.fetchJustification(this.surveyId, this.activity, this.type);
       }
     },
   },
