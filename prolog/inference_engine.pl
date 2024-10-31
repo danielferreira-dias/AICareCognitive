@@ -19,7 +19,7 @@ initialize(Diseases) :-
 allowed_activities(Diseases, AllowedActivities) :-
     findall(Activity,
             (activity(Activity),
-             \+ (member(Disease, Diseases), cannot(Disease, Activity))),
+             \+ (member(Disease, Diseases), cannot(Disease, Activity, _))),
             AllowedActivities).
 
 %--------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ filter_suitable_activities(Conditions, SuitableActivities) :-
     allowed_activities_saved(Activities),
     findall(Activity,
             (member(Activity, Activities),
-             \+ (member(Cond, Conditions), inadequate(Cond, Activity))),
+             \+ (member(Cond, Conditions), inadequate(Cond, Activity, _))),
             SuitableActivities).
 
 %--------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ initialize3(Preferences) :-
 reorder_activities_by_preferences(Preferences, Activities, OrderedActivities) :-
     % Find activities related to preferences, removing duplicates
     findall(Activity,
-            (member(Preference, Preferences), preference(Preference, Activity), member(Activity, Activities)),
+            (member(Preference, Preferences), preference(Preference, Activity, _), member(Activity, Activities)),
             RepeatedPreferredActivities),
     sort(RepeatedPreferredActivities, PreferredActivities),  % Remove duplicates
     % Filter activities that are not preferred
@@ -96,15 +96,15 @@ why_not(Activity, Justification) :-
 reason_not_allowed(Activity, Justification) :-
     get_diseases(Diseases),
     member(Disease, Diseases),
-    cannot(Disease, Activity),
-    Justification = ["disease", Disease].
+    cannot(Disease, Activity, Rule),
+    Justification = ["disease", Disease, Rule].
 
 reason_not_allowed(Activity, Justification) :-
     get_conditions(Conditions),
     member(Condition, Conditions),
-    inadequate(Condition, Activity),
+    inadequate(Condition, Activity, Rule),
     condition(Match, Condition),
-    Justification = ["conditions", Match, Condition].
+    Justification = ["conditions", Match, Condition, Rule].
 
 %--------------------------------------------------------------------------------   
 % EXPLANATION MODULE - WHY - ACTIVITY?
@@ -121,17 +121,17 @@ why(Activity, Justification) :-
 reason_allowed(Activity, Reason) :-
     get_preferences(Preferences),
     member(Pref, Preferences),
-    preference(Pref, Activity),
-    Reason = ["preferences", Pref].
+    preference(Pref, Activity, Rule),
+    Reason = ["preferences", Pref, Rule].
 
 % Specific selection reasons based on conditions
 reason_allowed(Activity, Reason) :-
     get_conditions(Conditions),
-    forall(member(Condition, Conditions), \+ inadequate(Condition, Activity)),
+    forall(member(Condition, Conditions), \+ inadequate(Condition, Activity, _)),
     Reason = ["no_conditions_prevent_activity"].
 
 % Specific selection reasons based on diseases (using cannot/2)
 reason_allowed(Activity, Reason) :-
     get_diseases(Diseases),
-    forall(member(Disease, Diseases), \+ cannot(Disease, Activity)),
+    forall(member(Disease, Diseases), \+ cannot(Disease, Activity, _)),
     Reason = ["no_diseases_prevent_activity"].
