@@ -55,7 +55,7 @@ public class DroolsGateway {
             }
 
             var restrictions = getRestrictionsFromSession(session);
-            var conclusions = getPreferredActivitiesFromSession(session);
+            var preferredActivities = getPreferredActivitiesFromSession(session);
 
             var restrictedActivityNames = restrictions.stream()
                     .map(Restrict::getActivity)
@@ -66,7 +66,7 @@ public class DroolsGateway {
                     .distinct()
                     .collect(Collectors.toList());
 
-            var prioritizedActivities = conclusions.stream()
+            var prioritizedActivities = preferredActivities.stream()
                     .map(PreferredActivity::getDescription)
                     .distinct()
                     .collect(Collectors.toList());

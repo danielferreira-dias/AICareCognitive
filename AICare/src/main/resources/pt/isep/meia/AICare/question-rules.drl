@@ -20,8 +20,6 @@ rule "start_diagnosis"
     when
         eval(evidences == null || evidences.isEmpty())
     then
-        System.out.println(drools.getRule().getName());
-        System.out.println("Starting survey - Asking diagnosis question");
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -35,7 +33,6 @@ rule "ask_alzheimer"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_ALZHEIMER);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -48,7 +45,6 @@ rule "ask_alzheimer_stage"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_ALZHEIMER_STAGE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
         insert(q);
@@ -61,7 +57,6 @@ rule "ask_parkinson"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_PARKINSON);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -74,7 +69,6 @@ rule "ask_parkinson_stage"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_PARKINSON_STAGE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
         insert(q);
@@ -87,7 +81,6 @@ rule "ask_vascular_dementia"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -100,7 +93,6 @@ rule "ask_vascular_dementia_stage"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA, AnswerConstants.YES))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.DIAGNOSIS_VASCULAR_DEMENTIA_STAGE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.INITIAL, AnswerConstants.ADVANCED));
         insert(q);
@@ -116,7 +108,6 @@ rule "ask_observation_alzheimer_initial_disorientation"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_SPATIAL_DISORIENTATION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_SPATIAL_DISORIENTATION);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -129,7 +120,6 @@ rule "ask_observation_alzheimer_initial_memory_loss_frustration"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_MEMORY_LOSS_FRUSTRATION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_MEMORY_LOSS_FRUSTRATION);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -142,7 +132,6 @@ rule "ask_observation_alzheimer_initial_slight_memory_loss"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_SLIGHT_MEMORY_LOSS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_SLIGHT_MEMORY_LOSS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -157,7 +146,6 @@ rule "ask_observation_alzheimer_advanced_stare"
         not Hypothesis(description == "disease", value == "alzheimer_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_STARE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_STARE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -171,7 +159,6 @@ rule "ask_observation_alzheimer_advanced_needs_constant_supervision"
         not Hypothesis(description == "disease", value == "alzheimer_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_NEEDS_CONSTANT_SUPERVISION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_NEEDS_CONSTANT_SUPERVISION);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -185,7 +172,6 @@ rule "ask_observation_alzheimer_advanced_unable_to_follow_stimuli"
         not Hypothesis(description == "disease", value == "alzheimer_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_UNABLE_TO_FOLLOW_STIMULI))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_UNABLE_TO_FOLLOW_STIMULI);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -199,7 +185,6 @@ rule "ask_observation_alzheimer_advanced_history_of_falls"
         not Hypothesis(description == "disease", value == "alzheimer_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_ALZHEIMER_HISTORY_OF_FALLS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_ALZHEIMER_HISTORY_OF_FALLS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -214,7 +199,6 @@ rule "ask_observation_parkinsons_initial_shaking"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_SHAKING))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_SHAKING);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -227,7 +211,6 @@ rule "ask_observation_parkinsons_locomotion_difficulties"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_LOCOMOTION_DIFFICULTIES))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_LOCOMOTION_DIFFICULTIES);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -240,7 +223,6 @@ rule "ask_observation_parkinsons_bent_spine"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_BENT_SPINE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_BENT_SPINE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -253,7 +235,6 @@ rule "ask_observation_parkinsons_balance_loss"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_BALANCE_LOSS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_BALANCE_LOSS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -266,7 +247,6 @@ rule "ask_observation_parkinsons_loss_onset"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_HEARING_LOSS_ONSET))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_HEARING_LOSS_ONSET);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -281,7 +261,6 @@ rule "ask_observation_parkinson_advanced_fine_motor_control"
         not Hypothesis(description == "disease", value == "parkinson_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_FINE_MOTOR_CONTROL))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_FINE_MOTOR_CONTROL);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -295,7 +274,6 @@ rule "ask_observation_parkinson_advanced_intense_tremors"
         not Hypothesis(description == "disease", value == "parkinson_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_INTENSE_TREMORS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_INTENSE_TREMORS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -309,7 +287,6 @@ rule "ask_observation_parkinson_advanced_coordination_difficulties"
         not Hypothesis(description == "disease", value == "parkinson_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_PARKINSON_COORDINATION_DIFFICULTIES))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_PARKINSON_COORDINATION_DIFFICULTIES);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -324,7 +301,6 @@ rule "ask_observation_vascular_dementia_initial_slight_memory_loss"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_SLIGHT_MEMORY_LOSS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_SLIGHT_MEMORY_LOSS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -337,7 +313,6 @@ rule "ask_observation_vascular_dementia_initial_depression_anxiety"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_DEPRESSION_ANXIETY))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_DEPRESSION_ANXIETY);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -350,7 +325,6 @@ rule "ask_observation_vascular_dementia_initial_thinking_problems"
         eval(DroolsHelper.checkQuestionAnswer(evidences, EvidenceConstants.DIAGNOSIS, AnswerConstants.NO))
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_THINKING_PROBLEMS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_THINKING_PROBLEMS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -365,7 +339,6 @@ rule "ask_observation_vascular_dementia_advanced_memory_recall_difficulties"
         not Hypothesis(description == "disease", value == "vascular_dementia_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MEMORY_RECALL_DIFFICULTIES))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MEMORY_RECALL_DIFFICULTIES);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -379,7 +352,6 @@ rule "ask_observation_vascular_dementia_advanced_memory_people_recognition"
         not Hypothesis(description == "disease", value == "vascular_dementia_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_PEOPLE_RECOGNITION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_PEOPLE_RECOGNITION);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -393,7 +365,6 @@ rule "ask_observation_vascular_dementia_advanced_insomnia_agitation"
         not Hypothesis(description == "disease", value == "vascular_dementia_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_AGGRESSIVENESS_INSOMNIA_AGITATION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_AGGRESSIVENESS_INSOMNIA_AGITATION);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -407,7 +378,6 @@ rule "ask_observation_vascular_dementia_advanced_motor_problems"
         not Hypothesis(description == "disease", value == "vascular_dementia_advanced")
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MOTOR_PROBLEMS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBSERVATION_VASCULAR_DEMENTIA_MOTOR_PROBLEMS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -420,7 +390,6 @@ rule "ask_condition_social_integration"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.SOCIAL_INTEGRATION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.SOCIAL_INTEGRATION);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.GOOD_SOCIAL_RELATIONS,
@@ -436,7 +405,6 @@ rule "ask_condition_vision"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.VISION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.VISION);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.GOOD_VISION,
@@ -452,7 +420,6 @@ rule "ask_condition_hearing"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.HEARING))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.HEARING);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.GOOD_HEARING,
@@ -468,7 +435,6 @@ rule "ask_condition_speech"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.SPEECH))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.SPEECH);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.SPEAKS_NORMALLY,
@@ -484,7 +450,6 @@ rule "ask_condition_smell"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.SMELL))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.SMELL);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.SMELL_NORMALLY,
@@ -500,7 +465,6 @@ rule "ask_condition_upper_motor_skills"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.UPPER_MOTOR_SKILLS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.UPPER_MOTOR_SKILLS);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.UMS_FUNCTIONS_NORMALLY,
@@ -516,7 +480,6 @@ rule "ask_condition_lower_motor_skills"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.LOWER_MOTOR_SKILLS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.LOWER_MOTOR_SKILLS);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.LMS_FUNCTIONS_NORMALLY,
@@ -532,7 +495,6 @@ rule "ask_condition_object_handling"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.OBJECT_HANDLING))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.OBJECT_HANDLING);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.FULL_CONTROL,
@@ -548,7 +510,6 @@ rule "ask_condition_reading_condition"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.READING_CONDITION))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.READING_CONDITION);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.READING_NORMALLY,
@@ -564,7 +525,6 @@ rule "ask_condition_writing"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.WRITING))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.WRITING);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.WRITES_NORMALLY,
@@ -580,7 +540,6 @@ rule "ask_condition_mobility"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.MOBILITY))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.MOBILITY);
         q.setPossibleAnswers(Arrays.asList(
             AnswerConstants.MOVES_EASILY,
@@ -597,7 +556,6 @@ rule "ask_preference_theatre"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.THEATRE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.THEATRE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -609,7 +567,6 @@ rule "ask_preference_museum"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.MUSEUM))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.MUSEUM);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -621,7 +578,6 @@ rule "ask_preference_music"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.MUSIC))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.MUSIC);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -633,7 +589,6 @@ rule "ask_preference_reading"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.READING_PREFERENCE))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.READING_PREFERENCE);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -645,7 +600,6 @@ rule "ask_preference_recreational_group"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.RECREATIONAL_GROUP))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.RECREATIONAL_GROUP);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -657,7 +611,6 @@ rule "ask_preference_art"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.ART))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.ART);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -669,7 +622,6 @@ rule "ask_preference_sports"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.SPORTS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.SPORTS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -681,7 +633,6 @@ rule "ask_preference_cooking"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.COOKING))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.COOKING);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -693,7 +644,6 @@ rule "ask_preference_handicrafts"
     when
         eval(!DroolsHelper.checkQuestionPresent(evidences, EvidenceConstants.HANDICRAFTS))
     then
-        System.out.println(drools.getRule().getName());
         Question q = new Question(surveyId, EvidenceConstants.HANDICRAFTS);
         q.setPossibleAnswers(Arrays.asList(AnswerConstants.YES, AnswerConstants.NO));
         insert(q);
@@ -705,9 +655,5 @@ rule "Survey Completed"
     when
         not (Question())
     then
-        System.out.println(drools.getRule().getName());
         insert(new SurveyCompleted());
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        System.out.println("Survey Completed");
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 end
