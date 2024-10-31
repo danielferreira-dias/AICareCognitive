@@ -28,9 +28,9 @@
         </li>
       </ul>
 
-      <!-- Toggle Rules and Close buttons -->
+      <!-- Toggle Rules and Close buttons, only show Toggle if any justification has triggered rules -->
       <div class="flex justify-end mt-4 space-x-2">
-        <button @click="toggleAllRules" class="bg-gray-200 text-blue-500 px-4 py-2 rounded">
+        <button v-if="hasTriggeredRules" @click="toggleAllRules" class="bg-gray-200 text-blue-500 px-4 py-2 rounded">
           {{ showAllRules ? $t(`surveys.justifications.${type}.hideRules`) :
             $t(`surveys.justifications.${type}.showRules`) }}
         </button>
@@ -68,13 +68,19 @@ export default {
     return {
       justifications: [],
       loading: false,
-      showAllRules: false, // Global toggle for showing all rules
+      showAllRules: false, // Global toggle for showing all rules, initially hidden
     };
+  },
+  computed: {
+    hasTriggeredRules() {
+      // Checks if any justification has triggered rules
+      return this.justifications.some(justification => justification.rulesTriggered && justification.rulesTriggered.length > 0);
+    }
   },
   methods: {
     closeModal() {
       this.$emit('close');
-      this.resetDialog(); // Reset dialog properties
+      this.resetDialog();
     },
     toggleAllRules() {
       this.showAllRules = !this.showAllRules; // Toggle the display of all rules
@@ -85,7 +91,7 @@ export default {
         const activityToCheck = {
           activityName: activity.description,
         };
-        // Add showRules property to each justification
+        // Fetch justifications with showRules property for each
         this.justifications = (await getJustifications(surveyId, type, activityToCheck)).map(justification => ({
           ...justification,
           showRules: false,
@@ -98,7 +104,6 @@ export default {
       }
     },
     resetDialog() {
-      // Reset all properties related to the dialog
       this.justifications = [];
       this.loading = false;
       this.showAllRules = false; // Reset showAllRules on close
