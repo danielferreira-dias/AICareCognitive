@@ -213,6 +213,17 @@
                 "showRules": "Show not triggered rules",
                 "hideRules": "Hide not triggered rules",
                 "generic_activity": "This activity is sufficiently general and adaptable, with no specific restrictions defined for it.",
+                "preferences": {
+                    "preferences_theatre": "This activity is prioritized due to the patient's preference for theatre.",
+                    "preferences_museum": "This activity is prioritized due to the patient's preference for visiting museums.",
+                    "preferences_music": "This activity is prioritized due to the patient's preference for music.",
+                    "preferences_reading": "This activity is prioritized due to the patient's preference for reading.",
+                    "preferences_recreational_group": "This activity is prioritized due to the patient's preference for recreational group activities.",
+                    "preferences_art": "This activity is prioritized due to the patient's preference for art activities.",
+                    "preferences_sports": "This activity is prioritized due to the patient's preference for sports.",
+                    "preferences_cooking": "This activity is prioritized due to the patient's preference for cooking.",
+                    "preferences_handicrafts": "This activity is prioritized due to the patient's preference for handicrafts."
+                },
                 "diseases": {
                     "alzheimer_advanced": "This activity is recommended as the patient does not exhibit advanced Alzheimer's symptoms, allowing safe participation.",
                     "alzheimer_initial": "The patient shows no early-stage Alzheimer's symptoms, supporting engagement in this activity.",

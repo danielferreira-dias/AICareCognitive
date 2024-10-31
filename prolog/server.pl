@@ -28,25 +28,48 @@ get_next_question(_) :-
     ),
     retractall(evidence(_, _)).
 
+format_why(["preferences", PreferenceList], FormattedPreferences) :-
+    findall(_{justification: PreferenceString, ruleTriggered: RuleString},
+        (member([Preference, Rule], PreferenceList),
+            atomic_list_concat(["preferences", Preference], '.', PreferenceString),
+            term_string(Rule, RuleString)),
+        FormattedPreferences).
+
+format_why(["diseases", DiseaseList], FormattedDiseases) :-
+    findall(_{justification: DiseaseString, ruleTriggered: RuleString},
+        (member([Disease, Rule], DiseaseList),
+            atomic_list_concat(["diseases", Disease], '.', DiseaseString),
+            term_string(Rule, RuleString)),
+        FormattedDiseases).
+
+format_why(["conditions", ConditionList], FormattedConditions) :-
+    findall(_{justification: ConditionString, ruleTriggered: RuleString},
+        (member([ConditionGroup, Condition, Rule], ConditionList),
+            atomic_list_concat(["conditions", ConditionGroup, Condition], '.', ConditionString),
+            term_string(Rule, RuleString)),
+        FormattedConditions).
+
 get_why(Activity, _) :-
     conclusions(_),
-    (   why(Activity, Justifications)
-    ->  reply_json_dict(_{justifications: Justifications})
+    (   why(Activity, Justifications),
+        maplist(format_why, Justifications, NestedFormattedJustifications),
+        append(NestedFormattedJustifications, FormattedJustifications)
+    ->  reply_json_dict(_{justifications: FormattedJustifications})
     ;   reply_json_dict(_{error: "No reason why."})
-    ),
-    retractall(evidence(_, _)).
+    ).
 
-format_justification([JustificationList, Rule], _{justification: JustificationString, ruleTriggered: RuleString}) :-
+format_why_not([JustificationList, Rule], _{justification: JustificationString, ruleTriggered: RuleString}) :-
     atomic_list_concat(JustificationList, '.', JustificationString),
     term_string(Rule, RuleString).
 
 get_why_not(Activity, _) :-
     conclusions(_),
     (   why_not(Activity, Justifications),
-        maplist(format_justification, Justifications, FormattedJustifications)
+        maplist(format_why_not, Justifications, FormattedJustifications)
     ->  reply_json_dict(_{justifications: FormattedJustifications})
     ;   reply_json_dict(_{error: "No reason why not."})
-    ).
+    ),
+    retractall(evidence(_, _)).
 
 post_answer(Request) :-
     catch(

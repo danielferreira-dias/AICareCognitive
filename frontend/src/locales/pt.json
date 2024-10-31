@@ -213,6 +213,17 @@
                 "showRules": "Mostrar regras não acionadas",
                 "hideRules": "Esconder regras não acionadas",
                 "generic_activity": "Esta atividade é suficientemente geral e adaptável, sem restrições específicas definidas para ela.",
+                "preferences": {
+                    "preferences_theatre": "Esta atividade é prioritária devido à preferência do paciente por teatro.",
+                    "preferences_museum": "Esta atividade é prioritária devido à preferência do paciente por visitas a museus.",
+                    "preferences_music": "Esta atividade é prioritária devido à preferência do paciente por música.",
+                    "preferences_reading": "Esta atividade é prioritária devido à preferência do paciente por leitura.",
+                    "preferences_recreational_group": "Esta atividade é prioritária devido à preferência do paciente por atividades de grupo recreativas.",
+                    "preferences_art": "Esta atividade é prioritária devido à preferência do paciente por atividades artísticas.",
+                    "preferences_sports": "Esta atividade é prioritária devido à preferência do paciente por desporto.",
+                    "preferences_cooking": "Esta atividade é prioritária devido à preferência do paciente por culinária.",
+                    "preferences_handicrafts": "Esta atividade é prioritária devido à preferência do paciente por artesanato."
+                },
                 "diseases": {
                     "alzheimer_advanced": "Esta atividade é recomendada, pois o paciente não apresenta sintomas avançados de Alzheimer, permitindo uma participação segura.",
                     "alzheimer_initial": "O paciente não apresenta sintomas de Alzheimer em estágio inicial, favorecendo a participação nesta atividade.",
@@ -282,7 +293,7 @@
             "whynot": {
                 "showRules": "Mostrar regras acionadas",
                 "hideRules": "Ocultar regras acionadas",
-                "disease": {
+                "diseases": {
                     "alzheimer_advanced": "A doença de Alzheimer em estado avançado prejudica significativamente as funções cognitivas, tornando esta atividade inapropriada.",
                     "alzheimer_initial": "A doença de Alzheimer em estágio inicial pode afetar a memória e a concentração, limitando potencialmente o envolvimento nesta atividade.",
                     "parkinson_advanced": "O Parkinson em estado avançado afeta as habilidades motoras e a coordenação, tornando atividades físicas desafiadoras ou inseguras.",

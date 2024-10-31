@@ -232,96 +232,63 @@ cannot(parkinson_advanced, missako_games, pka-r15).
 
 % CONDITIONS (OTHER ASPECTS)
 %1 Social Integration
-condition(conditions_social_integration, good_social_relations) :-
-    evidence(conditions_social_integration, good_social_relations).
-condition(conditions_social_integration, severe_integration_issues) :-
-    evidence(conditions_social_integration, severe_integration_issues).
-condition(conditions_social_integration, isolated_person) :-
-    evidence(conditions_social_integration, isolated_person).
+condition(conditions_social_integration, good_social_relations).
+condition(conditions_social_integration, severe_integration_issues).
+condition(conditions_social_integration, isolated_person).
 
 %2 Vision
-condition(conditions_vision, good_vision) :-
-    evidence(conditions_vision, good_vision).
-condition(conditions_vision, vision_with_difficulties) :-
-    evidence(conditions_vision, vision_with_difficulties).
-condition(conditions_vision, blindness) :-
-    evidence(conditions_vision, blindness).
+condition(conditions_vision, good_vision).
+condition(conditions_vision, vision_with_difficulties).
+condition(conditions_vision, blindness).
 
 %3 Hearing
-condition(conditions_hearing, good_hearing) :-
-    evidence(conditions_hearing, good_hearing).
-condition(conditions_hearing, hearing_with_difficulties) :-
-    evidence(conditions_hearing, hearing_with_difficulties).
-condition(conditions_hearing, deafness) :-
-    evidence(conditions_hearing, deafness).
+condition(conditions_hearing, good_hearing).
+condition(conditions_hearing, hearing_with_difficulties).
+condition(conditions_hearing, deafness).
     
 %4 Speech
-condition(conditions_speech, speaks_normally) :-
-    evidence(conditions_speech, speaks_normally).
-condition(conditions_speech, speaks_with_difficulty) :-
-    evidence(conditions_speech, speaks_with_difficulty).
-condition(conditions_speech, cannot_be_understood) :-
-    evidence(conditions_speech, cannot_be_understood).
+condition(conditions_speech, speaks_normally).
+condition(conditions_speech, speaks_with_difficulty).
+condition(conditions_speech, cannot_be_understood).
 
 %5 Smell
-condition(conditions_smell, smell_normally) :-
-    evidence(conditions_smell, smell_normally).
-condition(conditions_smell, smell_with_difficulty) :-
-    evidence(conditions_smell, smell_with_difficulty).
-condition(conditions_smell, no_sense_of_smell) :-
-    evidence(conditions_smell, no_sense_of_smell).
+condition(conditions_smell, smell_normally).
+condition(conditions_smell, smell_with_difficulty).
+condition(conditions_smell, no_sense_of_smell).
 
 %6 Upper Motor Skills
-condition(conditions_upper_motor_skills, ums_functions_normally) :-
-    evidence(conditions_upper_motor_skills, ums_functions_normally).
-condition(conditions_upper_motor_skills, ums_has_difficulty) :-
-    evidence(conditions_upper_motor_skills, ums_has_difficulty).
-condition(conditions_upper_motor_skills, unable_to_use_upper_limbs) :-
-    evidence(conditions_upper_motor_skills, unable_to_use_upper_limbs).
+condition(conditions_upper_motor_skills, ums_functions_normally).
+condition(conditions_upper_motor_skills, ums_has_difficulty).
+condition(conditions_upper_motor_skills, unable_to_use_upper_limbs).
 
 %7 Lower Motor Skills
-condition(conditions_lower_motor_skills, lms_functions_normally) :-
-    evidence(conditions_lower_motor_skills, lms_functions_normally).
-condition(conditions_lower_motor_skills, lms_has_difficulty) :-
-    evidence(conditions_lower_motor_skills, lms_has_difficulty).
-condition(conditions_lower_motor_skills, unable_to_use_lower_limbs) :-
-    evidence(conditions_lower_motor_skills, cannot_move).
+condition(conditions_lower_motor_skills, lms_functions_normally).
+condition(conditions_lower_motor_skills, lms_has_difficulty).
+condition(conditions_lower_motor_skills, unable_to_use).
 
 %8 Object Handling
-condition(conditions_object_handling, full_control) :-
-    evidence(conditions_object_handling, full_control).
-condition(conditions_object_handling, partial_control) :-
-    evidence(conditions_object_handling, partial_control).
-condition(conditions_object_handling, cannot_handle) :-
-    evidence(conditions_object_handling, cannot_handle).
+condition(conditions_object_handling, full_control).
+condition(conditions_object_handling, partial_control).
+condition(conditions_object_handling, cannot_handle).
 
 %9 Reading
-condition(conditions_reading, reading_normally) :-
-    evidence(conditions_reading, reading_normally).
-condition(conditions_reading, reading_with_difficulty) :-
-    evidence(conditions_reading, reading_with_difficulty).
-condition(conditions_reading, cannot_read) :-
-    evidence(conditions_reading, cannot_read).
+condition(conditions_reading, reading_normally).
+condition(conditions_reading, reading_with_difficulty).
+condition(conditions_reading, cannot_read).
 
 %10 Writing
-condition(conditions_writing, writes_normally) :-
-    evidence(conditions_writing, writes_normally).
-condition(conditions_writing, writes_with_difficulty) :-
-    evidence(conditions_writing, writes_with_difficulty).
-condition(conditions_writing, cannot_write) :-
-    evidence(conditions_writing, cannot_write).
+condition(conditions_writing, writes_normally).
+condition(conditions_writing, writes_with_difficulty).
+condition(conditions_writing, cannot_write).
 
 %11 Mobility
-condition(conditions_mobility, moves_easily) :-
-    evidence(conditions_mobility, moves_easily).
-condition(conditions_mobility, needs_assistance) :-
-    evidence(conditions_mobility, needs_assistance).
-condition(conditions_mobility, total_dependence) :-
-    evidence(conditions_mobility, total_dependence).
+condition(conditions_mobility, moves_easily).
+condition(conditions_mobility, needs_assistance).
+condition(conditions_mobility, total_dependence).
 
 
 get_conditions(Conditions):-
-    findall(X, condition(_, X), ConditionsList),
+    findall(X, evidence(_, X), ConditionsList),
     sort(ConditionsList, Conditions).
 
 %------------------------------------------------------------------------

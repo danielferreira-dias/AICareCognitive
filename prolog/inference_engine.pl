@@ -83,7 +83,6 @@ conclusions(List) :-
 
 %--------------------------------------------------------------------------------   
 % EXPLANATION MODULE - WHY NOT - ACTIVITY?
-
 % Check why an activity is not allowed
 why_not(Activity, Justification) :-
     allowed_activities_saved(AllowedActivities),
@@ -122,16 +121,27 @@ reason_allowed(Activity, Reason) :-
     get_preferences(Preferences),
     member(Pref, Preferences),
     preference(Pref, Activity, Rule),
-    Reason = ["preferences", Pref, Rule].
+    Reason = ["preferences", [[Pref, Rule]]].
 
-% Specific selection reasons based on conditions
+% Specific selection reasons based on conditions that could have prevented the activity
 reason_allowed(Activity, Reason) :-
-    get_conditions(Conditions),
-    forall(member(Condition, Conditions), \+ inadequate(Condition, Activity, _)),
-    Reason = ["no_conditions_prevent_activity"].
+    % Collect all conditions that could restrict the activity but did not
+    findall([ConditionGroup, Condition, Rule], 
+        (inadequate(Condition, Activity, Rule), 
+         condition(ConditionGroup, Condition),
+         \+ evidence(ConditionGroup, Condition)), 
+        CouldHaveTriggeredConditions),
+    % Ensure Reason is only added if there are conditions that could have been triggered
+    CouldHaveTriggeredConditions \= [],
+    Reason = ["conditions", CouldHaveTriggeredConditions].
 
-% Specific selection reasons based on diseases (using cannot/2)
+% Specific selection reasons based on diseases that could have prevented the activity
 reason_allowed(Activity, Reason) :-
-    get_diseases(Diseases),
-    forall(member(Disease, Diseases), \+ cannot(Disease, Activity, _)),
-    Reason = ["no_diseases_prevent_activity"].
+    % Collect all diseases that could restrict the activity but did not
+    findall([Disease, Rule], 
+        (cannot(Disease, Activity, Rule), 
+         \+ disease(Disease)), 
+        CouldHaveTriggeredDiseases),
+    % Ensure Reason is only added if there are diseases that could have been triggered
+    CouldHaveTriggeredDiseases \= [],
+    Reason = ["diseases", CouldHaveTriggeredDiseases].
