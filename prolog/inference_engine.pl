@@ -116,13 +116,6 @@ why(Activity, Justification) :-
     Justification = PartialJustifications,
     !.
 
-% Specific selection reasons based on preferences
-reason_allowed(Activity, Reason) :-
-    get_preferences(Preferences),
-    member(Pref, Preferences),
-    preference(Pref, Activity, Rule),
-    Reason = ["preferences", [[Pref, Rule]]].
-
 % Specific selection reasons based on conditions that could have prevented the activity
 reason_allowed(Activity, Reason) :-
     % Collect all conditions that could restrict the activity but did not

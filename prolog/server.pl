@@ -28,13 +28,6 @@ get_next_question(_) :-
     ),
     retractall(evidence(_, _)).
 
-format_why(["preferences", PreferenceList], FormattedPreferences) :-
-    findall(_{justification: PreferenceString, ruleTriggered: RuleString},
-        (member([Preference, Rule], PreferenceList),
-            atomic_list_concat(["preferences", Preference], '.', PreferenceString),
-            term_string(Rule, RuleString)),
-        FormattedPreferences).
-
 format_why(["diseases", DiseaseList], FormattedDiseases) :-
     findall(_{justification: DiseaseString, ruleTriggered: RuleString},
         (member([Disease, Rule], DiseaseList),
