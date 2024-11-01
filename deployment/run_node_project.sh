@@ -10,14 +10,38 @@ if ! node -v | grep -q "v20.18.0"; then
   sudo apt install -y nodejs
 fi
 
-echo "Navigating to Node.js project directory..."
+# Define project directories
 NODE_PROJECT_DIR="$HOME/code/frontend"  # Replace with your project directory
+DEPLOY_DIR="/var/www/aicare"            # Destination directory for the build
+
+# Ensure destination directory exists and set correct permissions
+echo "Setting up the deployment directory at $DEPLOY_DIR..."
+sudo mkdir -p "$DEPLOY_DIR"
+sudo chown -R $USER:$USER "$DEPLOY_DIR"
+
+# Navigate to Node.js project directory
+echo "Navigating to Node.js project directory..."
 cd "$NODE_PROJECT_DIR"
 
+# Install dependencies
 echo "Installing dependencies..."
 npm install
 
-echo "Starting Node.js project in the background..."
-nohup npm run dev > node_project.log 2>&1 & echo $! > node_project.pid
+# Build the project
+echo "Building the project..."
+npm run build
 
-echo "Node.js project started with PID $(cat node_project.pid)."
+# Move built files to the deployment directory
+echo "Deploying build to $DEPLOY_DIR..."
+sudo rm -rf "$DEPLOY_DIR"/*  # Clear old build files
+sudo cp -r "$NODE_PROJECT_DIR/dist/"* "$DEPLOY_DIR"
+
+# Set permissions for the deployed files
+echo "Setting permissions for deployed files..."
+sudo chown -R www-data:www-data "$DEPLOY_DIR"
+sudo chmod -R 755 "$DEPLOY_DIR"
+
+# Optionally, start the server (assuming Nginx is handling the static files, no server start is required)
+echo "Deployment completed. The static files are ready to be served by Nginx."
+
+echo "Done."
