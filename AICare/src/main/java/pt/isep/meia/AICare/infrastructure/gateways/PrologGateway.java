@@ -17,10 +17,7 @@ import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,15 +46,19 @@ public class PrologGateway {
     public List<Justification> getWhy(String activity) {
         var endpoint = serverUrl + "/get_why/" + activity;
         var response = restTemplate.getForEntity(endpoint, PrologWhyNotDto.class);
-        return response.getBody().getJustifications().stream()
+        var justifications = Objects.requireNonNull(response.getBody()).getJustifications().stream()
                 .map(justificationList -> new Justification(JustificationTypeEnum.whynot, justificationList.getJustification(), Collections.singletonList(justificationList.getRuleTriggered())))
                 .collect(Collectors.toList());
+        return justifications.isEmpty() ? Collections.singletonList(new Justification(
+                JustificationTypeEnum.whynot, "generic_activity",
+                new ArrayList<>()
+        )) : justifications;
     }
 
     public List<Justification> getWhyNot(String activity) {
         var endpoint = serverUrl + "/get_why_not/" + activity;
         var response = restTemplate.getForEntity(endpoint, PrologWhyNotDto.class);
-        return response.getBody().getJustifications().stream()
+        return Objects.requireNonNull(response.getBody()).getJustifications().stream()
                 .map(justificationList -> new Justification(JustificationTypeEnum.whynot, justificationList.getJustification(), Collections.singletonList(justificationList.getRuleTriggered())))
                 .collect(Collectors.toList());
     }
