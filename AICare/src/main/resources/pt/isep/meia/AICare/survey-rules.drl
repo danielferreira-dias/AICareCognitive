@@ -4,13 +4,13 @@ import pt.isep.meia.AICare.application.utils.DroolsHelper;
 import pt.isep.meia.AICare.domain.constants.AnswerConstants;
 import pt.isep.meia.AICare.domain.constants.ActivityConstants;
 import pt.isep.meia.AICare.domain.constants.EvidenceConstants;
+import pt.isep.meia.AICare.domain.model.Conclusion;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Hypothesis;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.Restrict
 import pt.isep.meia.AICare.domain.model.PreferredActivity;
 import pt.isep.meia.AICare.domain.model.SurveyCompleted;
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question
 import java.util.Arrays;
 import java.util.List;

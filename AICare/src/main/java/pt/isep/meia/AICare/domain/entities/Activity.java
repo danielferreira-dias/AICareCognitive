@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +25,7 @@ public class Activity {
 
     private String description;
 
-    @Column(name = "conclusion_id", updatable = false)
+    @Column(name = "conclusion_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID conclusionId;
 
     private int sortingOrder;

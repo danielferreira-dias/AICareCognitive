@@ -4,11 +4,12 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isep.meia.AICare.domain.constants.ActivityConstants;
-import pt.isep.meia.AICare.domain.entities.Activity;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.domain.model.*;
-import pt.isep.meia.AICare.infrastructure.repositories.*;
+import pt.isep.meia.AICare.infrastructure.repositories.AnswersRepository;
+import pt.isep.meia.AICare.infrastructure.repositories.QuestionsRepository;
+import pt.isep.meia.AICare.infrastructure.repositories.SurveysRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,7 +57,7 @@ public class SurveyService {
         }
 
         var conclusion = conclusionService.getConclusionBySurveyId(surveyId);
-        if(conclusion != null){
+        if (conclusion != null) {
             return Result.fromConclusion(conclusion);
         }
 
@@ -65,7 +66,7 @@ public class SurveyService {
                 .findFirst()
                 .orElse(null);
 
-        if(question != null){
+        if (question != null) {
             return Result.fromQuestion(question);
         }
 
@@ -75,16 +76,12 @@ public class SurveyService {
 
         var result = engineService.getNextQuestion(surveyId, evidences, order);
 
-        if(result == null){
+        if (result == null) {
             return null;
         }
 
-        if(result.getType().equals(ResultTypeEnum.conclusion)){
-            var activities = result.getConclusion().getActivities();
-            var createdConclusion = conclusionService.saveDroppingActivities(result.getConclusion());
-            var createdActivities = activitiesService.saveAllForConclusion(createdConclusion, activities);
-            createdConclusion.setActivities(createdActivities);
-
+        if (result.getType().equals(ResultTypeEnum.conclusion)) {
+            var createdConclusion = conclusionService.save(result.getConclusion());
             return Result.fromConclusion(createdConclusion);
         }
 
@@ -125,7 +122,7 @@ public class SurveyService {
 
     public List<Justification> getActivityJustifications(UUID surveyId, String activityName, JustificationTypeEnum type) throws IOException {
         var evidences = answersRepository.findEvidencesBySurveyId(surveyId);
-        if(evidences.isEmpty()){
+        if (evidences.isEmpty()) {
             return null;
         }
 

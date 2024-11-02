@@ -77,8 +77,7 @@ public class DroolsGateway {
             }));
 
             return Result.fromActivities(surveyId, permittedActivities);
-        }
-        finally {
+        } finally {
             clearSession(session);
         }
     }

@@ -2,9 +2,9 @@ package pt.isep.meia.AICare.application.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.isep.meia.AICare.domain.entities.Patient;
 import pt.isep.meia.AICare.domain.entities.Survey;
 import pt.isep.meia.AICare.infrastructure.repositories.PatientsRepository;
-import pt.isep.meia.AICare.domain.entities.Patient;
 
 import java.util.List;
 import java.util.UUID;

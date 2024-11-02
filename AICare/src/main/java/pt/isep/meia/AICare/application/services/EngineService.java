@@ -32,12 +32,10 @@ public class EngineService {
     }
 
     public Result getNextQuestion(UUID surveyId, List<Evidence> evidences, int order) throws IOException {
-        if(engineProperties.getType().equals("drools")){
+        if (engineProperties.getType().equals("drools")) {
             return droolsGateway.getNextQuestion(surveyId, evidences, order);
-        }
-        else{
-            if(!evidences.isEmpty())
-            {
+        } else {
+            if (!evidences.isEmpty()) {
                 var result = prologGateway.postBulkAnswers(evidences);
                 if (!result) {
                     return null;
@@ -48,14 +46,14 @@ public class EngineService {
     }
 
     public boolean postAnswer(String question, String answer) {
-        if(engineProperties.getType().equals("prolog")){
+        if (engineProperties.getType().equals("prolog")) {
             return prologGateway.postAnswer(question, answer);
         }
         return true;
     }
 
     public List<Justification> getWhy(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
-        if(engineProperties.getType().equals("drools")){
+        if (engineProperties.getType().equals("drools")) {
             return droolsGateway.getWhy(surveyId, evidences, activity);
         }
 
@@ -68,7 +66,7 @@ public class EngineService {
     }
 
     public List<Justification> getWhyNot(UUID surveyId, String activity, List<Evidence> evidences) throws IOException {
-        if(engineProperties.getType().equals("drools")){
+        if (engineProperties.getType().equals("drools")) {
             return droolsGateway.getWhyNot(surveyId, evidences, activity);
         }
 

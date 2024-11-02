@@ -10,12 +10,12 @@ import java.util.UUID;
 
 public interface ActivitiesRepository extends JpaRepository<Activity, UUID> {
     @Query("SELECT a.description " +
-            "FROM Activity a JOIN Conclusion c ON a.conclusionId = c.id " +
+            "FROM Activity a JOIN ConclusionPojo c ON a.conclusionId = c.id " +
             "WHERE c.surveyId = :surveyId ")
     List<String> findActivitiesDescriptionsBySurveyId(@Param("surveyId") UUID surveyId);
 
     @Query("SELECT a " +
-            "FROM Activity a JOIN Conclusion c ON a.conclusionId = c.id " +
-            "WHERE c.surveyId = :surveyId AND a.id = :activityId")
-    Activity findActivitiesByIdAndSurveyId(@Param("activityId") UUID activityId, @Param("surveyId") UUID surveyId);
+            "FROM Activity a JOIN ConclusionPojo c ON a.conclusionId = c.id " +
+            "WHERE c.id = :conclusionId")
+    List<Activity> findActivitiesByConclusionId(UUID conclusionId);
 }

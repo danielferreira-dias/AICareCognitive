@@ -1,14 +1,15 @@
 package pt.isep.meia.AICare.domain.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import pt.isep.meia.AICare.domain.dtos.SurveyListItemDto;
+import pt.isep.meia.AICare.domain.model.Conclusion;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
 

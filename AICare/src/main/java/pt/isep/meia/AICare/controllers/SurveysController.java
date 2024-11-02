@@ -10,10 +10,10 @@ import pt.isep.meia.AICare.domain.dtos.CreateSurveyRequestDto;
 import pt.isep.meia.AICare.domain.dtos.RejectedActivityDto;
 import pt.isep.meia.AICare.domain.entities.Answer;
 import pt.isep.meia.AICare.domain.entities.Survey;
+import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
 import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
-import pt.isep.meia.AICare.domain.model.Evidence;
 
 import java.io.IOException;
 import java.net.URI;
@@ -35,7 +35,7 @@ public class SurveysController {
     @GetMapping("{surveyId}")
     public ResponseEntity<Survey> getSurveyById(@PathVariable UUID surveyId) {
         var survey = surveyService.getSurveyById(surveyId);
-        if(survey == null) {
+        if (survey == null) {
             return ResponseEntity.notFound().build();
         }
 
@@ -53,7 +53,7 @@ public class SurveysController {
     @GetMapping("{surveyId}/next-question")
     public ResponseEntity<Result> getSurveyNextQuestion(@PathVariable UUID surveyId) throws IOException {
         var nextQuestion = surveyService.getNextQuestion(surveyId);
-        if(nextQuestion == null) {
+        if (nextQuestion == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(nextQuestion);
@@ -86,7 +86,7 @@ public class SurveysController {
     @PostMapping("{surveyId}/justifications/{type}")
     public ResponseEntity<List<Justification>> getJustifications(@PathVariable UUID surveyId, @PathVariable JustificationTypeEnum type, @RequestBody ActivityJustificationRequestDto requestDto) throws IOException {
         var justifications = surveyService.getActivityJustifications(surveyId, requestDto.activityName, type);
-        if(justifications == null) {
+        if (justifications == null) {
             return ResponseEntity.notFound().build();
         }
 

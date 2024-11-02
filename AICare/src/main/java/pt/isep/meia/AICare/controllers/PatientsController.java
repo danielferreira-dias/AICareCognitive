@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.isep.meia.AICare.application.services.ConclusionService;
+import pt.isep.meia.AICare.application.services.PatientService;
 import pt.isep.meia.AICare.domain.dtos.SurveyListItemDto;
 import pt.isep.meia.AICare.domain.entities.Patient;
-import pt.isep.meia.AICare.application.services.PatientService;
 
 import java.net.URI;
 import java.util.List;

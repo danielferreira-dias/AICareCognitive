@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.var;
 import pt.isep.meia.AICare.domain.entities.Activity;
-import pt.isep.meia.AICare.domain.entities.Conclusion;
 import pt.isep.meia.AICare.domain.entities.Question;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologTypeEnum;
@@ -48,7 +47,7 @@ public class Result {
     }
 
     public static Result fromPrologResult(UUID surveyId, PrologResultDto prologResultDto, int order) {
-        if(prologResultDto.getType().equals(PrologTypeEnum.question)){
+        if (prologResultDto.getType().equals(PrologTypeEnum.question)) {
             var question = new Question(surveyId, prologResultDto.getQuestion(), order);
             question.setPossibleAnswers(prologResultDto.getPossibleAnswers());
             return new Result(ResultTypeEnum.question, question, null);

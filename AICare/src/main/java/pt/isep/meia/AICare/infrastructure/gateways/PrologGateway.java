@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pt.isep.meia.AICare.application.configs.PrologServerProperties;
-import pt.isep.meia.AICare.domain.dtos.PrologJustificationDto;
 import pt.isep.meia.AICare.domain.dtos.PrologWhyNotDto;
 import pt.isep.meia.AICare.domain.model.Evidence;
 import pt.isep.meia.AICare.domain.model.Justification;
@@ -18,7 +17,10 @@ import pt.isep.meia.AICare.domain.model.JustificationTypeEnum;
 import pt.isep.meia.AICare.domain.model.Result;
 import pt.isep.meia.AICare.infrastructure.gateways.dtos.PrologResultDto;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

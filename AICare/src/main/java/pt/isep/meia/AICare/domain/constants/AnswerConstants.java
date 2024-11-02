@@ -8,7 +8,7 @@ public class AnswerConstants {
     // Stages
     public static final String INITIAL = "initial";
     public static final String ADVANCED = "advanced";
-    
+
     // Social Integration Answer
     public static final String GOOD_SOCIAL_RELATIONS = "good_social_relations";
     public static final String SEVERE_INTEGRATION_ISSUES = "severe_integration_issues";
@@ -23,7 +23,7 @@ public class AnswerConstants {
     public static final String GOOD_HEARING = "good_hearing";
     public static final String HEARING_WITH_DIFFICULTIES = "hearing_with_difficulties";
     public static final String DEAFNESS = "deafness";
-        
+
     // Speech Answer
     public static final String SPEAKS_NORMALLY = "speaks_normally";
     public static final String SPEAKS_WITH_DIFFICULTY = "speaks_with_difficulty";
