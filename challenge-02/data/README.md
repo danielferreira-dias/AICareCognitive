@@ -47,6 +47,14 @@ This folder contains all datasets used in the project, organized into subdirecto
   - **Source**: https://zenodo.org/records/7622128
   - **License**: Creative Commons Attribution 4.0 International
   - **Notes**: [Any important notes about usage, restrictions, or limitations]
+- ALZHEIMER_Dataset:
+  - **Source**: https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset
+  - **License**: ATTRIBUTION 4.0 INTERNATIONAL
+  - **Notes**: [Any important notes about usage, restrictions, or limitations]
+- PARKINSON_Dataset:
+  - **Source**: https://www.kaggle.com/datasets/rabieelkharoua/parkinsons-disease-dataset-analysis
+  - **License**: ATTRIBUTION 4.0 INTERNATIONAL
+  - **Notes**: [Any important notes about usage, restrictions, or limitations]
 
 ## Template
 
@@ -59,45 +67,3 @@ This folder contains all datasets used in the project, organized into subdirecto
 
 - If you encounter any issues with data files (e.g., missing fields or errors), report them to the team and document the issue in this README or the issue tracker.
 - For large datasets, consider using a `.gitignore` file to avoid committing raw data files to version control.
-
-
-## ------------------------------
-
-## Cognitive and Functional Assessments
-- **UPDRS**: Unified Parkinson's Disease Rating Scale score, ranging from **0 to 199** (higher scores indicate greater severity of the disease).
-- **MoCA**: Montreal Cognitive Assessment score, ranging from **0 to 30** (lower scores indicate cognitive impairment).
-- **FunctionalAssessment**: Functional assessment score, ranging from **0 to 10** (lower scores indicate greater impairment).
-
----
-
-## Symptoms
-- **Tremor**: Presence of tremor:
-  - `0`: No
-  - `1`: Yes
-- **Rigidity**: Presence of muscle rigidity:
-  - `0`: No
-  - `1`: Yes
-- **Bradykinesia**: Presence of bradykinesia (slowness of movement):
-  - `0`: No
-  - `1`: Yes
-- **PosturalInstability**: Presence of postural instability:
-  - `0`: No
-  - `1`: Yes
-- **SpeechProblems**: Presence of speech problems:
-  - `0`: No
-  - `1`: Yes
-- **SleepDisorders**: Presence of sleep disorders:
-  - `0`: No
-  - `1`: Yes
-- **Constipation**: Presence of constipation:
-  - `0`: No
-  - `1`: Yes
-
----
-
-## Diagnosis Information
-- **Diagnosis**: Diagnosis status for Parkinson's Disease:
-  - `0`: No
-  - `1`: Yes
-
----
