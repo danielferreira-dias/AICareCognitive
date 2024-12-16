@@ -1,11 +1,8 @@
 from fastapi import FastAPI
 import joblib
 
-from classes.alzheimer import AlzheimerData
-from classes.parkinson import ParkinsonData
 import uvicorn
 import services.inference_service as inference_service
-from concurrent.futures import ThreadPoolExecutor
 
 from classes.request import RequestData
 
@@ -13,8 +10,6 @@ models = {
     "parkinson": joblib.load('models/parkinson_model.joblib'),
     "alzheimer": joblib.load('models/alzheimer_model.joblib')
 }
-print(type(models))  # Example output: <class 'sklearn.ensemble._forest.RandomForestClassifier'>
-
 
 app = FastAPI()
 

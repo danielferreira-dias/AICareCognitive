@@ -29,7 +29,7 @@ def inference(data: BaseModelData, model: Any) -> Dict[str, Any]:
     # Make predictions using the model
     prediction = model.predict(input_data)
 
-    return {"prediction": prediction}
+    return {"prediction": int(prediction[0])}
 
 def process(request: RequestData, models: Dict[str, RandomForestClassifier]):
     """
