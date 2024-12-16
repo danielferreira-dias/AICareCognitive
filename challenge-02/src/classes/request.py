@@ -1,0 +1,52 @@
+from pydantic import BaseModel, Field
+
+
+class RequestData(BaseModel):
+    # Fields from BaseModelData
+    age: int = Field(alias="Age")
+    gender: int = Field(alias="Gender")
+    ethnicity: int = Field(alias="Ethnicity")
+    bmi: float = Field(alias="BMI")
+    smoking: int = Field(alias="Smoking")
+    alcohol_consumption: float = Field(alias="AlcoholConsumption")
+    physical_activity: float = Field(alias="PhysicalActivity")
+    diet_quality: float = Field(alias="DietQuality")
+    sleep_quality: float = Field(alias="SleepQuality")
+    hypertension: int = Field(alias="Hypertension")
+    diabetes: int = Field(alias="Diabetes")
+    depression: int = Field(alias="Depression")
+    systolic_bp: int = Field(alias="SystolicBP")
+    diastolic_bp: int = Field(alias="DiastolicBP")
+    cholesterol_total: float = Field(alias="CholesterolTotal")
+    cholesterol_ldl: float = Field(alias="CholesterolLDL")
+    cholesterol_hdl: float = Field(alias="CholesterolHDL")
+    cholesterol_triglycerides: float = Field(alias="CholesterolTriglycerides")
+    functional_assessment: float = Field(alias="FunctionalAssessment")
+
+    # Parkinson-specific fields
+    family_history_parkinsons: int = Field(alias="FamilyHistoryParkinsons")
+    traumatic_brain_injury: int = Field(alias="TraumaticBrainInjury")
+    stroke: int = Field(alias="Stroke")
+    updrs: float = Field(alias="UPDRS")
+    moca: float = Field(alias="MoCA")
+    tremor: int = Field(alias="Tremor")
+    rigidity: int = Field(alias="Rigidity")
+    bradykinesia: int = Field(alias="Bradykinesia")
+    postural_instability: int = Field(alias="PosturalInstability")
+    speech_problems: int = Field(alias="SpeechProblems")
+    sleep_disorders: int = Field(alias="SleepDisorders")
+    constipation: int = Field(alias="Constipation")
+
+    # Alzheimer-specific fields
+    family_history_alzheimers: int = Field(alias="FamilyHistoryAlzheimers")
+    cardiovascular_disease: int = Field(alias="CardiovascularDisease")
+    head_injury: int = Field(alias="HeadInjury")
+    mmse: float = Field(alias="MMSE")
+    memory_complaints: int = Field(alias="MemoryComplaints")
+    behavioral_problems: int = Field(alias="BehavioralProblems")
+    adl: float = Field(alias="ADL")
+    confusion: int = Field(alias="Confusion")
+    disorientation: int = Field(alias="Disorientation")
+    personality_changes: int = Field(alias="PersonalityChanges")
+    difficulty_completing_tasks: int = Field(alias="DifficultyCompletingTasks")
+    forgetfulness: int = Field(alias="Forgetfulness")
