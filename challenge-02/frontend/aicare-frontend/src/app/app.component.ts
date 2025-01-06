@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent  } from './navbar/navbar.component';
+import { BodyComponentComponent  } from './body-component/body-component.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [ NavbarComponent, BodyComponentComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
