@@ -2,6 +2,8 @@ from fastapi import FastAPI
 import joblib
 
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
 import services.inference_service as inference_service
 
 from classes.request import RequestData
@@ -12,6 +14,14 @@ models = {
 }
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Define the root endpoint
 @app.get("/health")
