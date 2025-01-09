@@ -46,6 +46,7 @@ export class SurveyComponent {
       "What was your last cholesterol measurement (LDL)?",
       "What was your last cholesterol measurement (HDL)?",
       "What was your last cholesterol measurement (CholesterolTriglycerides)?",
+      "Do you have any Cardio Vascular Disease ?",
       "How would you rate your overall functional capacity? (1-5, with 5 being excellent)",
     ],
     // # Neurological
@@ -128,9 +129,11 @@ export class SurveyComponent {
       CholesterolLDL: parseFloat(this.formData['page4-question6']),
       CholesterolHDL: parseFloat(this.formData['page4-question7']),
       CholesterolTriglycerides: parseFloat(this.formData['page4-question8']),
-      FunctionalAssessment: parseFloat(this.formData['page4-question9']),
+      CardiovascularDisease : parseInt(this.formData['page4-question9']),
+      FunctionalAssessment: parseFloat(this.formData['page4-question10']),
       
       TraumaticBrainInjury: parseInt(this.formData['page5-question0']),
+      HeadInjury : parseFloat(this.formData['page5-question0']),
       UPDRS: parseFloat(this.formData['page5-question1']),
       MoCA: parseFloat(this.formData['page5-question2']),
       Tremor: parseInt(this.formData['page5-question3']),
