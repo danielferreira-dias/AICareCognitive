@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { SurveynavbarComponent } from '../surveynavbar/surveynavbar.component';
+
 
 @Component({
   selector: 'app-survey',
   standalone: true,
-  imports: [FormsModule, CommonModule, SurveynavbarComponent], 
+  imports: [FormsModule, CommonModule], 
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css'],
 })
@@ -103,13 +103,47 @@ export class SurveyComponent {
   currentCategory = 0;
   formData: any = {};
 
+  navigateToPage(pageIndex: number) {
+    // // Optional validation to check if the user can leave the current page
+    // const currentPageQuestions = this.categories;
+
+    // const allFieldsFilled = currentPageQuestions.every((_, index) => {
+    //     const fieldValue = this.formData[`page${this.currentCategory + 1}-question${index}`];
+    //     return fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
+    // });
+
+    // if (!allFieldsFilled) {
+    //     alert('Please fill in all the fields before navigating.');
+    //     return;
+    // }
+
+    // Navigate to the selected page
+    
+    this.currentCategory = pageIndex;
+}
+
   prevCategory() {
     if (this.currentCategory > 0) {
       this.currentCategory--;
     }
   }
 
+  
+
   nextCategory() {
+    // // Optional validation to check if the user can leave the current page
+    // const currentPageQuestions = this.categories;
+
+    // const allFieldsFilled = currentPageQuestions.every((_, index) => {
+    //   const fieldValue = this.formData[`page${this.currentCategory + 1}-question${index}`];
+    //   return fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
+    // });
+
+    // if (!allFieldsFilled) {
+    //     alert('Please fill in all the fields before navigating.');
+    //     return;
+    // }
+
     if (this.currentCategory < this.categories.length - 1) {
       this.currentCategory++;
     }
