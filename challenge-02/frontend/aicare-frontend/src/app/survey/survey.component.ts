@@ -37,12 +37,16 @@ export class SurveyComponent {
     ],
     // # Medical Conditions
     [
-        "Have you been diagnosed with hypertension (high blood pressure)?",
-        "Do you have diabetes?",
-        "Have you been diagnosed with depression?",
-        "What was your last blood pressure measurement (systolic and diastolic)?",
-        "What was your last cholesterol measurement (total, LDL, HDL, and triglycerides)?",
-        "How would you rate your overall functional capacity? (1-5, with 5 being excellent)",
+      "Have you been diagnosed with hypertension (high blood pressure)?",
+      "Do you have diabetes?",
+      "Have you been diagnosed with depression?",
+      "What was your last blood pressure measurement (systolic)?",
+      "What was your last blood pressure measurement (diastolic)?",
+      "What was your last cholesterol measurement (tota)?",
+      "What was your last cholesterol measurement (LDL)?",
+      "What was your last cholesterol measurement (HDL)?",
+      "What was your last cholesterol measurement (CholesterolTriglycerides)?",
+      "How would you rate your overall functional capacity? (1-5, with 5 being excellent)",
     ],
     // # Neurological
     [
@@ -70,7 +74,6 @@ export class SurveyComponent {
         "Do you frequently experience forgetfulness?",
     ],
 ]
-
 
   // Arreglo de títulos para cada página
   pageTitles = [
@@ -101,55 +104,57 @@ export class SurveyComponent {
   
   async submitForm() {
     const jsonToSend = {
-      "Age": 65,
-      "Gender": 1,
-      "Ethnicity": 2,
-      "BMI": 24.5,
-      "Smoking": 0,
-      "AlcoholConsumption": 1.8,
-      "PhysicalActivity": 3.5,
-      "DietQuality": 4.0,
-      "SleepQuality": 3.0,
-      "Hypertension": 1,
-      "Diabetes": 0,
-      "Depression": 1,
-      "SystolicBP": 130,
-      "DiastolicBP": 85,
-      "CholesterolTotal": 220.0,
-      "CholesterolLDL": 140.0,
-      "CholesterolHDL": 50.0,
-      "CholesterolTriglycerides": 180.0,
-      "FunctionalAssessment": 3.0,
-    
-      "FamilyHistoryParkinsons": 1,
-      "TraumaticBrainInjury": 0,
-      "Stroke": 0,
-      "UPDRS": 32.0,
-      "MoCA": 28.0,
-      "Tremor": 1,
-      "Rigidity": 1,
-      "Bradykinesia": 1,
-      "PosturalInstability": 0,
-      "SpeechProblems": 0,
-      "SleepDisorders": 1,
-      "Constipation": 1,
-    
-      "FamilyHistoryAlzheimers": 1,
-      "CardiovascularDisease": 1,
-      "HeadInjury": 0,
-      "MMSE": 26.0,
-      "MemoryComplaints": 1,
-      "BehavioralProblems": 0,
-      "ADL": 4.0,
-      "Confusion": 0,
-      "Disorientation": 0,
-      "PersonalityChanges": 1,
-      "DifficultyCompletingTasks": 1,
-      "Forgetfulness": 1
+      Age: parseInt(this.formData['page1-question0']),
+      Gender: parseInt(this.formData['page1-question1']),
+      Ethnicity: parseInt(this.formData['page1-question2']),
+
+      BMI: parseFloat(this.formData['page2-question0']),
+      Smoking: parseInt(this.formData['page2-question1']),
+      AlcoholConsumption: parseFloat(this.formData['page2-question2']),
+      PhysicalActivity: parseFloat(this.formData['page2-question3']),
+      DietQuality: parseInt(this.formData['page2-question4']),
+      SleepQuality: parseInt(this.formData['page2-question5']),
+
+      FamilyHistoryParkinsons: parseInt(this.formData['page3-question0']),
+      FamilyHistoryAlzheimers: parseInt(this.formData['page3-question1']),
+      Stroke: parseInt(this.formData['page3-question2']),
+
+      Hypertension: parseInt(this.formData['page4-question0']),
+      Diabetes: parseInt(this.formData['page4-question1']),
+      Depression: parseInt(this.formData['page4-question2']),
+      SystolicBP: parseInt(this.formData['page4-question3']),
+      DiastolicBP: parseInt(this.formData['page4-question4']),
+      CholesterolTotal: parseFloat(this.formData['page4-question5']),
+      CholesterolLDL: parseFloat(this.formData['page4-question6']),
+      CholesterolHDL: parseFloat(this.formData['page4-question7']),
+      CholesterolTriglycerides: parseFloat(this.formData['page4-question8']),
+      FunctionalAssessment: parseFloat(this.formData['page4-question9']),
+      
+      TraumaticBrainInjury: parseInt(this.formData['page5-question0']),
+      UPDRS: parseFloat(this.formData['page5-question1']),
+      MoCA: parseFloat(this.formData['page5-question2']),
+      Tremor: parseInt(this.formData['page5-question3']),
+      Rigidity: parseInt(this.formData['page5-question4']),
+      Bradykinesia: parseInt(this.formData['page5-question5']),
+      PosturalInstability: parseInt(this.formData['page5-question6']),
+      SpeechProblems: parseInt(this.formData['page5-question7']),
+      SleepDisorders: parseInt(this.formData['page5-question8']),
+      Constipation: parseInt(this.formData['page5-question9']),
+      
+      MMSE: parseFloat(this.formData['page6-question0']),
+      MemoryComplaints: parseInt(this.formData['page6-question1']),
+      BehavioralProblems: parseInt(this.formData['page6-question2']),
+      ADL: parseFloat(this.formData['page6-question3']),
+      Confusion: parseInt(this.formData['page6-question4']),
+      Disorientation: parseInt(this.formData['page6-question5']),
+      PersonalityChanges: parseInt(this.formData['page6-question6']),
+      DifficultyCompletingTasks: parseInt(this.formData['page6-question7']),
+      Forgetfulness: parseInt(this.formData['page6-question8'])
+  
     };
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
+    console.log(jsonToSend)
     this.http.post('http://127.0.0.1:8000/predict', jsonToSend, { headers })
       .subscribe({
         next: (response) => {
