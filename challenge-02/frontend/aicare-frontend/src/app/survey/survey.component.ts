@@ -2,78 +2,92 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SurveynavbarComponent } from '../surveynavbar/surveynavbar.component';
 
 @Component({
   selector: 'app-survey',
   standalone: true,
-  imports: [FormsModule, CommonModule], 
+  imports: [FormsModule, CommonModule, SurveynavbarComponent], 
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css'],
 })
 export class SurveyComponent {
   constructor(private http: HttpClient) {} // Injeção do HttpClient
 
-  questions = [
-    // # Demographic and General Information
-    [
-        "Age",
-        "Gender",
-        "Ethnicity",
-    ],
-    // # Lifestyle
-    [
-        "What is your weight and height?",
-        "Do you smoke currently or have you smoked in the past?",
-        "How many alcoholic drinks do you consume per week?",
-        "How many hours of exercise do you do per week?",
-        "How would you describe your diet? (1-5, with 5 being excellent)",
-        "How would you rate your sleep quality? (1-5, with 5 being excellent)",
-    ],
-    // # Family History
-    [
-      "Is there a family history of Parkinson's disease?",
-      "Is there a family history of Alzheimer's disease?",
-      "Has anyone in your family had a stroke?",
-    ],
-    // # Medical Conditions
-    [
-      "Have you been diagnosed with hypertension (high blood pressure)?",
-      "Do you have diabetes?",
-      "Have you been diagnosed with depression?",
-      "What was your last blood pressure measurement (systolic)?",
-      "What was your last blood pressure measurement (diastolic)?",
-      "What was your last cholesterol measurement (tota)?",
-      "What was your last cholesterol measurement (LDL)?",
-      "What was your last cholesterol measurement (HDL)?",
-      "What was your last cholesterol measurement (CholesterolTriglycerides)?",
-      "How would you rate your overall functional capacity? (1-5, with 5 being excellent)",
-    ],
-    // # Neurological
-    [
-        "Have you experienced a severe traumatic brain injury?",
-        "How would you classify your motor symptoms using a UPDRS scale (1-100)?",
-        "What was your score on the last MoCA (Cognitive Scale) test?",
-        "Do you frequently experience tremors?",
-        "Do you experience muscle stiffness?",
-        "Do you notice slowness in your movements?",
-        "Do you have difficulty maintaining balance?",
-        "Do you have difficulty speaking?",
-        "Do you have trouble sleeping?",
-        "Do you have problems with constipation?",
-    ],
-    // # Cognitive and Behavioral
-    [
-        "What was your score on the last MMSE (Mini-Mental State Examination)?",
-        "Do you have trouble remembering things?",
-        "Have you noticed changes in your behavior?",
-        "Do you have difficulty performing daily tasks?",
-        "Do you often feel confused?",
-        "Do you feel disoriented?",
-        "Have you noticed personality changes?",
-        "Do you have difficulty completing tasks?",
-        "Do you frequently experience forgetfulness?",
-    ],
-]
+  categories = [
+    {
+      "category": "Demographic and General Information",
+      "questions": [
+        { "label": "Age", "type": "text" },
+        { "label": "Gender", "type": "one-hot" },
+        { "label": "Ethnicity", "type": "text" }
+      ]
+    },
+    {
+      "category": "Lifestyle",
+      "questions": [
+        { "label": "What is your weight and height?", "type": "text" },
+        { "label": "Do you smoke currently or have you smoked in the past?", "type": "one-hot" },
+        { "label": "How many alcoholic drinks do you consume per week?", "type": "text" },
+        { "label": "How many hours of exercise do you do per week?", "type": "text" },
+        { "label": "How would you describe your diet? (1-5, with 5 being excellent)", "type": "text" },
+        { "label": "How would you rate your sleep quality? (1-5, with 5 being excellent)", "type": "text" }
+      ]
+    },
+    {
+      "category": "Family History",
+      "questions": [
+        { "label": "Is there a family history of Parkinson's disease?", "type": "one-hot" },
+        { "label": "Is there a family history of Alzheimer's disease?", "type": "one-hot" },
+        { "label": "Has anyone in your family had a stroke?", "type": "one-hot" }
+      ]
+    },
+    {
+      "category": "Medical Conditions",
+      "questions": [
+        { "label": "Have you been diagnosed with hypertension (high blood pressure)?", "type": "one-hot" },
+        { "label": "Do you have diabetes?", "type": "one-hot" },
+        { "label": "Have you been diagnosed with depression?", "type": "one-hot" },
+        { "label": "What was your last blood pressure measurement (systolic)?", "type": "text" },
+        { "label": "What was your last blood pressure measurement (diastolic)?", "type": "text" },
+        { "label": "What was your last cholesterol measurement (total)?", "type": "text" },
+        { "label": "What was your last cholesterol measurement (LDL)?", "type": "text" },
+        { "label": "What was your last cholesterol measurement (HDL)?", "type": "text" },
+        { "label": "What was your last cholesterol measurement (CholesterolTriglycerides)?", "type": "text" },
+        { "label": "How would you rate your overall functional capacity? (1-5, with 5 being excellent)", "type": "text" }
+      ]
+    },
+    {
+      "category": "Neurological",
+      "questions": [
+        { "label": "Have you experienced a severe traumatic brain injury?", "type": "one-hot" },
+        { "label": "How would you classify your motor symptoms using a UPDRS scale (1-100)?", "type": "text" },
+        { "label": "What was your score on the last MoCA (Cognitive Scale) test?", "type": "text" },
+        { "label": "Do you frequently experience tremors?", "type": "one-hot" },
+        { "label": "Do you experience muscle stiffness?", "type": "one-hot" },
+        { "label": "Do you notice slowness in your movements?", "type": "one-hot" },
+        { "label": "Do you have difficulty maintaining balance?", "type": "one-hot" },
+        { "label": "Do you have difficulty speaking?", "type": "one-hot" },
+        { "label": "Do you have trouble sleeping?", "type": "one-hot" },
+        { "label": "Do you have problems with constipation?", "type": "one-hot" }
+      ]
+    },
+    {
+      "category": "Cognitive and Behavioral",
+      "questions": [
+        { "label": "What was your score on the last MMSE (Mini-Mental State Examination)?", "type": "text" },
+        { "label": "Do you have trouble remembering things?", "type": "one-hot" },
+        { "label": "Have you noticed changes in your behavior?", "type": "one-hot" },
+        { "label": "Do you have difficulty performing daily tasks?", "type": "one-hot" },
+        { "label": "Do you often feel confused?", "type": "one-hot" },
+        { "label": "Do you feel disoriented?", "type": "one-hot" },
+        { "label": "Have you noticed personality changes?", "type": "one-hot" },
+        { "label": "Do you have difficulty completing tasks?", "type": "one-hot" },
+        { "label": "Do you frequently experience forgetfulness?", "type": "one-hot" }
+      ]
+    }
+  ]
+  
 
   // Arreglo de títulos para cada página
   pageTitles = [
@@ -85,19 +99,18 @@ export class SurveyComponent {
     'Cognitive and Behavioral'
   ];
 
-  currentPage = 0; 
-  formData: { [key: string]: string } = {}; 
+  currentCategory = 0;
+  formData: any = {};
 
-  nextPage() {
-    if (this.currentPage < this.questions.length - 1) {
-      this.currentPage++;
+  prevCategory() {
+    if (this.currentCategory > 0) {
+      this.currentCategory--;
     }
   }
 
-  
-  prevPage() {
-    if (this.currentPage > 0) {
-      this.currentPage--;
+  nextCategory() {
+    if (this.currentCategory < this.categories.length - 1) {
+      this.currentCategory++;
     }
   }
 
