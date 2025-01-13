@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { SurveyComponent } from './survey/survey.component'; // Adicione o caminho para o SurveyComponent
-import { AppComponent } from './app.component';
-import { BodyComponentComponent } from './body-component/body-component.component';
+import { PredictionResultComponent } from './prediction-result/prediction-result.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/survey', pathMatch: 'full' }, // Default route
   { path: 'survey', component: SurveyComponent },
-  { path: '', component: BodyComponentComponent },
+  { path: 'prediction-result', component: PredictionResultComponent }, // New route
 ];

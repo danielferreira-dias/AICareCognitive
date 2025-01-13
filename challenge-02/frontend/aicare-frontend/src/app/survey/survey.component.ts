@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 type Question =
   | { label: string; type: 'text' }
@@ -26,7 +27,7 @@ type Category = {
   styleUrls: ['./survey.component.css'],
 })
 export class SurveyComponent {
-  constructor(private http: HttpClient) {} // Injeção do HttpClient
+  constructor(private http: HttpClient, private router: Router) {}
 
   categories: Category[] = [
     {
@@ -447,8 +448,9 @@ export class SurveyComponent {
       .post('http://127.0.0.1:8000/predict', jsonToSend, { headers })
       .subscribe({
         next: (response) => {
-          console.log('Response:', response);
-          alert('Form submitted successfully!');
+          this.router.navigate(['/prediction-result'], {
+            state: { results: response },
+          });
         },
         error: (error) => {
           console.error('Error:', error);
