@@ -1,86 +1,184 @@
 <div class="flex flex-col w-full justify-center items-center">
-    <div class="w-[90%] px-6 mx-auto max-w-6xl">
-        <nav class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5 w-full">
-            <div class="w-full h-full flex flex-row justify-between items-center text-center align-middle">
-                <div class="flex flex-row gap-x-10 text-center w-full">
-                    <!-- Navigation Links -->
-                    <div class="flex flex-row h-8 items-center justify-center w-full">
-                        <a href="#" (click)="navigateToPage(0)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Personal Information
-                        </a>
-                        <a href="#" (click)="navigateToPage(1)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Lifestyle
-                        </a>
-                        <a href="#" (click)="navigateToPage(2)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Family History
-                        </a>
-                        <a href="#" (click)="navigateToPage(3)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Medical Conditions
-                        </a>
-                        <a href="#" (click)="navigateToPage(4)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Neurological Conditions
-                        </a>
-                        <a href="#" (click)="navigateToPage(5)" class="text-zinc-600 hover:text-blue-200 flex items-center justify-center h-full px-4">
-                            Cognitive and Behavioral
-                        </a>
-                    </div>
-                </div>
-        
-            </div>
-        </nav>
-    </div>
+  <div class="w-[90%] px-6 mx-auto max-w-6xl">
+    <nav
+      class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5 w-full"
+    >
+      <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row gap-x-10 w-full">
+          <div class="flex flex-row items-center justify-center w-full">
+            <a
+              *ngFor="let category of categories; let index = index"
+              href="#"
+              (click)="navigateToPage(index)"
+              [ngClass]="{
+                'text-blue-200': currentCategory === index,
+                'text-zinc-600 hover:text-blue-200': currentCategory !== index
+              }"
+              class="flex items-center justify-center h-full px-4"
+            >
+              {{ category.category }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
 
-    <section class="bg-black py-12 px-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-[80%]">
-        <h2 class="text-3xl text-white font-bold text-center mb-10">
-            {{ categories[currentCategory].category }}
-        </h2>
+  <section
+    class="bg-black py-12 px-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-[80%]"
+  >
+    <h2 class="text-3xl text-white font-bold text-center mb-10">
+      {{ categories[currentCategory].category }}
+    </h2>
 
-        <form (ngSubmit)="submitForm()" class="px-5">
-            <!-- Render Questions Dynamically -->
-            <div *ngFor="let question of categories[currentCategory]?.questions; let i = index" class="mb-6">
-                <label for="question{{ i }}" class="block text-white font-semibold mb-2">
-                    {{ question.label }}
-                </label>
+    <form (ngSubmit)="submitForm()" class="px-5">
+      <!-- Render Questions Dynamically -->
+      <div
+        *ngFor="
+          let question of categories[currentCategory]?.questions;
+          let i = index
+        "
+        class="mb-6"
+      >
+        <label
+          for="question{{ i }}"
+          class="block text-white font-semibold mb-2"
+        >
+          {{ question.label }}
+        </label>
 
-                <!-- Dropdown for One-Hot Encoded Questions -->
-                <select *ngIf="question.type === 'one-hot'"
-                        id="question{{ i }}"
-                        [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
-                        name="category{{ currentCategory }}-question{{ i }}"
-                        class="w-full p-3 bg-zinc-900 rounded-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:bg-zinc-900 text-white">
-                    <option [value]="1">Yes</option>
-                    <option [value]="0">No</option>
-                </select>
+        <!-- Radio Buttons for One-Hot -->
+        <div *ngIf="question.type === 'one-hot'" class="mb-4">
+          <div class="flex gap-4">
+            <!-- Loop through question.options -->
+            <ng-container *ngFor="let option of question.options">
+              <label class="flex items-center gap-2">
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-option' + option.value"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="option.value"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="focus:ring focus:ring-blue-300"
+                />
+                <span class="text-white">{{ option.label }}</span>
+              </label>
+            </ng-container>
 
-                <!-- Text Input for Other Questions -->
-                <input *ngIf="question.type === 'text'"
-                       id="question{{ i }}"
-                       type="text"
-                       [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
-                       name="category{{ currentCategory }}-question{{ i }}"
-                       class="w-full p-3 bg-zinc-900 rounded-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:bg-zinc-900 text-white"
-                       required />
-            </div>
+            <!-- Fallback Yes/No -->
+            <ng-container *ngIf="!question.options?.length">
+              <label class="flex items-center gap-2">
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-yes'"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="1"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="focus:ring focus:ring-blue-300"
+                />
+                <span class="text-white">Yes</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-no'"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="0"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="focus:ring focus:ring-blue-300"
+                />
+                <span class="text-white">No</span>
+              </label>
+            </ng-container>
+          </div>
+        </div>
 
-            <!-- Navigation Buttons -->
-            <div class="flex justify-between items-center mt-8">
-                <button type="button" (click)="prevCategory()"
-                        [disabled]="currentCategory === 0"
-                        class="bg-gray-700 text-white py-2 px-6  rounded-sm hover:bg-gray-600 disabled:opacity-50">
-                    Previous
-                </button>
+        <!-- Text Input -->
+        <input
+          *ngIf="question.type === 'text'"
+          id="question{{ i }}"
+          type="text"
+          [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
+          name="category{{ currentCategory }}-question{{ i }}"
+          class="w-full p-3 bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+          required
+        />
 
-                <button *ngIf="currentCategory === categories.length - 1" type="submit"
-                        class="bg-green-500 text-white py-2 px-6  rounded-sm hover:bg-green-400 mt-4">
-                    Submit
-                </button>
+        <!-- Strict Number Input -->
+        <input
+          *ngIf="question.type === 'number'"
+          id="question{{ i }}"
+          type="number"
+          [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
+          name="category{{ currentCategory }}-question{{ i }}"
+          [attr.min]="question.min !== undefined ? question.min : null"
+          [attr.max]="question.max !== undefined ? question.max : null"
+          (input)="sanitizeNumberInput($event, i)"
+          class="w-full p-3 bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+          required
+        />
 
-                <button type="button" (click)="nextCategory()"
-                        [disabled]="currentCategory === categories.length - 1"
-                        class="bg-gray-300 text-zinc-800 font-semibold py-2 px-6 rounded-sm hover:bg-gray-900 disabled:opacity-50">
-                    Next
-                </button>
-            </div>
-        </form>
-    </section>
+        <!-- Number-Radio Input -->
+        <div *ngIf="question.type === 'number-radio'" class="mb-4">
+          <div class="flex gap-4">
+            <ng-container
+              *ngFor="
+                let value of [].constructor(question.max - question.min + 1);
+                let index = index
+              "
+            >
+              <label class="flex items-center gap-2">
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-option' + (question.min + index)"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="question.min + index"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="focus:ring focus:ring-blue-300"
+                />
+                <span class="text-white">{{ question.min + index }}</span>
+              </label>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between items-center mt-8">
+        <button
+          type="button"
+          (click)="prevCategory()"
+          [disabled]="currentCategory === 0"
+          class="bg-gray-700 text-white py-2 px-6 rounded-sm hover:bg-gray-600 disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <button
+          *ngIf="currentCategory === categories.length - 1"
+          type="submit"
+          class="bg-green-500 text-white py-2 px-6 rounded-sm hover:bg-green-400 mt-4"
+        >
+          Submit
+        </button>
+
+        <button
+          type="button"
+          (click)="nextCategory()"
+          [disabled]="currentCategory === categories.length - 1"
+          class="bg-gray-300 text-zinc-800 font-semibold py-2 px-6 rounded-sm hover:bg-gray-900 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+  </section>
 </div>
