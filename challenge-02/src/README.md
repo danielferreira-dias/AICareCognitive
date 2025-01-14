@@ -75,7 +75,7 @@ To stop the running container, follow these steps:
 
 3. Stop the container:
    ```bash
-   docker stop <container_id_or_name>
+   docker stop ai-care
    ```
 
 ---
