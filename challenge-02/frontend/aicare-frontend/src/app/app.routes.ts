@@ -1,9 +1,23 @@
 import { Routes } from '@angular/router';
-import { SurveyComponent } from './survey/survey.component'; // Adicione o caminho para o SurveyComponent
+import { SurveyComponent } from './survey/survey.component';
 import { PredictionResultComponent } from './prediction-result/prediction-result.component';
+import { AuthGuard } from '@auth0/auth0-angular';
+import { CallbackComponent } from './callback/callback.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/survey', pathMatch: 'full' }, // Default route
-  { path: 'survey', component: SurveyComponent },
-  { path: 'prediction-result', component: PredictionResultComponent }, // New route
+  {
+    path: 'callback',
+    component: CallbackComponent,
+  },
+  {
+    path: '',
+    redirectTo: '/survey',
+    pathMatch: 'full',
+  },
+  { path: 'survey', component: SurveyComponent, canActivate: [AuthGuard] },
+  {
+    path: 'prediction-result',
+    component: PredictionResultComponent,
+    canActivate: [AuthGuard],
+  },
 ];

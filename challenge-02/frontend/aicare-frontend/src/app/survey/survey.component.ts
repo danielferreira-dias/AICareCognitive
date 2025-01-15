@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { AuthService } from '@auth0/auth0-angular';
 
 type Question =
   | { label: string; type: 'text' }
@@ -27,7 +29,11 @@ type Category = {
   styleUrls: ['./survey.component.css'],
 })
 export class SurveyComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
   categories: Category[] = [
     {
@@ -442,20 +448,23 @@ export class SurveyComponent {
     };
     console.log(JSON.stringify(jsonToSend));
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    this.auth.idTokenClaims$.subscribe((claims) => {
+      const token = claims?.__raw; // Raw token
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http
-      .post('http://127.0.0.1:8000/predict', jsonToSend, { headers })
-      .subscribe({
-        next: (response) => {
-          this.router.navigate(['/prediction-result'], {
-            state: { results: response },
-          });
-        },
-        error: (error) => {
-          console.error('Error:', error);
-          alert('An error occurred while submitting the form.');
-        },
-      });
+      this.http
+        .post(`${environment.api.serverUrl}/predict`, jsonToSend, { headers })
+        .subscribe({
+          next: (response) => {
+            this.router.navigate(['/prediction-result'], {
+              state: { results: response },
+            });
+          },
+          error: (error) => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the form.');
+          },
+        });
+    });
   }
 }

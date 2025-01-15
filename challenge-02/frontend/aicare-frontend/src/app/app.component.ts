@@ -6,13 +6,14 @@ import { RouterOutlet } from '@angular/router'; // Importação do RouterOutlet 
 
 @Component({
   selector: 'app-root',
-  standalone: true,  // Marca o componente como standalone
-  imports: [         // Importa os outros componentes e módulos necessários
-    NavbarComponent, 
-    RouterModule,    // Importa o RouterModule para usar as rotas
+  standalone: true, // Marca o componente como standalone
+  imports: [
+    // Importa os outros componentes e módulos necessários
+    NavbarComponent,
+    RouterModule, // Importa o RouterModule para usar as rotas
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'aicare-frontend';
