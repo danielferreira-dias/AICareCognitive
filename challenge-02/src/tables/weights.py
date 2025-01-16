@@ -8,4 +8,5 @@ weights_table = Table(
     Column("disease", String, nullable=False),
     Column("criterion_id", Integer, ForeignKey("criteria.id"), nullable=False),
     Column("weight", Float, nullable=False),
+    extend_existing=True
 )

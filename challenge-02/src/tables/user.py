@@ -55,6 +55,5 @@ user_table = Table(
     Column("speech_problems", Integer, nullable=True),  # Speech problems (0 or 1)
     Column("sleep_disorders", Integer, nullable=True),  # Sleep disorders (0 or 1)
     Column("constipation", Integer, nullable=True),  # Constipation (0 or 1)xx\
-    Column("has_alzheimer", Boolean, nullable=True, default=None),  # Alzheimer's flag (default is NULL)
-    Column("has_parkinson", Boolean, nullable=True, default=None),  # Parkinson's flag (default is NULL)
+    extend_existing=True # Parkinson's flag (default is NULL)
 )

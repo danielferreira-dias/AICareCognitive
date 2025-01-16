@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+from sqlite3 import IntegrityError
 from typing import Any, Dict, Tuple
 
 from sklearn.ensemble import RandomForestClassifier
@@ -7,6 +8,11 @@ from classes.alzheimer import AlzheimerData
 from classes.base_model import BaseModelData
 from classes.parkinson import ParkinsonData
 from classes.request import RequestData
+from sqlalchemy import insert, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.tables.disease_predictions import disease_predictions_table
+from src.tables.user import user_table
 
 
 def inference(data: BaseModelData, model: Any) -> Dict[str, Any]:
@@ -31,31 +37,64 @@ def inference(data: BaseModelData, model: Any) -> Dict[str, Any]:
 
     return {"prediction": int(prediction[0])}
 
-def process(request: RequestData, models: Dict[str, RandomForestClassifier]):
+async def process(request: RequestData, models: Dict[str, RandomForestClassifier], auth0_id: str,
+                  db_session: AsyncSession):
     """
     Processes a prediction request by running inference on multiple machine learning models in parallel.
-
-    <p>
-    This function maps the incoming data from the RequestData object into domain-specific data objects
-    (e.g., ParkinsonData and AlzheimerData). It then uses a ThreadPoolExecutor to perform inference
-    on both models (Parkinson and Alzheimer) concurrently.
-    </p>
-
-    @param request A RequestData object containing the input data for the models.
-    @param models A dictionary that maps model names (e.g., "parkinson", "alzheimer") to trained machine learning models.
-    @return A dictionary containing the prediction results:
-            - "parkinson_model": Prediction results from the Parkinson model.
-            - "alzheimer_model": Prediction results from the Alzheimer model.
+    It saves the user's input data to the `users` table and prediction results to the `disease_predictions` table.
     """
+    # Step 1: Extract Parkinson and Alzheimer data from the request
     parkinson_data, alzheimer_data = map_to_models(request)
 
+    # Step 2: Perform predictions in parallel
     with ThreadPoolExecutor() as executor:
         parkinson_result = executor.submit(inference, parkinson_data, models["parkinson"])
-        alzheimer_result = executor.submit(inference, alzheimer_data, models["parkinson"])
+        alzheimer_result = executor.submit(inference, alzheimer_data, models["alzheimer"])
 
+    parkinson_prediction = parkinson_result.result()["prediction"]
+    alzheimer_prediction = alzheimer_result.result()["prediction"]
+
+    # Determine prediction overview (e.g., Alzheimer's, Parkinson's, Both, or None)
+    if alzheimer_prediction == 1 and parkinson_prediction == 1:
+        disease_prediction = "Both"
+    elif alzheimer_prediction == 1:
+        disease_prediction = "Alzheimer"
+    elif parkinson_prediction == 1:
+        disease_prediction = "Parkinson"
+    else:
+        disease_prediction = "None"
+
+    # Step 3: Save User Data
+    user_data = request.model_dump()  # Serialize RequestData into a dictionary
+    user_data["auth0_user_id"] = auth0_id  # Add the Auth0 user ID to the data
+
+    try:
+        # Insert into users table
+        user_insert_stmt = insert(user_table).values(**user_data).returning(user_table.c.id)
+        result = await db_session.execute(user_insert_stmt)
+        user_id = result.scalar()  # Fetch the generated ID of the user
+
+    except IntegrityError:
+        # If the user already exists in the database (via `auth0_user_id`), fetch their `id`
+        existing_user_stmt = select(user_table.c.id).where(user_table.c.auth0_user_id == auth0_id)
+        result = await db_session.execute(existing_user_stmt)
+        user_id = result.scalar()
+
+    # Step 4: Save Predictions in disease_predictions_table
+    prediction_data = {
+        "user_id": user_id,
+        "prediction": disease_prediction
+    }
+
+    prediction_insert_stmt = insert(disease_predictions_table).values(**prediction_data)
+    await db_session.execute(prediction_insert_stmt)
+    await db_session.commit()  # Commit both inserts to persist them in the database
+
+    # Step 5: Return the predictions without database fields
     return {
         "parkinson_model": parkinson_result.result(),
         "alzheimer_model": alzheimer_result.result(),
+        "overall_prediction": disease_prediction
     }
 
 def map_to_models(request_data: RequestData) -> Tuple[ParkinsonData, AlzheimerData]:

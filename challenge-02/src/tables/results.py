@@ -7,5 +7,6 @@ results_table = Table(
     Column("id", Integer, primary_key=True),
     Column("user_id", Integer, ForeignKey("users.id"), nullable=False),
     Column("activity_id", Integer,ForeignKey("activities.id"), nullable=False),
-    Column("score", Float, nullable=False)
+    Column("score", Float, nullable=False),
+    extend_existing=True
 )

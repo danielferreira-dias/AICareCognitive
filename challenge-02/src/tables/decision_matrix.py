@@ -8,4 +8,5 @@ decision_matrix_table = Table(
     Column("activity_id", Integer, ForeignKey("activities.id"), nullable=False),  # Refers to the activities table.
     Column("criterion_id", Integer, ForeignKey("criteria.id"), nullable=False),  # Refers to the criteria table.
     Column("score", Float, nullable=False),  # Score assigned to the activity for this criterion.
+    extend_existing=True
 )

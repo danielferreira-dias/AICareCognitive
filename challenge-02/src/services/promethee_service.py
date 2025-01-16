@@ -67,46 +67,43 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         criterion_idx = criterion_id_to_index[row[1]]
         decision_matrix_np[activity_idx][criterion_idx] = row[2]
 
-    # Step 7: Normalize the decision matrix
-    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
+    # PROMETHEE II Implementation
+    # Step 7: Normalize decision matrix
+    min_vals = decision_matrix_np.min(axis=0)
+    max_vals = decision_matrix_np.max(axis=0)
 
-    # Step 8: Apply user-specific weights
-    # Default to global weights if the user weights are missing
-    user_weight_vector = np.array(
-        [user_weights.get(c_id, 0) for c_id in criterion_ids]
-    )
+    normalized_matrix = (decision_matrix_np - min_vals) / (max_vals - min_vals)
+
+    # Fetch user weight vector for criteria
+    user_weight_vector = np.array([user_weights.get(c_id, 0) for c_id in criterion_ids])
+
+    # Step 8: Apply user weights
     weighted_matrix = normalized_matrix * user_weight_vector
 
-    # Step 9: Define indices for maximizing and minimizing
-    indices_max = [0, 1, 2, 3, 4, 9, 10, 11]  # Columns to MAXIMIZE
-    indices_min = [5, 6, 7, 8, 12]  # Columns to MINIMIZE
+    # Step 9: Calculate pairwise preference indices for each pair of activities
+    def preference_function(value1, value2):
+        # General example: linear preference function
+        return max(0, value1 - value2)
 
-    # Calculate the ideal best (positive) and worst (negative) solutions
-    ideal_positive = []
-    ideal_negative = []
+    n_activities = len(activity_ids)
+    preference_matrix = np.zeros((n_activities, n_activities))
 
-    for j in range(weighted_matrix.shape[1]):
-        if j in indices_max:  # Maximize
-            ideal_positive.append(weighted_matrix[:, j].max())
-            ideal_negative.append(weighted_matrix[:, j].min())
-        elif j in indices_min:  # Minimize
-            ideal_positive.append(weighted_matrix[:, j].min())
-            ideal_negative.append(weighted_matrix[:, j].max())
+    for i in range(n_activities):
+        for j in range(n_activities):
+            if i != j:
+                preference_indices = [
+                    preference_function(weighted_matrix[i, k], weighted_matrix[j, k])
+                    for k in range(weighted_matrix.shape[1])
+                ]
+                preference_matrix[i, j] = np.dot(preference_indices, user_weight_vector)
 
-    ideal_positive = np.array(ideal_positive)
-    ideal_negative = np.array(ideal_negative)
+    # Step 10: Calculate net flows (leaving flow - entering flow)
+    leaving_flows = preference_matrix.sum(axis=1) / (n_activities - 1)
+    entering_flows = preference_matrix.sum(axis=0) / (n_activities - 1)
+    net_flows = leaving_flows - entering_flows
 
-    # Step 10: Calculate distances to ideal positive and ideal negative
-    distances_to_positive = np.sqrt(((weighted_matrix - ideal_positive) ** 2).sum(axis=1))
-    distances_to_negative = np.sqrt(((weighted_matrix - ideal_negative) ** 2).sum(axis=1))
-
-    # Step 11: Calculate the TOPSIS scores
-    topsis_scores = distances_to_negative / (distances_to_positive + distances_to_negative)
-
-    # Step 12: Rank the activities based on the TOPSIS scores
-    ranked_activities = sorted(
-        zip(activity_ids, topsis_scores), key=lambda x: x[1], reverse=True
-    )
+    # Step 11: Rank activities based on net flows
+    ranked_activities = sorted(zip(activity_ids, net_flows), key=lambda x: x[1], reverse=True)
 
     # Map activity IDs to their names
     activity_id_to_name = {activity[0]: activity[1] for activity in activities}
@@ -115,20 +112,20 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         for activity_id, score in ranked_activities
     ]
 
-    # Step 13: Save the results to the `results_table`
+    # Step 12: Save results to the `results_table`
     insert_data = [
         {"user_id": user_id, "activity_id": activity_id, "score": score}
         for activity_id, score in ranked_activities
     ]
 
-    # Clear previous results for user, if needed (optional)
+    # Optional: Clear previous results for this user
     await db_session.execute(
         results_table.delete().where(results_table.c.user_id == user_id)
     )
 
-    # Insert new results into the results table
+    # Insert the new results
     await db_session.execute(insert(results_table).values(insert_data))
     await db_session.commit()  # Commit to save changes
 
-    # Step 14: Return the ranked activities
+    # Step 13: Return ranked activities
     return ranked_activities_named
