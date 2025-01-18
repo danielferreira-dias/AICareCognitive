@@ -7,6 +7,8 @@ from pydantic import BaseModel, conlist, confloat
 from sqlalchemy.ext.asyncio import AsyncSession
 from enum import Enum
 
+from starlette.middleware.cors import CORSMiddleware
+
 from database import database, engine, metadata, get_db_session
 from src.schemas.algorithm import AlgorithmType, UpdateAlgorithmRequest
 from src.schemas.weights import UpdateWeightsRequest
@@ -50,6 +52,13 @@ async def lifespan(app: FastAPI):
 # Initialize the FastAPI app
 app = FastAPI(lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Allowed origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 @app.get("/health")
 def health_check():

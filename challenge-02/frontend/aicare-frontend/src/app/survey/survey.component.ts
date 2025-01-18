@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { AuthService } from '@auth0/auth0-angular';
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
+import {AuthService} from '@auth0/auth0-angular';
 
 type Question =
   | { label: string; type: 'text' }
   | { label: string; type: 'number'; min?: number; max?: number }
   | {
-      label: string;
-      type: 'one-hot';
-      options: { value: string; label: string }[];
-    }
+  label: string;
+  type: 'one-hot';
+  options: { value: string; label: string }[];
+}
   | { label: string; type: 'number-radio'; min: number; max: number };
 
 type Category = {
@@ -33,29 +33,30 @@ export class SurveyComponent {
     private http: HttpClient,
     private router: Router,
     private auth: AuthService
-  ) {}
+  ) {
+  }
 
   categories: Category[] = [
     {
       category: 'Demographic and General Information',
       questions: [
-        { label: 'Age', type: 'number' },
+        {label: 'Age', type: 'number'},
         {
           label: 'Gender',
           type: 'one-hot',
           options: [
-            { value: '0', label: 'Male' },
-            { value: '1', label: 'Female' },
+            {value: '0', label: 'Male'},
+            {value: '1', label: 'Female'},
           ],
         },
         {
           label: 'Ethnicity',
           type: 'one-hot',
           options: [
-            { value: '0', label: 'Caucasian' },
-            { value: '1', label: 'African American' },
-            { value: '2', label: 'Asian' },
-            { value: '3', label: 'Other' },
+            {value: '0', label: 'Caucasian'},
+            {value: '1', label: 'African American'},
+            {value: '2', label: 'Asian'},
+            {value: '3', label: 'Other'},
           ],
         },
       ],
@@ -448,16 +449,15 @@ export class SurveyComponent {
     };
     console.log(JSON.stringify(jsonToSend));
 
-    this.auth.idTokenClaims$.subscribe((claims) => {
-      const token = claims?.__raw; // Raw token
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.auth.getAccessTokenSilently().subscribe((accessToken) => {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
       this.http
-        .post(`${environment.api.serverUrl}/predict`, jsonToSend, { headers })
+        .post(`${environment.api.serverUrl}/predict`, jsonToSend, {headers})
         .subscribe({
           next: (response) => {
             this.router.navigate(['/prediction-result'], {
-              state: { results: response },
+              state: {results: response},
             });
           },
           error: (error) => {

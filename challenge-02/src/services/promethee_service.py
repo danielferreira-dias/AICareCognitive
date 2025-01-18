@@ -22,11 +22,10 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
 
     # Step 2: Fetch user-specific weights
     user_weights_result = await db_session.execute(
-        select(user_weights_table.c.weight_id, weights_table.c.criterion_id, weights_table.c.weight)
-        .join(weights_table, user_weights_table.c.weight_id == weights_table.c.id)
+        select(user_weights_table.c.criterion_id, user_weights_table.c.weight)
         .where(user_weights_table.c.user_id == user_id)
     )
-    user_weights = {criterion_id: weight for _, criterion_id, weight in user_weights_result.fetchall()}
+    user_weights = {criterion_id: weight for criterion_id, weight in user_weights_result.fetchall()}
 
     # Step 3: Fetch all activities
     activities_result = await db_session.execute(select(activities_table))
@@ -53,7 +52,6 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         raise HTTPException(status_code=404, detail="No decision matrix data found")
 
     # Step 6: Construct the decision matrix
-    # Rows: Activities, Columns: Criteria
     activity_ids = [activity[0] for activity in activities]
     criterion_ids = [criterion[0] for criterion in criteria]
 
@@ -72,7 +70,9 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
     min_vals = decision_matrix_np.min(axis=0)
     max_vals = decision_matrix_np.max(axis=0)
 
-    normalized_matrix = (decision_matrix_np - min_vals) / (max_vals - min_vals)
+    # Prevent division by zero
+    ranges = np.where(max_vals == min_vals, 1, max_vals - min_vals)
+    normalized_matrix = (decision_matrix_np - min_vals) / ranges
 
     # Fetch user weight vector for criteria
     user_weight_vector = np.array([user_weights.get(c_id, 0) for c_id in criterion_ids])
@@ -82,7 +82,7 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
 
     # Step 9: Calculate pairwise preference indices for each pair of activities
     def preference_function(value1, value2):
-        # General example: linear preference function
+        # Example: linear preference function
         return max(0, value1 - value2)
 
     n_activities = len(activity_ids)

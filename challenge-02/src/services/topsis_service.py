@@ -22,11 +22,10 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
 
     # Step 2: Fetch user-specific weights
     user_weights_result = await db_session.execute(
-        select(user_weights_table.c.weight_id, weights_table.c.criterion_id, weights_table.c.weight)
-        .join(weights_table, user_weights_table.c.weight_id == weights_table.c.id)
+        select(user_weights_table.c.criterion_id, user_weights_table.c.weight)
         .where(user_weights_table.c.user_id == user_id)
     )
-    user_weights = {criterion_id: weight for _, criterion_id, weight in user_weights_result.fetchall()}
+    user_weights = {criterion_id: weight for criterion_id, weight in user_weights_result.fetchall()}
 
     # Step 3: Fetch all activities
     activities_result = await db_session.execute(select(activities_table))
