@@ -3,27 +3,18 @@ from fastapi import FastAPI, Depends, HTTPException
 from contextlib import asynccontextmanager
 import joblib
 import uvicorn
-from pydantic import BaseModel
+from pydantic import BaseModel, conlist, confloat
 from sqlalchemy.ext.asyncio import AsyncSession
 from enum import Enum
 
 from database import database, engine, metadata, get_db_session
+from src.schemas.algorithm import AlgorithmType, UpdateAlgorithmRequest
+from src.schemas.weights import UpdateWeightsRequest
 from src.security import extract_sub_from_token
 from src.services import promethee_service, topsis_service
-from src.services.weights_service import get_weights
+from src.services.weights_service import get_weights, update_weights
 from services.inference_service import process as inference_process
 from classes.request import RequestData
-
-
-# Enum for selecting algorithms
-class AlgorithmType(Enum):
-    TOPSIS = "TOPSIS"
-    PROMETHEE_II = "PROMETHEE_II"
-
-
-# Request model to update algorithm
-class UpdateAlgorithmRequest(BaseModel):
-    algorithm: AlgorithmType
 
 
 # In-memory store for the selected algorithm
@@ -83,6 +74,19 @@ async def get_weights_endpoint(
 ):
     """Fetch user-specific weights."""
     return await get_weights(auth0_id, db_session)
+
+
+@app.put("/weights")
+async def update_user_weights(
+        request: UpdateWeightsRequest,
+        auth0_id: str = Depends(extract_sub_from_token),
+        db_session: AsyncSession = Depends(get_db_session)
+):
+    """
+    Endpoint to update a list of weights for a user.
+    """
+    return await update_weights(auth0_id, request.weights, db_session)
+
 
 
 @app.get("/results")
