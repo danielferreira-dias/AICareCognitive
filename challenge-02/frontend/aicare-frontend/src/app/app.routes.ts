@@ -3,6 +3,7 @@ import { SurveyComponent } from './survey/survey.component';
 import { PredictionResultComponent } from './prediction-result/prediction-result.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { CallbackComponent } from './callback/callback.component';
+import { AlgorithmSettingsComponent } from './algorithm-settings/algorithm-settings.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,11 @@ export const routes: Routes = [
   {
     path: 'prediction-result',
     component: PredictionResultComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'algorithm-settings',
+    component: AlgorithmSettingsComponent,
     canActivate: [AuthGuard],
   },
 ];

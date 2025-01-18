@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-prediction-result',
   imports: [CommonModule],
   templateUrl: './prediction-result.component.html',
-  styleUrl: './prediction-result.component.css',
+  styleUrls: ['./prediction-result.component.css'],
 })
 export class PredictionResultComponent {
   results: {
@@ -21,5 +21,9 @@ export class PredictionResultComponent {
 
   goBack() {
     this.router.navigate(['/survey']); // Adjust the route if necessary
+  }
+
+  navigateToAlgorithm() {
+    this.router.navigate(['/algorithm-settings']);
   }
 }

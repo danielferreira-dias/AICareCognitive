@@ -6,7 +6,7 @@ export const environment = {
     authorizationParams: {
       redirect_uri: 'http://localhost:4200/callback',
       audience: 'aicare-api',
-    },
+    }
   },
   api: {
     serverUrl: 'http://localhost:8000',
