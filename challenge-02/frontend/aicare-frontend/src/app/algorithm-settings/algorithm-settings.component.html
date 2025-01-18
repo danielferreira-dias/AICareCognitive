@@ -53,12 +53,31 @@
     <!-- Results -->
     <div *ngIf="activities.length > 0" class="mt-8">
       <h3 class="text-xl text-white font-bold mb-4">Activities:</h3>
-      <ul class="list-disc list-inside text-white">
-        <li *ngFor="let activity of activities">
-          {{ activity.activity }} - Score:
-          {{ activity.score | number : "1.2-2" }}
-        </li>
-      </ul>
+      <div class="flex flex-wrap gap-4">
+        <div
+          *ngFor="let activity of activities"
+          class="activity-pill relative px-4 py-2 rounded-full text-white text-sm font-semibold cursor-pointer transform transition-transform duration-500"
+          [ngStyle]="{
+            'background-color':
+              activity.score > 0
+                ? 'green'
+                : activity.score === 0
+                ? 'grey'
+                : 'red'
+          }"
+          (click)="toggleBadge(activity)"
+        >
+          <span class="activity-text">{{ activity.activity }}</span>
+          <!-- Badge -->
+          <div
+            *ngIf="activity.showBadge"
+            class="badge absolute bg-black text-white text-xs font-bold px-2 py-1 rounded-md"
+            style="top: -10px; right: -10px"
+          >
+            {{ activity.score.toFixed(2) }}
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

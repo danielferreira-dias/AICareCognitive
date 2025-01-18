@@ -72,10 +72,20 @@ export class AlgorithmSettingsComponent {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       this.http.get('http://localhost:8000/results', { headers }).subscribe({
         next: (response: any) => {
-          this.activities = response;
+          this.activities = response.map((activity: any) => ({
+            ...activity,
+            showBadge: false, // Add `showBadge` property for the badge
+          }));
         },
         error: (err) => console.error('Error fetching activities', err),
       });
     });
+  }
+
+  toggleBadge(activity: any) {
+    activity.showBadge = true; // Show the badge
+    setTimeout(() => {
+      activity.showBadge = false; // Hide the badge after 1 second
+    }, 1000);
   }
 }
