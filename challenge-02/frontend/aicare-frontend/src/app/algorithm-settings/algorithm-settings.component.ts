@@ -117,16 +117,21 @@ export class AlgorithmSettingsComponent {
   getPillBackground(activity: any): string {
     const score = activity.score;
 
-    console.log(score);
-
     if (score > 0) {
       const normalized =
-        (score - this.minPositive) / (this.maxPositive - this.minPositive);
-      return `rgba(0, 200, 0, ${normalized})`; // Gradient Green
+        (this.maxPositive - score) / (this.maxPositive - this.minPositive);
+      const greenValue = Math.round(0 + normalized * (128 - 0));
+      return `rgb(${greenValue}, ${
+        200 - normalized * (200 - 128)
+      }, ${greenValue})`;
     } else if (score < 0) {
+      // Invert the gradient logic for negatives
       const normalized =
         (score - this.maxNegative) / (this.minNegative - this.maxNegative);
-      return `rgba(200, 0, 0, ${normalized})`; // Gradient Red
+      const redValue = Math.round(128 + normalized * (200 - 128));
+      return `rgb(${redValue}, ${128 - normalized * (128 - 0)}, ${
+        128 - normalized * (128 - 0)
+      })`;
     }
 
     return '#808080'; // Neutral Grey
