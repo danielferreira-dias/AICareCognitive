@@ -15,6 +15,10 @@ export class AlgorithmSettingsComponent {
   showWeightsPopup = false;
   weights: any[] = [];
   activities: any[] = [];
+  maxPositive: number = 0;
+  minPositive: number = 0;
+  maxNegative: number = 0;
+  minNegative: number = 0;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -76,10 +80,56 @@ export class AlgorithmSettingsComponent {
             ...activity,
             showBadge: false, // Add `showBadge` property for the badge
           }));
+
+          // Calculate ranges for dynamic colors
+          const positiveScores = this.activities
+            .filter((a) => a.score > 0)
+            .map((a) => a.score);
+          const negativeScores = this.activities
+            .filter((a) => a.score < 0)
+            .map((a) => a.score);
+          console.log(this.activities);
+          console.log(positiveScores);
+          console.log(negativeScores);
+
+          this.maxPositive = Math.max(...positiveScores, 0);
+          this.minPositive = Math.min(...positiveScores, 0);
+          this.maxNegative = Math.max(...negativeScores, 0);
+          this.minNegative = Math.min(...negativeScores, 0);
+          console.log(
+            'minPositive:',
+            this.minPositive,
+            'maxPositive:',
+            this.maxPositive
+          );
+          console.log(
+            'minNegative:',
+            this.minNegative,
+            'maxNegative:',
+            this.maxNegative
+          );
         },
         error: (err) => console.error('Error fetching activities', err),
       });
     });
+  }
+
+  getPillBackground(activity: any): string {
+    const score = activity.score;
+
+    console.log(score);
+
+    if (score > 0) {
+      const normalized =
+        (score - this.minPositive) / (this.maxPositive - this.minPositive);
+      return `rgba(0, 200, 0, ${normalized})`; // Gradient Green
+    } else if (score < 0) {
+      const normalized =
+        (score - this.maxNegative) / (this.minNegative - this.maxNegative);
+      return `rgba(200, 0, 0, ${normalized})`; // Gradient Red
+    }
+
+    return '#808080'; // Neutral Grey
   }
 
   toggleBadge(activity: any) {
