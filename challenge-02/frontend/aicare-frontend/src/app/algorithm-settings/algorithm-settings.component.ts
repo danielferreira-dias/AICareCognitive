@@ -15,20 +15,12 @@ export class AlgorithmSettingsComponent {
   showWeightsPopup = false;
   weights: any[] = [];
   activities: any[] = [];
-  maxPositive: number = 0;
-  minPositive: number = 0;
-  maxNegative: number = 0;
-  minNegative: number = 0;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   onAlgorithmChange() {
     // Clear current state
     this.activities = [];
-    this.maxPositive = 0;
-    this.minPositive = 0;
-    this.maxNegative = 0;
-    this.minNegative = 0;
 
     const payload = { algorithm: this.selectedAlgorithm };
     this.auth.getAccessTokenSilently().subscribe((token) => {
@@ -95,26 +87,6 @@ export class AlgorithmSettingsComponent {
           const negativeScores = this.activities
             .filter((a) => a.score < 0)
             .map((a) => a.score);
-          console.log(this.activities);
-          console.log(positiveScores);
-          console.log(negativeScores);
-
-          this.maxPositive = Math.max(...positiveScores, 0);
-          this.minPositive = Math.min(...positiveScores, 0);
-          this.maxNegative = Math.max(...negativeScores, 0);
-          this.minNegative = Math.min(...negativeScores, 0);
-          console.log(
-            'minPositive:',
-            this.minPositive,
-            'maxPositive:',
-            this.maxPositive
-          );
-          console.log(
-            'minNegative:',
-            this.minNegative,
-            'maxNegative:',
-            this.maxNegative
-          );
         },
         error: (err) => console.error('Error fetching activities', err),
       });
@@ -124,17 +96,19 @@ export class AlgorithmSettingsComponent {
   getPillBackground(activity: any): string {
     const score = activity.score;
 
-    if (score > 0) {
-      const normalized =
-        (this.maxPositive - score) / (this.maxPositive - this.minPositive);
+    const max = Math.max(...this.activities.map((a) => a.score));
+    const min = Math.min(...this.activities.map((a) => a.score));
+    const avg = (max + min) / 2; // Calculate the midpoint (average)
+
+    if (score > avg) {
+      const normalized = (max - score) / (max - avg);
       const greenValue = Math.round(0 + normalized * (128 - 0));
       return `rgb(${greenValue}, ${
         200 - normalized * (200 - 128)
       }, ${greenValue})`;
-    } else if (score < 0) {
+    } else if (score < avg) {
       // Invert the gradient logic for negatives
-      const normalized =
-        (score - this.maxNegative) / (this.minNegative - this.maxNegative);
+      const normalized = (score - avg) / (min - avg);
       const redValue = Math.round(128 + normalized * (200 - 128));
       return `rgb(${redValue}, ${128 - normalized * (128 - 0)}, ${
         128 - normalized * (128 - 0)
