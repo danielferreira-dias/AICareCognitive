@@ -23,6 +23,13 @@ export class AlgorithmSettingsComponent {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   onAlgorithmChange() {
+    // Clear current state
+    this.activities = [];
+    this.maxPositive = 0;
+    this.minPositive = 0;
+    this.maxNegative = 0;
+    this.minNegative = 0;
+
     const payload = { algorithm: this.selectedAlgorithm };
     this.auth.getAccessTokenSilently().subscribe((token) => {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
