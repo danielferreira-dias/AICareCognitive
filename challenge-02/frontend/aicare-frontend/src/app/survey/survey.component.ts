@@ -39,7 +39,7 @@ export class SurveyComponent {
     {
       category: 'Demographic and General Information',
       questions: [
-        { label: 'Age', type: 'number' },
+        { label: 'Age', type: 'number', min: 0, max: 120 },
         {
           label: 'Gender',
           type: 'one-hot',
@@ -490,7 +490,7 @@ export class SurveyComponent {
     for (const key in jsonToSend) {
       const value: any = jsonToSend[key];
       if (isNaN(value)) {
-        alert(`Please complete all fields before submitting.`);
+        alert(`Please complete the field for "${key}" before submitting.`);
         return;
       }
     }
