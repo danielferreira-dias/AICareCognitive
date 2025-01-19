@@ -88,14 +88,29 @@ async def process(request: RequestData, models: Dict[str, RandomForestClassifier
         user_id = result.scalar()  # Fetch the generated ID of the user
 
     # Step 4: Save Predictions in disease_predictions_table
-    prediction_data = {
-        "user_id": user_id,
-        "prediction": disease_prediction
-    }
+    existing_prediction = await db_session.execute(
+        select(disease_predictions_table.c.id).where(disease_predictions_table.c.user_id == user_id)
+    )
+    existing_prediction_id = existing_prediction.scalar_one_or_none()
 
-    prediction_insert_stmt = insert(disease_predictions_table).values(**prediction_data)
-    await db_session.execute(prediction_insert_stmt)
-    await db_session.commit()  # Commit both inserts/updates to persist them in the database
+    if existing_prediction_id:
+        # Update the existing prediction
+        await db_session.execute(
+            disease_predictions_table.update()
+            .where(disease_predictions_table.c.id == existing_prediction_id)
+            .values(prediction=disease_prediction)
+        )
+    else:
+        # Insert a new prediction
+        prediction_data = {
+            "user_id": user_id,
+            "prediction": disease_prediction
+        }
+        prediction_insert_stmt = insert(disease_predictions_table).values(**prediction_data)
+        await db_session.execute(prediction_insert_stmt)
+
+    # Commit both inserts/updates to persist them in the database
+    await db_session.commit()
 
     # Step 5: Return the predictions without database fields
     return {
