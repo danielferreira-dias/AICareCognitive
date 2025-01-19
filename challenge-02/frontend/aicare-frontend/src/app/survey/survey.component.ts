@@ -321,6 +321,20 @@ export class SurveyComponent {
   currentCategory = 0;
   formData: any = {};
 
+  isCurrentCategoryComplete(): boolean {
+    if (!this.categories[this.currentCategory]?.questions) {
+      return false;
+    }
+  
+    return this.categories[this.currentCategory].questions.every((question, index) => {
+      const key = `category${this.currentCategory}-question${index}`;
+      const value = this.formData[key];
+  
+      // Check if the value is defined and not an empty string
+      return value !== undefined && value !== null && value !== '';
+    });
+  }
+
   sanitizeNumberInput(event: Event, index: number) {
     const input = event.target as HTMLInputElement;
     let value = input.value;
