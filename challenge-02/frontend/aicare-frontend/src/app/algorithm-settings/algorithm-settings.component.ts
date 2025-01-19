@@ -17,6 +17,7 @@ export class AlgorithmSettingsComponent {
   weights: any[] = [];
   activities: any[] = [];
   totalWeight: number = 0;
+  isLoading: boolean | undefined;
 
   constructor(private http: HttpClient, private auth: AuthService) {
     this.updateTotalWeight();
@@ -54,6 +55,41 @@ export class AlgorithmSettingsComponent {
       });
     });
   }
+
+  setDefaultWeights() {
+      this.isLoading = true; // Inicia el estado de carga
+      this.auth.getAccessTokenSilently().subscribe((token) => {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        
+        // Solicitud DELETE
+        this.http.delete('http://localhost:8000/weights', { headers }).subscribe({
+          next: (response: any) => {
+            console.log(response.message); // Mensaje del backend
+            this.weights = []; // Limpiar pesos locales
+            this.updateTotalWeight(); // Actualizar el total
+            
+            // Solicitud GET
+            this.http.get('http://localhost:8000/weights', { headers }).subscribe({
+              next: (response: any) => {
+                this.weights = response.weights; // Actualizar pesos
+                this.updateTotalWeight(); // Recalcular total
+                console.log('Pesos actualizados:', this.weights);
+                this.isLoading = false; // Termina la carga
+              },
+              error: (err) => {
+                console.error('Error recuperando los pesos', err);
+                this.isLoading = false; // Termina la carga en caso de error
+              },
+            });
+          },
+          error: (err) => {
+            console.error('Error reseteando los pesos', err);
+            this.isLoading = false; // Termina la carga en caso de error
+          },
+        });
+      });
+    }
+    
 
   saveWeights() {
     // Transformar los datos al formato requerido
@@ -139,7 +175,7 @@ export class AlgorithmSettingsComponent {
       activity.showBadge = false; // Hide the badge after 1 second
     }, 1000);
   }
-  
+
   updateTotalWeight() {
     // Sumar todos los pesos redondeados a un decimal
     this.totalWeight = parseFloat(
@@ -148,22 +184,22 @@ export class AlgorithmSettingsComponent {
         .toFixed(2) // Redondear y convertir a número
     );
   }
-  
+
   validateDecimal(event: Event, weight: any) {
     const inputElement = event.target as HTMLInputElement;
     let value = inputElement.value;
-  
+
     // Permitir "0" o "0." temporalmente
     if (value === '0' || value === '0,') {
       weight.weight = value; // Actualiza el modelo sin cambios
       return;
     }
-  
+
     // Validar y limitar a dos decimales
     if (!/^\d*(\.\d{0,2})?$/.test(value)) {
       value = parseFloat(value).toFixed(2); // Redondear si supera los dos decimales
     }
-  
+
     // Asegurarse de que esté dentro del rango permitido
     const numericValue = parseFloat(value);
     if (numericValue < 0) {
@@ -171,12 +207,10 @@ export class AlgorithmSettingsComponent {
     } else if (numericValue > 1) {
       value = '1';
     }
-  
+
     // Actualizar el valor en el input y en el modelo
     inputElement.value = value;
     weight.weight = value;
     this.updateTotalWeight();
   }
-  
-
 }
