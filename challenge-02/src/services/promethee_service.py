@@ -65,14 +65,7 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         criterion_idx = criterion_id_to_index[row[1]]
         decision_matrix_np[activity_idx][criterion_idx] = row[2]
 
-    # PROMETHEE II Implementation
-    # Step 7: Normalize decision matrix
-    min_vals = decision_matrix_np.min(axis=0)
-    max_vals = decision_matrix_np.max(axis=0)
-
-    # Prevent division by zero
-    ranges = np.where(max_vals == min_vals, 1, max_vals - min_vals)
-    normalized_matrix = (decision_matrix_np - min_vals) / ranges
+    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
 
     # Fetch user weight vector for criteria
     user_weight_vector = np.array([user_weights.get(c_id, 0) for c_id in criterion_ids])
