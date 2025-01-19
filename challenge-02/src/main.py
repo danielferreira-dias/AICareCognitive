@@ -17,6 +17,7 @@ from services import promethee_service, topsis_service
 from services.weights_service import get_weights, update_weights
 from services.inference_service import process as inference_process
 from classes.request import RequestData
+from src.services.weights_service import reset_weights
 
 
 # In-memory store for the selected algorithm
@@ -96,7 +97,15 @@ async def update_user_weights(
     """
     return await update_weights(auth0_id, request.weights, db_session)
 
-
+@app.delete("/weights")
+async def reset_user_weights(
+        auth0_id: str = Depends(extract_sub_from_token),
+        db_session: AsyncSession = Depends(get_db_session)
+):
+    """
+    Endpoint to update a list of weights for a user.
+    """
+    return await reset_weights(auth0_id, db_session)
 
 @app.get("/results")
 async def get_results(

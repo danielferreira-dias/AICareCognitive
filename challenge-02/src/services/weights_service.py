@@ -134,3 +134,39 @@ async def update_weights(auth0_id: str, weights: list[WeightUpdateRequest], db_s
     await db_session.commit()
 
     return {"message": f"Successfully updated {len(weights)} weights"}
+
+async def reset_weights(auth0_id: str, db_session: AsyncSession):
+    """
+    Reset all user-specific weights for a user by removing them from the user_weights_table.
+
+    Parameters:
+    - auth0_id: The Auth0 user ID of the user.
+    - db_session: The active database session.
+    """
+    # Step 1: Fetch user ID based on auth0_id
+    result = await db_session.execute(
+        select(user_table.c.id).where(user_table.c.auth0_user_id == auth0_id)
+    )
+    user_id = result.scalar_one_or_none()
+
+    if not user_id:
+        return {"error": "User not found"}
+
+    # Step 2: Check if there are weights associated with the user in user_weights_table
+    result = await db_session.execute(
+        select(user_weights_table.c.id).where(user_weights_table.c.user_id == user_id)
+    )
+    user_weights = result.fetchall()
+
+    if not user_weights:
+        return {"message": "No weights found for the user"}
+
+    # Step 3: Delete all weights for the user
+    await db_session.execute(
+        user_weights_table.delete().where(user_weights_table.c.user_id == user_id)
+    )
+
+    # Step 4: Commit the deletion
+    await db_session.commit()
+
+    return {"message": "Successfully reset user-specific weights"}
