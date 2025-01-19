@@ -1,19 +1,19 @@
-import {Component} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
-import {AuthService} from '@auth0/auth0-angular';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { AuthService } from '@auth0/auth0-angular';
 
 type Question =
   | { label: string; type: 'text' }
   | { label: string; type: 'number'; min?: number; max?: number }
   | {
-  label: string;
-  type: 'one-hot';
-  options: { value: string; label: string }[];
-}
+      label: string;
+      type: 'one-hot';
+      options: { value: string; label: string }[];
+    }
   | { label: string; type: 'number-radio'; min: number; max: number };
 
 type Category = {
@@ -33,30 +33,29 @@ export class SurveyComponent {
     private http: HttpClient,
     private router: Router,
     private auth: AuthService
-  ) {
-  }
+  ) {}
 
   categories: Category[] = [
     {
       category: 'Demographic and General Information',
       questions: [
-        {label: 'Age', type: 'number'},
+        { label: 'Age', type: 'number' },
         {
           label: 'Gender',
           type: 'one-hot',
           options: [
-            {value: '0', label: 'Male'},
-            {value: '1', label: 'Female'},
+            { value: '0', label: 'Male' },
+            { value: '1', label: 'Female' },
           ],
         },
         {
           label: 'Ethnicity',
           type: 'one-hot',
           options: [
-            {value: '0', label: 'Caucasian'},
-            {value: '1', label: 'African American'},
-            {value: '2', label: 'Asian'},
-            {value: '3', label: 'Other'},
+            { value: '0', label: 'Caucasian' },
+            { value: '1', label: 'African American' },
+            { value: '2', label: 'Asian' },
+            { value: '3', label: 'Other' },
           ],
         },
       ],
@@ -143,35 +142,44 @@ export class SurveyComponent {
           options: [],
         },
         {
-          label: 'What was your last blood pressure measurement (systolic)?',
+          label:
+            'What was your last blood pressure measurement (systolic)? (90-180)',
           type: 'number',
-          min: 0,
-        },
-        {
-          label: 'What was your last blood pressure measurement (diastolic)?',
-          type: 'number',
-          min: 0,
-        },
-        {
-          label: 'What was your last cholesterol measurement (total)?',
-          type: 'number',
-          min: 0,
-        },
-        {
-          label: 'What was your last cholesterol measurement (LDL)?',
-          type: 'number',
-          min: 0,
-        },
-        {
-          label: 'What was your last cholesterol measurement (HDL)?',
-          type: 'number',
-          min: 0,
+          min: 90,
+          max: 180,
         },
         {
           label:
-            'What was your last cholesterol measurement (CholesterolTriglycerides)?',
+            'What was your last blood pressure measurement (diastolic)? (60-120)',
           type: 'number',
-          min: 0,
+          min: 60,
+          max: 120,
+        },
+        {
+          label:
+            'What was your last cholesterol measurement (total)? (150-300)',
+          type: 'number',
+          min: 150,
+          max: 300,
+        },
+        {
+          label: 'What was your last cholesterol measurement (LDL)? (50-200)',
+          type: 'number',
+          min: 50,
+          max: 200,
+        },
+        {
+          label: 'What was your last cholesterol measurement (HDL)? (20-100)',
+          type: 'number',
+          min: 20,
+          max: 100,
+        },
+        {
+          label:
+            'What was your last cholesterol measurement (CholesterolTriglycerides)? (50-400)',
+          type: 'number',
+          min: 50,
+          max: 400,
         },
         {
           label: 'Do you have any Cardio Vascular Disease ?',
@@ -180,10 +188,10 @@ export class SurveyComponent {
         },
         {
           label:
-            'How would you rate your overall functional capacity? (1-5, with 5 being excellent)',
+            'How would you rate your overall functional capacity? (1-10, with 10 being excellent)',
           type: 'number-radio',
           min: 1,
-          max: 5,
+          max: 10,
         },
       ],
     },
@@ -197,15 +205,17 @@ export class SurveyComponent {
         },
         {
           label:
-            'How would you classify your motor symptoms using a UPDRS scale (1-100)?',
-          type: 'number',
-          min: 1,
-          max: 100,
-        },
-        {
-          label: 'What was your score on the last MoCA (Cognitive Scale) test?',
+            'How would you classify your motor symptoms using a UPDRS scale (0-199)?',
           type: 'number',
           min: 0,
+          max: 199,
+        },
+        {
+          label:
+            'What was your score on the last MoCA (Cognitive Scale) test? (0-30)',
+          type: 'number',
+          min: 0,
+          max: 30,
         },
         {
           label: 'Do you frequently experience tremors?',
@@ -249,9 +259,10 @@ export class SurveyComponent {
       questions: [
         {
           label:
-            'What was your score on the last MMSE (Mini-Mental State Examination)?',
+            'What was your score on the last MMSE (Mini-Mental State Examination)? (0-30)',
           type: 'number',
           min: 0,
+          max: 30,
         },
         {
           label: 'Do you have trouble remembering things?',
@@ -336,6 +347,40 @@ export class SurveyComponent {
     this.formData[fieldName] = value ? parseFloat(value) : null;
   }
 
+  validateNumberInput(index: number) {
+    // Obtiene la pregunta actual
+    const question = this.categories[this.currentCategory]?.questions[index];
+
+    // Verifica si la pregunta es del tipo 'number' o 'number-radio'
+    if (question.type !== 'number') {
+      return; // Si no es un tipo numérico, no hacemos nada
+    }
+
+    // Obtiene el valor actual del modelo
+    const fieldName = `category${this.currentCategory}-question${index}`;
+    let value = this.formData[fieldName];
+
+    // Convierte a número
+    let numericValue = value ? parseFloat(value) : null;
+
+    // Aplica límites si el valor no está en el rango
+    if (numericValue !== null) {
+      const min =
+        question.min !== undefined ? question.min : Number.NEGATIVE_INFINITY;
+      const max =
+        question.max !== undefined ? question.max : Number.POSITIVE_INFINITY;
+
+      if (numericValue < min) {
+        numericValue = min;
+      } else if (numericValue > max) {
+        numericValue = max;
+      }
+
+      // Actualiza el modelo con el valor corregido
+      this.formData[fieldName] = numericValue;
+    }
+  }
+
   navigateToPage(pageIndex: number) {
     // // Optional validation to check if the user can leave the current page
     // const currentPageQuestions = this.categories;
@@ -388,14 +433,7 @@ export class SurveyComponent {
   }
 
   async submitForm() {
-    for (const key in this.formData) {
-      if (this.formData[key] === null || this.formData[key] === undefined) {
-        alert(`Please complete all fields before submitting.`);
-        return;
-      }
-    }
-
-    const jsonToSend = {
+    const jsonToSend: Record<string, number | string> = {
       Age: parseInt(this.formData['category0-question0']),
       Gender: parseInt(this.formData['category0-question1']),
       Ethnicity: parseInt(this.formData['category0-question2']),
@@ -449,16 +487,29 @@ export class SurveyComponent {
     };
     console.log(JSON.stringify(jsonToSend));
 
+    for (const key in jsonToSend) {
+      const value: any = jsonToSend[key];
+      if (isNaN(value)) {
+        alert(`Please complete all fields before submitting.`);
+        return;
+      }
+    }
+
     this.auth.getAccessTokenSilently().subscribe((accessToken) => {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+      console.log('accessToken', accessToken);
+      const headers = new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${accessToken}`
+      );
 
       this.http
-        .post(`${environment.api.serverUrl}/predict`, jsonToSend, {headers})
+        .post(`${environment.api.serverUrl}/predict`, jsonToSend, { headers })
         .subscribe({
           next: (response) => {
             this.router.navigate(['/prediction-result'], {
-              state: {results: response},
+              state: { results: response },
             });
+            console.log('state', response);
           },
           error: (error) => {
             console.error('Error:', error);

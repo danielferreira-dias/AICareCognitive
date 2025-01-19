@@ -1,12 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert, update
 
-from src.schemas.weights import WeightUpdateRequest
-from src.tables.disease_predictions import disease_predictions_table
-from src.tables.weights import weights_table
-from src.tables.criteria import criteria_table
-from src.tables.user_weights import user_weights_table
-from src.tables.user import user_table
+from schemas.weights import WeightUpdateRequest
+from tables.disease_predictions import disease_predictions_table
+from tables.weights import weights_table
+from tables.criteria import criteria_table
+from tables.user_weights import user_weights_table
+from tables.user import user_table
 
 
 async def get_weights(auth0_id: str, db_session: AsyncSession):

@@ -1,0 +1,73 @@
+    /* Estilo para el radio button */
+.radio-label {
+    display: block;
+    cursor: pointer;
+    padding: 0.5rem;
+    border: 2px solid;
+    border-radius: 0.375rem; /* Corresponde a rounded-lg */
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .radio-label.bg-blue-200 {
+    background-color: #e6eff6; /* Mantén el fondo blanco cuando está seleccionado */
+  }
+  
+  .radio-label:hover {
+    box-shadow: 0 8px 10px rgba(253, 253, 253, 0.633);
+  }
+  
+  /* Estilo para el círculo del radio */
+  .radio-circle {
+    width: 1.25rem; /* 5 */
+    height: 1.25rem; /* 5 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid;
+    border-radius: 50%;
+  }
+  
+  .radio-circle.bg-blue-500 {
+    background-color: #ffffff; /* blue-500 */
+  }
+  
+  /* Estilo para el ícono del check */
+  .radio-check-icon {
+    width: 1rem; /* 4 */
+    height: 1rem; /* 4 */
+    color: #000; /* negro por defecto */
+  }
+  
+  .radio-check-icon path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+  
+  /* Estilo para cuando el radio button está seleccionado */
+  input[type="radio"]:checked + .flex .radio-circle .radio-check-icon {
+    color: #000; /* Cambio de color del check a negro */
+  }
+  
+  /* Estilo para el texto de las opciones */
+  .radio-label span {
+    font-size: 1rem; /* text-base */
+  }
+  
+
+  .custom-label {
+    font-size: 1.10rem; /* Aumenta el tamaño de la fuente */
+    font-weight: 700; /* Negrita */
+    letter-spacing: 1px; /* Espaciado entre letras */
+    color: #f3f4f6; /* Color blanco muy suave */
+    margin-bottom: 0.75rem; /* Espaciado abajo */
+    padding-left: 0.5rem; /* Espaciado a la izquierda */
+    padding-right: 0.5rem; /* Espaciado a la derecha */
+    display: inline-block; /* Alineación */
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo sutil */
+    border-radius: 0.375rem; /* Bordes redondeados */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: all 0.3s ease; /* Transición suave para efectos */
+  }
+  

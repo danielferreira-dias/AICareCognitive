@@ -10,11 +10,11 @@ from enum import Enum
 from starlette.middleware.cors import CORSMiddleware
 
 from database import database, engine, metadata, get_db_session
-from src.schemas.algorithm import AlgorithmType, UpdateAlgorithmRequest
-from src.schemas.weights import UpdateWeightsRequest
-from src.security import extract_sub_from_token
-from src.services import promethee_service, topsis_service
-from src.services.weights_service import get_weights, update_weights
+from schemas.algorithm import AlgorithmType, UpdateAlgorithmRequest
+from schemas.weights import UpdateWeightsRequest
+from security import extract_sub_from_token
+from services import promethee_service, topsis_service
+from services.weights_service import get_weights, update_weights
 from services.inference_service import process as inference_process
 from classes.request import RequestData
 

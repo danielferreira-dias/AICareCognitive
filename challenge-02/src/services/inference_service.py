@@ -11,8 +11,8 @@ from classes.request import RequestData
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.tables.disease_predictions import disease_predictions_table
-from src.tables.user import user_table
+from tables.disease_predictions import disease_predictions_table
+from tables.user import user_table
 
 
 def inference(data: BaseModelData, model: Any) -> Dict[str, Any]:

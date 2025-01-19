@@ -2,13 +2,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert
 import numpy as np
 from fastapi import HTTPException
-from src.tables.activities import activities_table
-from src.tables.criteria import criteria_table
-from src.tables.weights import weights_table
-from src.tables.decision_matrix import decision_matrix_table
-from src.tables.user import user_table
-from src.tables.user_weights import user_weights_table
-from src.tables.results import results_table
+from tables.activities import activities_table
+from tables.criteria import criteria_table
+from tables.weights import weights_table
+from tables.decision_matrix import decision_matrix_table
+from tables.user import user_table
+from tables.user_weights import user_weights_table
+from tables.results import results_table
 
 
 async def get_results(auth0_id: str, db_session: AsyncSession):
