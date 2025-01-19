@@ -4,11 +4,10 @@
       <div class="flex flex-row justify-between items-center">
         <div class="flex flex-row gap-x-10 w-full">
           <div class="flex flex-row items-center justify-center w-full">
-            <a *ngFor="let category of categories; let index = index" href="#" (click)="navigateToPage(index)"
-              [ngClass]="{
+            <a *ngFor="let category of categories; let index = index" (click)="navigateToPage(index)" [ngClass]="{
                 'text-blue-200': currentCategory === index,
                 'text-zinc-600 hover:text-blue-200': currentCategory !== index
-              }" class="flex items-center justify-center h-full px-4">
+              }" class="flex items-center justify-center h-full px-4 cursor-pointer">
               {{ category.category }}
             </a>
           </div>
