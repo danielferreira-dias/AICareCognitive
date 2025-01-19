@@ -4,6 +4,7 @@ import { LogoutButtonComponent } from '../logout-button/logout-button.component'
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class NavbarComponent {
   menuOpen = false;
 
-  constructor(public auth: AuthService, private translate: TranslateService) {
+  constructor(
+    public auth: AuthService,
+    private translate: TranslateService,
+    private router: Router
+  ) {
     this.translate.addLangs(['en', 'pt', 'es']);
     this.translate.setDefaultLang('en');
   }
@@ -29,5 +34,10 @@ export class NavbarComponent {
   switchLanguage(lang: string) {
     this.translate.use(lang);
     console.log(`Language changed to ${lang}`);
+  }
+
+  goBack() {
+    console.log('entre');
+    this.router.navigate(['/']); // Adjust the route if necessary
   }
 }

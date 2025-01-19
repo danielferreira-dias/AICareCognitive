@@ -1,22 +1,17 @@
 <section class="bg-black text-white py-20 px-10">
   <div class="max-w-4xl mx-auto text-center">
-    <!-- Title -->
-    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+    <!-- Título -->
+    <h1 class="text-4xl md:text-6xl font-bold mb-12 leading-tight tracking-tight transition-all hover:text-gray-300">
       {{ "The Algorithm to predict Alzheimer or Parkinson" | translate }}
     </h1>
 
-    <!-- Buttons -->
-    <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+    <!-- Botones -->
+    <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+      <!-- Botón de Start your Survey -->
       <button
-        class="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-200"
-        (click)="navigateToSurvey()"
-      >
+        class="bg-white text-black px-8 py-4 rounded-md font-semibold text-xl transition-all duration-300 hover:bg-gray-300 hover:scale-110 shadow-xl hover:shadow-2xl transform"
+        (click)="navigateToSurvey()">
         {{ "Start your Survey" | translate }}
-      </button>
-      <button
-        class="bg-zinc-800 text-white px-6 py-3 rounded-md font-medium border border-zinc-600 hover:border-white"
-      >
-        {{ "Contact Us" | translate }}
       </button>
     </div>
   </div>

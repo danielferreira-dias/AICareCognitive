@@ -17,7 +17,7 @@ from services import promethee_service, topsis_service
 from services.weights_service import get_weights, update_weights
 from services.inference_service import process as inference_process
 from classes.request import RequestData
-from src.services.weights_service import reset_weights
+from services.weights_service import reset_weights
 
 
 # In-memory store for the selected algorithm

@@ -1,81 +1,50 @@
 <nav class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5">
-  <div
-    class="w-full h-full flex flex-row justify-between items-center text-center align-middle"
-  >
+  <div class="w-full h-full flex flex-row justify-between items-center text-center align-middle">
     <div class="flex flex-row gap-x-10 text-center">
       <!-- Logo -->
       <div class="flex flex-row">
-        <a href="#" class="text-white text-2xl font-bold">
+        <a (click)="goBack()"
+          class="text-white text-2xl font-bold cursor-pointer transition-all hover:opacity-80 hover:scale-105">
           <p>{{ "AICare" | translate }}</p>
         </a>
       </div>
-
-      
     </div>
 
     <!-- Language Buttons and Search Bar -->
     <div class="flex flex-row items-center gap-4 h-8">
-      <button
-        (click)="switchLanguage('pt')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
-      >
+      <button (click)="switchLanguage('pt')"
+        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
         {{ "PT" | translate }}
       </button>
-      <button
-        (click)="switchLanguage('es')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
-      >
+      <button (click)="switchLanguage('es')"
+        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
         {{ "ES" | translate }}
       </button>
-      <button
-        (click)="switchLanguage('en')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
-      >
+      <button (click)="switchLanguage('en')"
+        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
         {{ "EN" | translate }}
       </button>
 
       <!-- Search Bar -->
       <div class="relative">
-        <input
-          type="text"
-          [placeholder]="'Search...' | translate"
-          class="bg-zinc-900 text-white px-4 py-2 rounded-sm w-48 h-8 outline-none"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          class="w-5 h-5 absolute top-1/2 right-3 transform -translate-y-1/2 text-zinc-700"
-        >
-          <circle
-            cx="11"
-            cy="11"
-            r="8"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-          ></circle>
-          <line
-            x1="21"
-            y1="21"
-            x2="16.65"
-            y2="16.65"
-            stroke-width="2"
-            stroke="currentColor"
-          ></line>
+        <input type="text" [placeholder]="'Search...' | translate"
+          class="bg-zinc-900 text-white px-4 py-2 rounded-sm w-48 h-8 outline-none" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          class="w-5 h-5 absolute top-1/2 right-3 transform -translate-y-1/2 text-zinc-700">
+          <circle cx="11" cy="11" r="8" stroke-width="2" stroke="currentColor" fill="none"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="currentColor"></line>
         </svg>
       </div>
 
-        <!-- Navigation Links -->
-        <div class="flex flex-row h-8 items-center justify-center">
-          <ng-container *ngIf="auth.isAuthenticated$ | async; else notLoggedIn">
-            <app-logout-button></app-logout-button>
-          </ng-container>
-          <ng-template #notLoggedIn>
-            <app-login-button></app-login-button>
-          </ng-template>
-        </div>
+      <!-- Navigation Links -->
+      <div class="flex flex-row h-8 items-center justify-center">
+        <ng-container *ngIf="auth.isAuthenticated$ | async; else notLoggedIn">
+          <app-logout-button></app-logout-button>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <app-login-button></app-login-button>
+        </ng-template>
+      </div>
     </div>
   </div>
 </nav>
