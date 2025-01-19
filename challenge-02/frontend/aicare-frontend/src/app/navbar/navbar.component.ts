@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
   menuOpen = false;
+  selectedLanguage: string = 'en';
 
   constructor(
     public auth: AuthService,
@@ -33,6 +34,7 @@ export class NavbarComponent {
   // Method to change the language
   switchLanguage(lang: string) {
     this.translate.use(lang);
+    this.selectedLanguage = lang;
     console.log(`Language changed to ${lang}`);
   }
 

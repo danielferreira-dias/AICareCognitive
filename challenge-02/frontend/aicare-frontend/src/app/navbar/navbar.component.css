@@ -1,0 +1,3 @@
+.hover\:shadow-white:hover {
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.5); /* Sombra blanca con opacidad */
+  }

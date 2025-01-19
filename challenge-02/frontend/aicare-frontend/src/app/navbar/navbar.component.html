@@ -1,29 +1,40 @@
 <nav class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5">
   <div class="w-full h-full flex flex-row justify-between items-center text-center align-middle">
     <div class="flex flex-row gap-x-10 text-center">
-      <!-- Logo -->
-      <div class="flex flex-row">
-        <a (click)="goBack()"
-          class="text-white text-2xl font-bold cursor-pointer transition-all hover:opacity-80 hover:scale-105">
-          <p>{{ "AICare" | translate }}</p>
-        </a>
+      <!-- Logo Container with Hover Effect and Click Event -->
+      <div class="flex flex-row items-center cursor-pointer transition-all hover:opacity-80 hover:scale-105"
+        (click)="goBack()">
+        <!-- Logo Image -->
+        <img src="assets/i18n/Images/aicarelogo.png" alt="AICare Logo" class="h-8 mr-2" />
+        <!-- Text -->
+        <p class="text-white text-2xl font-bold">{{ "AICare" | translate }}</p>
       </div>
     </div>
 
     <!-- Language Buttons and Search Bar -->
     <div class="flex flex-row items-center gap-4 h-8">
+      <!-- PT Button -->
       <button (click)="switchLanguage('pt')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
+        [ngClass]="{'bg-white text-black': selectedLanguage === 'pt', 'bg-zinc-950 text-white': selectedLanguage !== 'pt'}"
+        class="language-button h-8 text-sm w-14 rounded-[0.175rem] border-zinc-800 hover:shadow-white">
         {{ "PT" | translate }}
       </button>
+
+      <!-- ES Button -->
       <button (click)="switchLanguage('es')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
+        [ngClass]="{'bg-white text-black': selectedLanguage === 'es', 'bg-zinc-950 text-white': selectedLanguage !== 'es'}"
+        class="language-button h-8 text-sm w-14 rounded-[0.175rem] border-zinc-800 hover:shadow-white">
         {{ "ES" | translate }}
       </button>
+
+      <!-- EN Button -->
       <button (click)="switchLanguage('en')"
-        class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800">
+        [ngClass]="{'bg-white text-black': selectedLanguage === 'en', 'bg-zinc-950 text-white': selectedLanguage !== 'en'}"
+        class="language-button h-8 text-sm w-14 rounded-[0.175rem] border-zinc-800 hover:shadow-white">
         {{ "EN" | translate }}
       </button>
+
+
 
       <!-- Search Bar -->
       <div class="relative">

@@ -431,21 +431,10 @@ export class SurveyComponent {
   }
 
   nextCategory() {
-    // // Optional validation to check if the user can leave the current page
-    // const currentPageQuestions = this.categories;
-
-    // const allFieldsFilled = currentPageQuestions.every((_, index) => {
-    //   const fieldValue = this.formData[`page${this.currentCategory + 1}-question${index}`];
-    //   return fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
-    // });
-
-    // if (!allFieldsFilled) {
-    //     alert('Please fill in all the fields before navigating.');
-    //     return;
-    // }
-
     if (this.currentCategory < this.categories.length - 1) {
       this.currentCategory++;
+      // Desplazar al principio de la página
+      window.scrollTo(0, 0);
     }
   }
 
