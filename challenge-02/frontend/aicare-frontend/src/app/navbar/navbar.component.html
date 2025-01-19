@@ -6,7 +6,7 @@
       <!-- Logo -->
       <div class="flex flex-row">
         <a href="#" class="text-white text-2xl font-bold">
-          <p>AICare</p>
+          <p>{{ "AICare" | translate }}</p>
         </a>
       </div>
 
@@ -16,26 +16,29 @@
     <!-- Language Buttons and Search Bar -->
     <div class="flex flex-row items-center gap-4 h-8">
       <button
+        (click)="switchLanguage('pt')"
         class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
       >
-        PT
+        {{ "PT" | translate }}
       </button>
       <button
+        (click)="switchLanguage('es')"
         class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
       >
-        ES
+        {{ "ES" | translate }}
       </button>
       <button
+        (click)="switchLanguage('en')"
         class="border-[0.2px] h-8 bg-zinc-950 text-white text-sm w-14 rounded-[0.175rem] border-zinc-800"
       >
-        EN
+        {{ "EN" | translate }}
       </button>
 
       <!-- Search Bar -->
       <div class="relative">
         <input
           type="text"
-          placeholder="Search..."
+          [placeholder]="'Search...' | translate"
           class="bg-zinc-900 text-white px-4 py-2 rounded-sm w-48 h-8 outline-none"
         />
         <svg

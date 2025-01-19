@@ -1,26 +1,23 @@
 <section class="bg-black text-white py-20 px-10">
-    <div class="max-w-4xl mx-auto text-center">
-      <!-- Title -->
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">
-        The Algorithm to predict Alzheimer or Parkinson
-      </h1>
-  
-      <!-- Subtitle -->
-      <p class="text-lg md:text-xl text-zinc-400 mb-10">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        <span class="text-white font-semibold">ellentesque volutpat augue vitae ligula</span>
-        ullamcorper, at efficitur sem tristique..
-      </p>
-  
-      <!-- Buttons -->
-      <div class="flex flex-col md:flex-row justify-center items-center gap-4">
-        <button class="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-200" (click)="navigateToSurvey()">
-          Start your Survey
-        </button>
-        <button class="bg-zinc-800 text-white px-6 py-3 rounded-md font-medium border border-zinc-600 hover:border-white">
-          Contact Us
-        </button>
-      </div>
+  <div class="max-w-4xl mx-auto text-center">
+    <!-- Title -->
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+      {{ "The Algorithm to predict Alzheimer or Parkinson" | translate }}
+    </h1>
+
+    <!-- Buttons -->
+    <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+      <button
+        class="bg-white text-black px-6 py-3 rounded-md font-medium hover:bg-gray-200"
+        (click)="navigateToSurvey()"
+      >
+        {{ "Start your Survey" | translate }}
+      </button>
+      <button
+        class="bg-zinc-800 text-white px-6 py-3 rounded-md font-medium border border-zinc-600 hover:border-white"
+      >
+        {{ "Contact Us" | translate }}
+      </button>
     </div>
-  </section>
-  
+  </div>
+</section>

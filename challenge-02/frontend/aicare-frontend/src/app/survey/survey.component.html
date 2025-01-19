@@ -1,14 +1,20 @@
 <div class="flex flex-col w-full justify-center items-center">
   <div class="w-[90%] px-6 mx-auto max-w-6xl">
-    <nav class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5 w-full">
+    <nav
+      class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5 w-full"
+    >
       <div class="flex flex-row justify-between items-center">
         <div class="flex flex-row gap-x-10 w-full">
           <div class="flex flex-row items-center justify-center w-full">
-            <a *ngFor="let category of categories; let index = index" [ngClass]="{
+            <a
+              *ngFor="let category of categories; let index = index"
+              [ngClass]="{
                 'text-blue-200': currentCategory === index,
                 'text-zinc-600': currentCategory !== index
-              }" class="flex items-center justify-center h-full px-4 cursor-pointer">
-              {{ category.category }}
+              }"
+              class="flex items-center justify-center h-full px-4 cursor-pointer"
+            >
+              {{ category.category | translate }}
             </a>
           </div>
         </div>
@@ -16,19 +22,24 @@
     </nav>
   </div>
 
-  <section class="bg-black py-12 px-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-[80%]">
+  <section
+    class="bg-black py-12 px-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-[80%]"
+  >
     <h2 class="text-4xl text-white font-bold text-center mb-12">
-      {{ categories[currentCategory].category }}
+      {{ categories[currentCategory].category | translate }}
     </h2>
 
     <form (ngSubmit)="submitForm()" class="px-5">
       <!-- Render Questions Dynamically -->
-      <div *ngFor="
+      <div
+        *ngFor="
           let question of categories[currentCategory]?.questions;
           let i = index
-        " class="mb-6">
+        "
+        class="mb-6"
+      >
         <label for="question{{ i }}" class="custom-label">
-          {{ question.label }}
+          {{ question.label | translate }}
         </label>
 
         <!-- Radio Buttons for One-Hot -->
@@ -36,106 +47,259 @@
           <div class="flex gap-4">
             <!-- Loop through question.options -->
             <ng-container *ngFor="let option of question.options">
-              <label class="radio-label"
-                [ngClass]="{ 'bg-blue-200': formData['category' + currentCategory + '-question' + i] === option.value, 'text-white': formData['category' + currentCategory + '-question' + i] !== option.value }">
-                <input type="radio" [id]="'question' + i + '-option' + option.value"
-                  [(ngModel)]="formData['category' + currentCategory + '-question' + i]" [value]="option.value"
-                  [name]="'category' + currentCategory + '-question' + i" class="hidden" />
+              <label
+                class="radio-label"
+                [ngClass]="{
+                  'bg-blue-200':
+                    formData['category' + currentCategory + '-question' + i] ===
+                    option.value,
+                  'text-white':
+                    formData['category' + currentCategory + '-question' + i] !==
+                    option.value
+                }"
+              >
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-option' + option.value"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="option.value"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="hidden"
+                />
                 <div class="flex items-center gap-2">
-                  <div class="radio-circle"
-                    [class.bg-blue-500]="formData['category' + currentCategory + '-question' + i] === option.value">
-                    <svg *ngIf="formData['category' + currentCategory + '-question' + i] === option.value"
-                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                      class="w-4 h-4 radio-check-icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <div
+                    class="radio-circle"
+                    [class.bg-blue-500]="
+                      formData[
+                        'category' + currentCategory + '-question' + i
+                      ] === option.value
+                    "
+                  >
+                    <svg
+                      *ngIf="
+                        formData[
+                          'category' + currentCategory + '-question' + i
+                        ] === option.value
+                      "
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="w-4 h-4 radio-check-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
-                  <span class="text-base">{{ option.label }}</span>
+                  <span class="text-base">{{ option.label | translate }}</span>
                 </div>
               </label>
             </ng-container>
 
             <!-- Fallback Yes/No -->
             <ng-container *ngIf="!question.options?.length">
-              <label class="radio-label flex items-center gap-2" [ngClass]="{
-                  'bg-blue-200': formData['category' + currentCategory + '-question' + i] === 1,
-                  'text-white': formData['category' + currentCategory + '-question' + i] !== 1
-                }">
-                <input type="radio" [id]="'question' + i + '-yes'"
-                  [(ngModel)]="formData['category' + currentCategory + '-question' + i]" [value]="1"
-                  [name]="'category' + currentCategory + '-question' + i" class="hidden" />
+              <label
+                class="radio-label flex items-center gap-2"
+                [ngClass]="{
+                  'bg-blue-200':
+                    formData['category' + currentCategory + '-question' + i] ===
+                    1,
+                  'text-white':
+                    formData['category' + currentCategory + '-question' + i] !==
+                    1
+                }"
+              >
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-yes'"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="1"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="hidden"
+                />
                 <div class="flex items-center gap-2">
-                  <div class="radio-circle"
-                    [class.bg-blue-500]="formData['category' + currentCategory + '-question' + i] === 1">
-                    <svg *ngIf="formData['category' + currentCategory + '-question' + i] === 1"
-                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                      class="w-4 h-4 radio-check-icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <div
+                    class="radio-circle"
+                    [class.bg-blue-500]="
+                      formData[
+                        'category' + currentCategory + '-question' + i
+                      ] === 1
+                    "
+                  >
+                    <svg
+                      *ngIf="
+                        formData[
+                          'category' + currentCategory + '-question' + i
+                        ] === 1
+                      "
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="w-4 h-4 radio-check-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
-                  <span class="text-base">{{ 'Yes' }}</span>
+                  <span class="text-base">{{ "Yes" | translate }}</span>
                 </div>
               </label>
 
-              <label class="radio-label flex items-center gap-2" [ngClass]="{
-                  'bg-blue-200': formData['category' + currentCategory + '-question' + i] === 0,
-                  'text-white': formData['category' + currentCategory + '-question' + i] !== 0
-                }">
-                <input type="radio" [id]="'question' + i + '-no'"
-                  [(ngModel)]="formData['category' + currentCategory + '-question' + i]" [value]="0"
-                  [name]="'category' + currentCategory + '-question' + i" class="hidden" />
+              <label
+                class="radio-label flex items-center gap-2"
+                [ngClass]="{
+                  'bg-blue-200':
+                    formData['category' + currentCategory + '-question' + i] ===
+                    0,
+                  'text-white':
+                    formData['category' + currentCategory + '-question' + i] !==
+                    0
+                }"
+              >
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-no'"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="0"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="hidden"
+                />
                 <div class="flex items-center gap-2">
-                  <div class="radio-circle"
-                    [class.bg-blue-500]="formData['category' + currentCategory + '-question' + i] === 0">
-                    <svg *ngIf="formData['category' + currentCategory + '-question' + i] === 0"
-                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                      class="w-4 h-4 radio-check-icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <div
+                    class="radio-circle"
+                    [class.bg-blue-500]="
+                      formData[
+                        'category' + currentCategory + '-question' + i
+                      ] === 0
+                    "
+                  >
+                    <svg
+                      *ngIf="
+                        formData[
+                          'category' + currentCategory + '-question' + i
+                        ] === 0
+                      "
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="w-4 h-4 radio-check-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
-                  <span class="text-base">{{ 'No' }}</span>
+                  <span class="text-base">{{ "No" | translate }}</span>
                 </div>
               </label>
             </ng-container>
-
           </div>
         </div>
 
         <!-- Text Input -->
-        <input *ngIf="question.type === 'text'" id="question{{ i }}" type="text"
+        <input
+          *ngIf="question.type === 'text'"
+          id="question{{ i }}"
+          type="text"
           [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
           name="category{{ currentCategory }}-question{{ i }}"
           class="w-full p-3 bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-          required />
+          required
+        />
 
         <!-- Strict Number Input -->
-        <input *ngIf="question.type === 'number'" id="question{{ i }}" type="number"
+        <input
+          *ngIf="question.type === 'number'"
+          id="question{{ i }}"
+          type="number"
           [(ngModel)]="formData['category' + currentCategory + '-question' + i]"
           name="category{{ currentCategory }}-question{{ i }}"
           [attr.min]="question.min !== undefined ? question.min : null"
-          [attr.max]="question.max !== undefined ? question.max : null" (input)="sanitizeNumberInput($event, i)"
+          [attr.max]="question.max !== undefined ? question.max : null"
+          (input)="sanitizeNumberInput($event, i)"
           (blur)="validateNumberInput(i)"
           class="w-full p-3 bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-          required />
+          required
+        />
 
         <!-- Number-Radio Input -->
         <div *ngIf="question.type === 'number-radio'" class="mb-4">
           <div class="flex gap-4">
-            <ng-container *ngFor="let value of [].constructor(question.max - question.min + 1); let index = index">
-              <label class="radio-label flex items-center gap-2" [ngClass]="{
-                  'bg-blue-200': formData['category' + currentCategory + '-question' + i] === (question.min + index),
-                  'text-white': formData['category' + currentCategory + '-question' + i] !== (question.min + index)
-                }">
-                <input type="radio" [id]="'question' + i + '-option' + (question.min + index)"
-                  [(ngModel)]="formData['category' + currentCategory + '-question' + i]" [value]="question.min + index"
-                  [name]="'category' + currentCategory + '-question' + i" class="hidden" />
+            <ng-container
+              *ngFor="
+                let value of [].constructor(question.max - question.min + 1);
+                let index = index
+              "
+            >
+              <label
+                class="radio-label flex items-center gap-2"
+                [ngClass]="{
+                  'bg-blue-200':
+                    formData['category' + currentCategory + '-question' + i] ===
+                    question.min + index,
+                  'text-white':
+                    formData['category' + currentCategory + '-question' + i] !==
+                    question.min + index
+                }"
+              >
+                <input
+                  type="radio"
+                  [id]="'question' + i + '-option' + (question.min + index)"
+                  [(ngModel)]="
+                    formData['category' + currentCategory + '-question' + i]
+                  "
+                  [value]="question.min + index"
+                  [name]="'category' + currentCategory + '-question' + i"
+                  class="hidden"
+                />
                 <div class="flex items-center gap-2">
-                  <div class="radio-circle"
-                    [class.bg-blue-500]="formData['category' + currentCategory + '-question' + i] === (question.min + index)">
-                    <svg *ngIf="formData['category' + currentCategory + '-question' + i] === (question.min + index)"
-                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                      class="w-4 h-4 radio-check-icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <div
+                    class="radio-circle"
+                    [class.bg-blue-500]="
+                      formData[
+                        'category' + currentCategory + '-question' + i
+                      ] ===
+                      question.min + index
+                    "
+                  >
+                    <svg
+                      *ngIf="
+                        formData[
+                          'category' + currentCategory + '-question' + i
+                        ] ===
+                        question.min + index
+                      "
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      class="w-4 h-4 radio-check-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                   <span class="text-base">{{ question.min + index }}</span>
@@ -149,27 +313,37 @@
       <!-- Navigation Buttons -->
       <div class="flex justify-between items-center mt-8">
         <!-- Previous Button -->
-        <button type="button" (click)="prevCategory()" [disabled]="currentCategory === 0"
-          class="bg-zinc-950 border-2 border-white text-white py-4 px-12 text-lg font-semibold rounded-lg shadow-md 
-                hover:shadow-white hover:bg-gray-800 disabled:bg-gray-700 transition-all duration-200 ease-in-out disabled:opacity-50">
-          Previous
+        <button
+          type="button"
+          (click)="prevCategory()"
+          [disabled]="currentCategory === 0"
+          class="bg-zinc-950 border-2 border-white text-white py-4 px-12 text-lg font-semibold rounded-lg shadow-md hover:shadow-white hover:bg-gray-800 disabled:bg-gray-700 transition-all duration-200 ease-in-out disabled:opacity-50"
+        >
+          {{ "Previous" | translate }}
         </button>
 
         <!-- Submit Button -->
-        <button *ngIf="currentCategory === categories.length - 1" type="submit"
-          class="bg-zinc-950 text-black py-4 px-12 text-lg font-semibold rounded-lg shadow-md 
-                hover:shadow-white transition-all duration-200 ease-in-out text-lime-600 border-lime-600 border-2">
-          Submit
+        <button
+          *ngIf="currentCategory === categories.length - 1"
+          type="submit"
+          class="bg-zinc-950 text-black py-4 px-12 text-lg font-semibold rounded-lg shadow-md hover:shadow-white transition-all duration-200 ease-in-out text-lime-600 border-lime-600 border-2"
+        >
+          {{ "Submit" | translate }}
         </button>
 
         <!-- Next Button -->
-        <button type="button" (click)="nextCategory()" [disabled]="!isCurrentCategoryComplete() || currentCategory === categories.length - 1"
-        class="bg-black text-white border-2 border-white font-semibold py-4 px-12 text-lg rounded-lg shadow-md 
-              hover:shadow-white hover:bg-gray-800 disabled:bg-gray-700 transition-all duration-200 ease-in-out disabled:opacity-50">
-        Next
+        <button
+          type="button"
+          (click)="nextCategory()"
+          [disabled]="
+            !isCurrentCategoryComplete() ||
+            currentCategory === categories.length - 1
+          "
+          class="bg-black text-white border-2 border-white font-semibold py-4 px-12 text-lg rounded-lg shadow-md hover:shadow-white hover:bg-gray-800 disabled:bg-gray-700 transition-all duration-200 ease-in-out disabled:opacity-50"
+        >
+          {{ "Next" | translate }}
         </button>
       </div>
-
     </form>
   </section>
 </div>

@@ -8,6 +8,24 @@ import {
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// Translation loader factory
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+// Safely get Translate providers
+const translateProviders =
+  TranslateModule.forRoot({
+    loader: {
+      provide: TranslateLoader,
+      useFactory: HttpLoaderFactory,
+      deps: [HttpClient],
+    },
+  }).providers || []; // Fallback to an empty array if undefined
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,5 +56,6 @@ export const appConfig: ApplicationConfig = {
         ],
       },
     }),
+    ...translateProviders, // Add translation providers
   ],
 };

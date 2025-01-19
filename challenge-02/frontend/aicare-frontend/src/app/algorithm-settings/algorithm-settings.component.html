@@ -4,7 +4,9 @@
       class="bg-black p-4 border-b-[1px] border-b-zinc-800 px-10 py-5 w-full"
     >
       <div class="flex flex-row justify-between items-center">
-        <h1 class="text-2xl text-white font-bold">Algorithm Settings</h1>
+        <h1 class="text-2xl text-white font-bold">
+          {{ "Algorithm Settings" | translate }}
+        </h1>
       </div>
     </nav>
   </div>
@@ -13,14 +15,14 @@
     class="bg-black py-12 px-6 rounded-xl shadow-lg max-w-4xl mx-auto mt-10 w-[80%]"
   >
     <h2 class="text-3xl text-white font-bold text-center mb-10">
-      Configure Algorithm
+      {{ "Configure Algorithm" | translate }}
     </h2>
 
     <!-- Dropdown -->
     <div class="mb-6">
-      <label for="algorithm-select" class="block text-white mb-2"
-        >Select Algorithm:</label
-      >
+      <label for="algorithm-select" class="block text-white mb-2">
+        {{ "Select Algorithm:" | translate }}
+      </label>
       <select
         id="algorithm-select"
         class="bg-zinc-900 text-white p-2 rounded-md w-full"
@@ -38,7 +40,7 @@
         class="bg-gray-700 text-white py-2 px-6 rounded-sm hover:bg-gray-600"
         (click)="openWeightsPopup()"
       >
-        Configure Weights
+        {{ "Configure Weights" | translate }}
       </button>
 
       <!-- Get Activities Button -->
@@ -46,7 +48,7 @@
         class="bg-blue-700 text-white py-2 px-6 rounded-sm hover:bg-blue-600"
         (click)="getActivities()"
       >
-        Get Activities
+        {{ "Get Activities" | translate }}
       </button>
     </div>
 
@@ -60,7 +62,7 @@
           [ngStyle]="{ 'background-color': getPillBackground(activity) }"
           (click)="toggleBadge(activity)"
         >
-          <span class="activity-text">{{ activity.activity }}</span>
+          <span class="activity-text">{{ activity.activity | translate }}</span>
 
           <!-- Badge -->
           <div
@@ -84,7 +86,9 @@
       class="bg-white p-6 rounded-md shadow-lg max-w-2xl w-full"
       style="max-height: 80vh; overflow-y: auto"
     >
-      <h3 class="text-lg font-bold mb-4">Configure Weights</h3>
+      <h3 class="text-lg font-bold mb-4">
+        {{ "Configure Weights" | translate }}
+      </h3>
 
       <!-- Weight List in Two Columns -->
       <ul
@@ -92,9 +96,9 @@
         style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
       >
         <li *ngFor="let weight of weights" class="flex flex-col">
-          <label class="font-medium text-gray-700 mb-1">{{
-            weight.criterion
-          }}</label>
+          <label class="font-medium text-gray-700 mb-1">
+            {{ weight.criterion | translate }}
+          </label>
           <input
             type="number"
             [(ngModel)]="weight.weight"
@@ -112,13 +116,13 @@
           class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600"
           (click)="saveWeights()"
         >
-          Save
+          {{ "Save" | translate }}
         </button>
         <button
           class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500"
           (click)="closeWeightsPopup()"
         >
-          Cancel
+          {{ "Cancel" | translate }}
         </button>
       </div>
     </div>

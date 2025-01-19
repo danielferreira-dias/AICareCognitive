@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-prediction-result',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './prediction-result.component.html',
   styleUrls: ['./prediction-result.component.css'],
 })

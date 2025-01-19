@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { AuthService } from '@auth0/auth0-angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 type Question =
   | { label: string; type: 'text' }
@@ -24,7 +25,7 @@ type Category = {
 @Component({
   selector: 'app-survey',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.css'],
 })
@@ -64,7 +65,7 @@ export class SurveyComponent {
       category: 'Lifestyle',
       questions: [
         {
-          label: 'What is your BMY (body mass index)? (15-40)',
+          label: 'What is your BMI (Body Mass Index)? (15-40)',
           type: 'number',
           min: 15,
           max: 40,
@@ -325,14 +326,16 @@ export class SurveyComponent {
     if (!this.categories[this.currentCategory]?.questions) {
       return false;
     }
-  
-    return this.categories[this.currentCategory].questions.every((question, index) => {
-      const key = `category${this.currentCategory}-question${index}`;
-      const value = this.formData[key];
-  
-      // Check if the value is defined and not an empty string
-      return value !== undefined && value !== null && value !== '';
-    });
+
+    return this.categories[this.currentCategory].questions.every(
+      (question, index) => {
+        const key = `category${this.currentCategory}-question${index}`;
+        const value = this.formData[key];
+
+        // Check if the value is defined and not an empty string
+        return value !== undefined && value !== null && value !== '';
+      }
+    );
   }
 
   sanitizeNumberInput(event: Event, index: number) {
