@@ -64,21 +64,28 @@ async def process(request: RequestData, models: Dict[str, RandomForestClassifier
     else:
         disease_prediction = "None"
 
-    # Step 3: Save User Data
+    # Step 3: Save or Update User Data
     user_data = request.model_dump()  # Serialize RequestData into a dictionary
     user_data["auth0_user_id"] = auth0_id  # Add the Auth0 user ID to the data
 
-    try:
-        # Insert into users table
+    # Check if the user already exists
+    existing_user_stmt = select(user_table.c.id).where(user_table.c.auth0_user_id == auth0_id)
+    result = await db_session.execute(existing_user_stmt)
+    user_id = result.scalar()
+
+    if user_id:
+        # If the user exists, update their data using `update` statement
+        user_update_stmt = (
+            user_table.update().
+            where(user_table.c.id == user_id).
+            values(**user_data)
+        )
+        await db_session.execute(user_update_stmt)
+    else:
+        # If the user does not exist, insert new user data into the `users` table
         user_insert_stmt = insert(user_table).values(**user_data).returning(user_table.c.id)
         result = await db_session.execute(user_insert_stmt)
         user_id = result.scalar()  # Fetch the generated ID of the user
-
-    except IntegrityError:
-        # If the user already exists in the database (via `auth0_user_id`), fetch their `id`
-        existing_user_stmt = select(user_table.c.id).where(user_table.c.auth0_user_id == auth0_id)
-        result = await db_session.execute(existing_user_stmt)
-        user_id = result.scalar()
 
     # Step 4: Save Predictions in disease_predictions_table
     prediction_data = {
@@ -88,7 +95,7 @@ async def process(request: RequestData, models: Dict[str, RandomForestClassifier
 
     prediction_insert_stmt = insert(disease_predictions_table).values(**prediction_data)
     await db_session.execute(prediction_insert_stmt)
-    await db_session.commit()  # Commit both inserts to persist them in the database
+    await db_session.commit()  # Commit both inserts/updates to persist them in the database
 
     # Step 5: Return the predictions without database fields
     return {

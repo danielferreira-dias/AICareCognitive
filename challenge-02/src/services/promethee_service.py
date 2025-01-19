@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, update
 import numpy as np
 from fastapi import HTTPException
 from tables.activities import activities_table
@@ -82,8 +82,7 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
 
     # Step 9: Calculate pairwise preference indices for each pair of activities
     def preference_function(value1, value2):
-        # Example: linear preference function
-        return max(0, value1 - value2)
+        return max(0, value1 - value2)  # Example: linear preference function
 
     n_activities = len(activity_ids)
     preference_matrix = np.zeros((n_activities, n_activities))
@@ -112,20 +111,33 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         for activity_id, score in ranked_activities
     ]
 
-    # Step 12: Save results to the `results_table`
-    insert_data = [
-        {"user_id": user_id, "activity_id": activity_id, "score": score}
-        for activity_id, score in ranked_activities
-    ]
+    # Step 12: Save or Update results in the `results_table`
+    for activity_id, score in ranked_activities:
+        # Check if the result exists for the user and activity
+        existing_result = await db_session.execute(
+            select(results_table.c.id)
+            .where(results_table.c.user_id == user_id)
+            .where(results_table.c.activity_id == activity_id)
+        )
+        existing_result_id = existing_result.scalar_one_or_none()
 
-    # Optional: Clear previous results for this user
-    await db_session.execute(
-        results_table.delete().where(results_table.c.user_id == user_id)
-    )
+        if existing_result_id:
+            # Update the existing record
+            await db_session.execute(
+                results_table.update()
+                .where(results_table.c.id == existing_result_id)
+                .values(score=score)
+            )
+        else:
+            # Insert a new record
+            await db_session.execute(
+                insert(results_table).values(
+                    {"user_id": user_id, "activity_id": activity_id, "score": score}
+                )
+            )
 
-    # Insert the new results
-    await db_session.execute(insert(results_table).values(insert_data))
-    await db_session.commit()  # Commit to save changes
+    # Commit the changes
+    await db_session.commit()
 
     # Step 13: Return ranked activities
     return ranked_activities_named

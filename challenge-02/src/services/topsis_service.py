@@ -70,7 +70,6 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
     normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
 
     # Step 8: Apply user-specific weights
-    # Default to global weights if the user weights are missing
     user_weight_vector = np.array(
         [user_weights.get(c_id, 0) for c_id in criterion_ids]
     )
@@ -114,20 +113,34 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         for activity_id, score in ranked_activities
     ]
 
-    # Step 13: Save the results to the `results_table`
+    # Step 13: Save or Update Results in the `results_table`
     insert_data = [
         {"user_id": user_id, "activity_id": activity_id, "score": score}
         for activity_id, score in ranked_activities
     ]
 
-    # Clear previous results for user, if needed (optional)
-    await db_session.execute(
-        results_table.delete().where(results_table.c.user_id == user_id)
-    )
+    for data in insert_data:
+        # Check if a result already exists for this user and activity
+        existing_result = await db_session.execute(
+            select(results_table.c.id)
+            .where(results_table.c.user_id == data["user_id"])
+            .where(results_table.c.activity_id == data["activity_id"])
+        )
+        existing_result_id = existing_result.scalar_one_or_none()
 
-    # Insert new results into the results table
-    await db_session.execute(insert(results_table).values(insert_data))
-    await db_session.commit()  # Commit to save changes
+        if existing_result_id:
+            # Update the existing row with the new score
+            await db_session.execute(
+                results_table.update()
+                .where(results_table.c.id == existing_result_id)
+                .values(score=data["score"])
+            )
+        else:
+            # Insert a new row
+            await db_session.execute(insert(results_table).values(data))
+
+    # Commit all the database changes
+    await db_session.commit()
 
     # Step 14: Return the ranked activities
     return ranked_activities_named

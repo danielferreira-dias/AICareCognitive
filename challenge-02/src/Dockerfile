@@ -1,20 +1,24 @@
-# Base image with Python 3.12
+# Use the official Python 3.12 slim image
 FROM python:3.12-slim
 
-# Set the working directory in the container
+# Set environment variables to ensure Python runs without buffering
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory
 WORKDIR /app
 
-# Copy only the files necessary for installing dependencies (to leverage Docker caching)
+# Copy requirements.txt into the container
 COPY requirements.txt .
 
-# Install dependencies
+# Install dependencies using pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project into the container
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port FastAPI will listen on
+# Expose the required FastAPI port
 EXPOSE 8000
 
-# Command to run the FastAPI application using Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+# Run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
