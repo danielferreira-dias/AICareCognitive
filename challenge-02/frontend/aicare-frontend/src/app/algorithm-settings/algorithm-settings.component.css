@@ -59,3 +59,9 @@ input {
   z-index: 10;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
+
+button:disabled {
+  background-color: #b3b3b3; /* Color gris claro */
+  cursor: not-allowed; /* Muestra un cursor de "prohibido" */
+  opacity: 0.6; /* Reduce la opacidad */
+}

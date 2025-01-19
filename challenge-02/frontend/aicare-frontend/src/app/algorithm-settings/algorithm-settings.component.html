@@ -106,6 +106,20 @@
             min="0"
             max="1"
             step="0.01"
+            (input)="validateDecimal($event, weight)"
+          />
+        </li>
+        <!-- Total Weight Field -->
+        <li class="flex flex-col mt-0">
+          <label class="font-medium text-gray-700 mb-1">
+            {{ "Peso total:" | translate }}
+          </label>
+          <input
+            type="number"
+            [value]="totalWeight"
+            class="border border-gray-300 p-2 rounded-md w-full"
+            [ngClass]="{'bg-red-200': totalWeight !== 1.0, 'bg-green-200': totalWeight === 1.0}"
+            readonly
           />
         </li>
       </ul>
@@ -115,9 +129,12 @@
         <button
           class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600"
           (click)="saveWeights()"
+          [disabled]="totalWeight !== 1.0"
+          [title]="totalWeight !== 1.0 ? ('A soma dos pesos deve ser igual a 1' | translate) : ''"
         >
           {{ "Save" | translate }}
         </button>
+
         <button
           class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500"
           (click)="closeWeightsPopup()"

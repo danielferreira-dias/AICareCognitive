@@ -16,8 +16,11 @@ export class AlgorithmSettingsComponent {
   showWeightsPopup = false;
   weights: any[] = [];
   activities: any[] = [];
+  totalWeight: number = 0;
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.updateTotalWeight();
+  }
 
   onAlgorithmChange() {
     // Clear current state
@@ -42,6 +45,9 @@ export class AlgorithmSettingsComponent {
         next: (response: any) => {
           this.weights = response.weights;
           this.showWeightsPopup = true;
+
+          // Actualizar el total después de cargar los pesos
+          this.updateTotalWeight();
           console.log(this.weights);
         },
         error: (err) => console.error('Error fetching weights', err),
@@ -133,4 +139,44 @@ export class AlgorithmSettingsComponent {
       activity.showBadge = false; // Hide the badge after 1 second
     }, 1000);
   }
+  
+  updateTotalWeight() {
+    // Sumar todos los pesos redondeados a un decimal
+    this.totalWeight = parseFloat(
+      this.weights
+        .reduce((sum, weight) => sum + parseFloat(weight.weight || 0), 0)
+        .toFixed(2) // Redondear y convertir a número
+    );
+  }
+  
+  validateDecimal(event: Event, weight: any) {
+    const inputElement = event.target as HTMLInputElement;
+    let value = inputElement.value;
+  
+    // Permitir "0" o "0." temporalmente
+    if (value === '0' || value === '0,') {
+      weight.weight = value; // Actualiza el modelo sin cambios
+      return;
+    }
+  
+    // Validar y limitar a dos decimales
+    if (!/^\d*(\.\d{0,2})?$/.test(value)) {
+      value = parseFloat(value).toFixed(2); // Redondear si supera los dos decimales
+    }
+  
+    // Asegurarse de que esté dentro del rango permitido
+    const numericValue = parseFloat(value);
+    if (numericValue < 0) {
+      value = '0';
+    } else if (numericValue > 1) {
+      value = '1';
+    }
+  
+    // Actualizar el valor en el input y en el modelo
+    inputElement.value = value;
+    weight.weight = value;
+    this.updateTotalWeight();
+  }
+  
+
 }
