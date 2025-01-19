@@ -5,22 +5,12 @@
     <div class="flex flex-row gap-x-10 text-center">
       <!-- Logo -->
       <div class="flex flex-row">
-        <img src="/slash-forward-svgrepo-com.svg" class="w-8 h-8" alt="" />
-
         <a href="#" class="text-white text-2xl font-bold">
           <p>AICare</p>
         </a>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="flex flex-row h-8 items-center justify-center">
-        <ng-container *ngIf="auth.isAuthenticated$ | async; else notLoggedIn">
-          <app-logout-button></app-logout-button>
-        </ng-container>
-        <ng-template #notLoggedIn>
-          <app-login-button></app-login-button>
-        </ng-template>
-      </div>
+      
     </div>
 
     <!-- Language Buttons and Search Bar -->
@@ -73,6 +63,16 @@
           ></line>
         </svg>
       </div>
+
+        <!-- Navigation Links -->
+        <div class="flex flex-row h-8 items-center justify-center">
+          <ng-container *ngIf="auth.isAuthenticated$ | async; else notLoggedIn">
+            <app-logout-button></app-logout-button>
+          </ng-container>
+          <ng-template #notLoggedIn>
+            <app-login-button></app-login-button>
+          </ng-template>
+        </div>
     </div>
   </div>
 </nav>
