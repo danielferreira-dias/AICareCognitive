@@ -41,6 +41,7 @@ export class AlgorithmSettingsComponent {
         next: (response: any) => {
           this.weights = response.weights;
           this.showWeightsPopup = true;
+          console.log(this.weights);
         },
         error: (err) => console.error('Error fetching weights', err),
       });
@@ -48,12 +49,19 @@ export class AlgorithmSettingsComponent {
   }
 
   saveWeights() {
+    // Transformar los datos al formato requerido
+    const transformedWeights = this.weights.map((item: any) => ({
+      criterion_id: item.criterion_id,
+      new_weight: item.weight, // Cambiar "weight" a "new_weight"
+    }));
+
     this.auth.getAccessTokenSilently().subscribe((token) => {
+      console.log('Transformed weights', transformedWeights);
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       this.http
         .put(
           'http://localhost:8000/weights',
-          { weights: this.weights },
+          { weights: transformedWeights }, // Enviar el objeto transformado
           { headers }
         )
         .subscribe({
