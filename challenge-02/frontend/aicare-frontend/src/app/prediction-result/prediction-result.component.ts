@@ -17,6 +17,7 @@ export class PredictionResultComponent {
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.results = navigation?.extras.state?.['results'] || {};
+    console.log('results', this.results);
   }
 
   goBack() {
