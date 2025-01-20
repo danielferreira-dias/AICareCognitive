@@ -4,6 +4,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-algorithm-settings',
@@ -21,12 +22,16 @@ export class AlgorithmSettingsComponent {
 
   constructor(private http: HttpClient, private auth: AuthService) {
     this.updateTotalWeight();
+    this.onAlgorithmChange();
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getWeights();
   }
 
   onAlgorithmChange() {
     // Clear current state
     this.activities = [];
-
     const payload = { algorithm: this.selectedAlgorithm };
     this.auth.getAccessTokenSilently().subscribe((token) => {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -39,17 +44,30 @@ export class AlgorithmSettingsComponent {
     });
   }
 
+  async getWeights(): Promise<void> {
+    this.auth.getAccessTokenSilently().subscribe((token) => {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      this.http.get('http://localhost:8000/weights', { headers }).subscribe({
+        next: (response: any) => {
+          this.weights = response.weights;
+          console.log("WEIGHTS FIRST:",this.weights)
+        },
+        error: (err) => console.error('Error fetching weights', err),
+      });
+    });
+  }
+
   openWeightsPopup() {
     this.auth.getAccessTokenSilently().subscribe((token) => {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       this.http.get('http://localhost:8000/weights', { headers }).subscribe({
         next: (response: any) => {
           this.weights = response.weights;
+          console.log(this.weights)
           this.showWeightsPopup = true;
 
           // Actualizar el total después de cargar los pesos
           this.updateTotalWeight();
-          console.log(this.weights);
         },
         error: (err) => console.error('Error fetching weights', err),
       });
@@ -178,6 +196,8 @@ export class AlgorithmSettingsComponent {
   }
 
   updateTotalWeight() {
+    console.log('entre');
+    console.log(this.totalWeight);
     // Sumar todos los pesos redondeados a un decimal
     this.totalWeight = parseFloat(
       this.weights
