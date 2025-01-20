@@ -83,3 +83,15 @@ button:disabled {
     transform: rotate(360deg);
   }
 }
+
+.activity-pill {
+  transition: transform 1s ease;
+}
+
+.activity-pill.grow {
+  transform: scale(1.08); /* Crecimiento al pasar el ratón */
+}
+
+.badge {
+  transition: transform 1s ease, opacity 1s ease;
+}

@@ -60,10 +60,12 @@
           *ngFor="let activity of activities"
           class="activity-pill relative px-4 py-2 rounded-full text-white text-sm font-semibold cursor-pointer transform transition-transform duration-500"
           [ngStyle]="{ 'background-color': getPillBackground(activity) }"
-          (click)="toggleBadge(activity)"
+          (mouseenter)="showBadge(activity)"
+          (mouseleave)="hideBadge(activity)"
+          [class.grow]="activity.showBadge"
         >
           <span class="activity-text">{{ activity.activity | translate }}</span>
-
+    
           <!-- Badge -->
           <div
             *ngIf="activity.showBadge"

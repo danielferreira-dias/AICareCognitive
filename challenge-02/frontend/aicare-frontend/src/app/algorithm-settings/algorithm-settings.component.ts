@@ -50,7 +50,7 @@ export class AlgorithmSettingsComponent {
       this.http.get('http://localhost:8000/weights', { headers }).subscribe({
         next: (response: any) => {
           this.weights = response.weights;
-          console.log("WEIGHTS FIRST:",this.weights)
+          console.log('WEIGHTS FIRST:', this.weights);
         },
         error: (err) => console.error('Error fetching weights', err),
       });
@@ -63,7 +63,7 @@ export class AlgorithmSettingsComponent {
       this.http.get('http://localhost:8000/weights', { headers }).subscribe({
         next: (response: any) => {
           this.weights = response.weights;
-          console.log(this.weights)
+          console.log(this.weights);
           this.showWeightsPopup = true;
 
           // Actualizar el total después de cargar los pesos
@@ -188,11 +188,19 @@ export class AlgorithmSettingsComponent {
     return '#808080'; // Neutral Grey
   }
 
-  toggleBadge(activity: any) {
+  /*toggleBadge(activity: any) {
     activity.showBadge = true; // Show the badge
     setTimeout(() => {
       activity.showBadge = false; // Hide the badge after 1 second
     }, 1000);
+  }*/
+
+  showBadge(activity: any): void {
+    activity.showBadge = true; // Mostrar el badge
+  }
+
+  hideBadge(activity: any): void {
+    activity.showBadge = false; // Ocultar el badge
   }
 
   updateTotalWeight() {
