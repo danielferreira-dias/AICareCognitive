@@ -52,6 +52,7 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         raise HTTPException(status_code=404, detail="No decision matrix data found")
 
     # Step 6: Construct the decision matrix
+    # Rows: Activities, Columns: Criteria
     activity_ids = [activity[0] for activity in activities]
     criterion_ids = [criterion[0] for criterion in criteria]
 
@@ -65,37 +66,104 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         criterion_idx = criterion_id_to_index[row[1]]
         decision_matrix_np[activity_idx][criterion_idx] = row[2]
 
-    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
-
-    # Fetch user weight vector for criteria
+    # Step 7: Find weights according to disease
     user_weight_vector = np.array([user_weights.get(c_id, 0) for c_id in criterion_ids])
 
-    # Step 8: Apply user weights
-    weighted_matrix = normalized_matrix * user_weight_vector
+    # Step: 8 ÍNDICES DAS COLUNAS A MAXIMIZAR E MINIMIZAR
+    criterios_maximizar = np.array([True, True, True, True, True, False, False, False, False, True, True, True, False])  # Ejemplo: el 1er y 3er criterio son de maximización, el 2do es de minimización
 
-    # Step 9: Calculate pairwise preference indices for each pair of activities
-    def preference_function(value1, value2):
-        return max(0, value1 - value2)  # Example: linear preference function
+    #################################################
+    #             PROMETHEE II METHOD
+    ################################################
 
-    n_activities = len(activity_ids)
-    preference_matrix = np.zeros((n_activities, n_activities))
+    # STEP 1: Normalize the decision matrix
+    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
 
-    for i in range(n_activities):
-        for j in range(n_activities):
-            if i != j:
-                preference_indices = [
-                    preference_function(weighted_matrix[i, k], weighted_matrix[j, k])
-                    for k in range(weighted_matrix.shape[1])
-                ]
-                preference_matrix[i, j] = np.dot(preference_indices, user_weight_vector)
+    # STEP 2: Calculate the difference matrices by criterion (matrices de diferencia x criterio)
+    def calcular_matrices_diferencia(D):
+        m, n = D.shape
+        diferencias_por_criterio = []
 
-    # Step 10: Calculate net flows (leaving flow - entering flow)
-    leaving_flows = preference_matrix.sum(axis=1) / (n_activities - 1)
-    entering_flows = preference_matrix.sum(axis=0) / (n_activities - 1)
-    net_flows = leaving_flows - entering_flows
+        # Calcular las diferencias por cada criterio
+        for j in range(n):  # Para cada criterio (columna)
+            diferencia_criterio = np.zeros((m, m))  # Inicializar la matriz de diferencia para este criterio
+            for i in range(m):
+                for k in range(m):
+                    if i != k:
+                        diferencia_criterio[i, k] = D[i, j] - D[k, j]  # Diferencia por el criterio j
+                    else:
+                        diferencia_criterio[i, k] = 0  # Las diagonales deben ser 0
+            diferencias_por_criterio.append(diferencia_criterio)  # Añadir la matriz de diferencia del criterio j
 
-    # Step 11: Rank activities based on net flows
-    ranked_activities = sorted(zip(activity_ids, net_flows), key=lambda x: x[1], reverse=True)
+        return diferencias_por_criterio
+
+    # Calcular matrices de diferencias
+    diferencias = calcular_matrices_diferencia(normalized_matrix)
+
+    # STEP 3: Calculate the preference matrix using Usual Type 1 (matrices de preferencia x criterio)
+    def calcular_matriz_preferencia(diferencias, criterios_maximizar):
+        m = diferencias[0].shape[0]  # Número de alternativas
+        preferencias_por_criterio = []
+
+        for idx, diferencia in enumerate(diferencias):
+            preferencia_criterio = np.zeros((m, m))
+            for i in range(m):
+                for j in range(m):
+                    if criterios_maximizar[idx]:  # Maximización
+                        if diferencia[i, j] > 0:
+                            preferencia_criterio[i, j] = 1
+                        else:
+                            preferencia_criterio[i, j] = 0
+                    else:  # Minimización
+                        if diferencia[i, j] < 0:
+                            preferencia_criterio[i, j] = 1
+                        else:
+                            preferencia_criterio[i, j] = 0
+            preferencias_por_criterio.append(preferencia_criterio)
+
+        return preferencias_por_criterio
+    
+    # Calcular matrices de preferencias
+    preferencias = calcular_matriz_preferencia(diferencias, criterios_maximizar)
+
+    # STEP 4: Calculate the weighted preference index (Matriz ponderada)
+    def calcular_indice_preferencia(preferencias, weights):
+        m = preferencias[0].shape[0]  # Número de alternativas
+        indice_preferencia = np.zeros((m, m))  # Matriz de índice de preferencia
+
+        # Sumar las matrices de preferencia ponderadas
+        for idx, preferencia in enumerate(preferencias):
+            indice_preferencia += weights[idx] * preferencia  # Multiplicar cada matriz de preferencia por el peso correspondiente
+
+        return indice_preferencia
+
+    # Calcular matrices de preferencias ponderadas
+    indice_preferencia = calcular_indice_preferencia(preferencias, user_weight_vector)
+
+    # STEP 5: Calculate the overflows (Flujos de superacion postivos, negativos e netos)
+    def calcular_flujos_superacion(indice_preferencia):
+        m = indice_preferencia.shape[0]
+        flujo_superacion_positivo = np.zeros(m)
+        flujo_superacion_negativo = np.zeros(m)
+
+        # Normalizamos por m-1 (en lugar de simplemente sumar)
+        for i in range(m):
+            flujo_superacion_positivo[i] = np.sum(indice_preferencia[i, :]) / (m - 1)
+            flujo_superacion_negativo[i] = np.sum(indice_preferencia[:, i]) / (m - 1)
+
+        # Calcular flujo neto de superación (Φ)
+        flujo_neto_superacion = flujo_superacion_positivo - flujo_superacion_negativo
+
+        return flujo_superacion_positivo, flujo_superacion_negativo, flujo_neto_superacion
+
+    # Calcular flujos positivos, negativos, netos
+    flujo_superacion_positivo, flujo_superacion_negativo, flujo_neto_superacion = calcular_flujos_superacion(indice_preferencia)
+
+    # -END PROMETHEE METHOD
+
+    # STEP 6: Rank the activities based net flows
+    ranked_activities = sorted(zip(activity_ids, flujo_neto_superacion), key=lambda x: x[1], reverse=True)
+
 
     # Map activity IDs to their names
     activity_id_to_name = {activity[0]: activity[1] for activity in activities}

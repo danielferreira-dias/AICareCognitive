@@ -66,23 +66,29 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
         criterion_idx = criterion_id_to_index[row[1]]
         decision_matrix_np[activity_idx][criterion_idx] = row[2]
 
-    # Step 7: Normalize the decision matrix
-    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
+    # Step 7: Find weights according to disease
+    user_weight_vector = np.array([user_weights.get(c_id, 0) for c_id in criterion_ids])
 
-    # Step 8: Apply user-specific weights
-    user_weight_vector = np.array(
-        [user_weights.get(c_id, 0) for c_id in criterion_ids]
-    )
-    weighted_matrix = normalized_matrix * user_weight_vector
-
-    # Step 9: Define indices for maximizing and minimizing
+    # Step 8: Define indices for maximizing and minimizing
     indices_max = [0, 1, 2, 3, 4, 9, 10, 11]  # Columns to MAXIMIZE
     indices_min = [5, 6, 7, 8, 12]  # Columns to MINIMIZE
 
-    # Calculate the ideal best (positive) and worst (negative) solutions
+    #  Step 9: Calculate the ideal best (positive) and worst (negative) solutions
     ideal_positive = []
     ideal_negative = []
 
+    #################################################
+    #                TOPSIS METHOD
+    ################################################
+
+    # STEP 1: Normalize the decision matrix
+    normalized_matrix = decision_matrix_np / np.sqrt((decision_matrix_np ** 2).sum(axis=0))
+
+    # STEP 2: Weight to normalized matrix
+    weighted_matrix = normalized_matrix * user_weight_vector
+
+    # STEP 3: Determine the ideal positive and the ideal negative options
+    # Atribuir os máximos e mínimos de acordo com os índices
     for j in range(weighted_matrix.shape[1]):
         if j in indices_max:  # Maximize
             ideal_positive.append(weighted_matrix[:, j].max())
@@ -94,17 +100,19 @@ async def get_results(auth0_id: str, db_session: AsyncSession):
     ideal_positive = np.array(ideal_positive)
     ideal_negative = np.array(ideal_negative)
 
-    # Step 10: Calculate distances to ideal positive and ideal negative
+    # STEP 4: Calculate the distances of each alternative from negative ideal and positive solution (Eucledian distance)
     distances_to_positive = np.sqrt(((weighted_matrix - ideal_positive) ** 2).sum(axis=1))
     distances_to_negative = np.sqrt(((weighted_matrix - ideal_negative) ** 2).sum(axis=1))
 
-    # Step 11: Calculate the TOPSIS scores
+    # STEP 5: Calculate the relative distance / TOPSIS scores
     topsis_scores = distances_to_negative / (distances_to_positive + distances_to_negative)
 
-    # Step 12: Rank the activities based on the TOPSIS scores
+    # STEP 6: Rank the activities based on the TOPSIS scores
     ranked_activities = sorted(
         zip(activity_ids, topsis_scores), key=lambda x: x[1], reverse=True
     )
+
+    # -END TOPSIS METHOD
 
     # Map activity IDs to their names
     activity_id_to_name = {activity[0]: activity[1] for activity in activities}
